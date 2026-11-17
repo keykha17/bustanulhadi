@@ -541,11 +541,16 @@ main {
       </div>
     </div>
 
-    <div id="quizResult" class="neu-card" style="display:none;text-align:center;padding:24px 16px;">
-      <span class="badge" style="margin-bottom:8px;">Hasil Akhir Kuis</span>
-      <div style="font-size:34px;font-weight:800;margin:6px 0;" id="resScore">0 Poin</div>
-      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;" id="resDetail"></p>
-      <button type="button" class="btn btn-primary btn-block" onclick="finishQuizView()">Lihat Klasemen Kejuaraan</button>
+    <div id="quizResult" style="display:none;">
+      <div class="neu-card" style="text-align:center;padding:24px 16px;">
+        <span class="badge" style="margin-bottom:8px;">Hasil Akhir Kuis</span>
+        <div style="font-size:34px;font-weight:800;margin:6px 0;" id="resScore">0 Poin</div>
+        <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;" id="resDetail"></p>
+        <button type="button" class="btn btn-primary btn-block" onclick="finishQuizView()">Lihat Klasemen Kejuaraan</button>
+      </div>
+
+      <h3 style="font-size:15px;font-weight:700;margin:16px 0 10px;">Pembahasan & Kunci Jawaban</h3>
+      <div id="quizReviewList"></div>
     </div>
   </section>
 
@@ -667,7 +672,8 @@ const fallbackState = {
       pertanyaan: "Berapakah jumlah rukun wudhu menurut kitab Safinatun Najah?",
       opsi: ["4 perkara", "5 perkara", "6 perkara", "7 perkara"],
       kunci: 2,
-      poin: 25
+      poin: 25,
+      penjelasan: "Dalam kitab Safinatun Najah disebutkan bahwa fardhu (rukun) wudhu ada enam perkara: niat, membasuh muka, membasuh kedua tangan beserta siku, mengusap sebagian kepala, membasuh kedua kaki beserta mata kaki, dan tertib."
     }
   ],
   skor: [],
@@ -1141,6 +1147,40 @@ function nextQuestion() {
   }
 }
 
+function renderQuizReview() {
+  const huruf = ["A", "B", "C", "D"];
+  const reviewEl = document.getElementById("quizReviewList");
+  reviewEl.innerHTML = appState.kuisSoal.map((q, idx) => {
+    const userAns = quizAnswers[q.id];
+    const correctIdx = Number(q.kunci);
+    const isCorrect = userAns === correctIdx;
+    const userText = userAns !== undefined ? `${huruf[userAns]}. ${q.opsi[userAns]}` : "Tidak dijawab";
+    const correctText = `${huruf[correctIdx]}. ${q.opsi[correctIdx]}`;
+
+    return `
+      <div class="neu-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <span class="badge">Soal #${idx + 1}</span>
+          <span class="badge" style="${isCorrect ? "background:var(--accent);color:var(--accent-text);" : ""}">
+            ${isCorrect ? "Benar (+" + q.poin + " Poin)" : "Kurang Tepat (0 Poin)"}
+          </span>
+        </div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:10px;">${q.pertanyaan}</div>
+        <div style="font-size:12px;margin-bottom:4px;color:var(--text-secondary);">
+          Jawaban Anda: <strong style="color:var(--text-primary);">${userText}</strong>
+        </div>
+        <div style="font-size:12px;margin-bottom:10px;color:var(--text-secondary);">
+          Jawaban Benar: <strong style="color:var(--text-primary);">${correctText}</strong>
+        </div>
+        <div class="neu-inset" style="padding:10px 12px;font-size:12px;color:var(--text-secondary);">
+          <strong style="color:var(--text-primary);display:block;margin-bottom:3px;">Penjelasan Jawaban:</strong>
+          <span style="white-space:pre-line;line-height:1.6;">${q.penjelasan || "Kunci jawaban yang benar adalah " + correctText + "."}</span>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
 async function submitQuiz() {
   clearInterval(quizTimerInterval);
   let totalPoin = 0;
@@ -1202,6 +1242,7 @@ async function submitQuiz() {
   document.getElementById("quizResult").style.display = "block";
   document.getElementById("resScore").textContent = `${totalPoin} Poin`;
   document.getElementById("resDetail").textContent = `${nama} menjawab benar ${benar} dari ${total} soal.`;
+  renderQuizReview();
   renderKejuaraan();
 }
 

@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="color-scheme" content="light dark">
+<title>Balai Pengajian - Portal Santri</title>
+<style>
+:root {
+  --bg: #f0f0f0;
+  --surface: #f7f7f7;
+  --surface-elevated: #ffffff;
+  --border: #dcdcdc;
+  --text-primary: #141414;
+  --text-secondary: #525252;
+  --text-muted: #737373;
+  --accent: #141414;
+  --accent-text: #ffffff;
+  --shadow-dark: #d1d1d1;
+  --shadow-light: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121212;
+    --surface: #171717;
+    --surface-elevated: #1e1e1e;
+    --border: #2a2a2a;
+    --text-primary: #f5f5f5;
+    --text-secondary: #a3a3a3;
+    --text-muted: #737373;
+    --accent: #ffffff;
+    --accent-text: #121212;
+    --shadow-dark: #0a0a0a;
+    --shadow-light: #222222;
+  }
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+  padding-bottom: 84px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.neu-card {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 6px 6px 14px var(--shadow-dark), -4px -4px 10px var(--shadow-light);
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.neu-inset {
+  background: var(--bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -3px -3px 7px var(--shadow-light);
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 4px 4px 8px var(--shadow-dark), -2px -2px 6px var(--shadow-light);
+  transition: transform 0.12s ease;
+}
+.btn:active {
+  transform: scale(0.97);
+  box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+.btn-sm {
+  padding: 7px 10px;
+  font-size: 12px;
+  border-radius: 10px;
+}
+.btn-block {
+  width: 100%;
+}
+select, input {
+  width: 100%;
+  background: var(--bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 11px 13px;
+  font-size: 14px;
+  font-family: inherit;
+  box-shadow: inset 3px 3px 7px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
+  outline: none;
+}
+input:focus, select:focus {
+  border-color: var(--text-secondary);
+}
+label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.form-group {
+  margin-bottom: 12px;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 7px var(--shadow-dark), -2px -2px 5px var(--shadow-light);
+}
+.brand h1 {
+  font-size: 15px;
+  font-weight: 700;
+}
+.brand span {
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: block;
+}
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+.status-dot.online {
+  background: var(--accent);
+}
+main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px;
+}
+.section {
+  display: none;
+}
+.section.active {
+  display: block;
+}
+.section-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.stat-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 8px;
+  text-align: center;
+  box-shadow: 4px 4px 10px var(--shadow-dark), -3px -3px 7px var(--shadow-light);
+}
+.stat-val {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-lbl {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+.pill-group {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+}
+.pill {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.pill.active {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+.bar-track {
+  width: 100%;
+  height: 8px;
+  background: var(--bg);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-top: 8px;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+}
+.quiz-opt {
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: all 0.12s ease;
+}
+.quiz-opt.selected {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+  font-weight: 700;
+}
+.podium-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+.podium-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 8px;
+  text-align: center;
+  box-shadow: 4px 4px 10px var(--shadow-dark), -3px -3px 7px var(--shadow-light);
+}
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 6px 4px 10px;
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+}
+.nav-item.active {
+  color: var(--accent);
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.72);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal-backdrop.open {
+  display: flex;
+}
+.modal-box {
+  width: 100%;
+  max-width: 480px;
+  max-height: 88vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+}
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+.auth-overlay.hidden {
+  display: none;
+}
+.tab-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.tab-btn {
+  padding: 8px;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.tab-btn.active {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+.toast {
+  position: fixed;
+  top: 66px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 80;
+  background: var(--accent);
+  color: var(--accent-text);
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  display: none;
+}
+.icon {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+</style>
+</head>
+<body>
+
+<div id="authScreen" class="auth-overlay">
+  <div class="neu-card" style="width:100%;max-width:380px;padding:24px;">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div class="brand-icon" style="width:50px;height:50px;margin:0 auto 12px;">
+        <svg class="icon" style="width:24px;height:24px;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <h2 style="font-size:18px;margin-bottom:4px;">Akun Mandiri Santri</h2>
+      <p style="font-size:12px;color:var(--text-secondary);">Cukup masuk sekali, akun otomatis tersimpan di HP Anda</p>
+    </div>
+
+    <div class="tab-switch">
+      <button type="button" id="btnModeLogin" class="tab-btn active" onclick="setAuthMode('login')">Masuk Akun</button>
+      <button type="button" id="btnModeRegister" class="tab-btn" onclick="setAuthMode('register')">Daftar Baru</button>
+    </div>
+
+    <div id="formLogin">
+      <div class="form-group">
+        <label>Username Santri</label>
+        <input type="text" id="loginUsername" autocomplete="off" placeholder="Contoh: rizki">
+      </div>
+      <div class="form-group">
+        <label>PIN Pribadi</label>
+        <input type="password" id="loginPin" inputmode="numeric" maxlength="6" placeholder="Contoh: 1111">
+      </div>
+      <button type="button" class="btn btn-primary btn-block" onclick="handleSantriLogin()">Masuk ke Portal Santri</button>
+    </div>
+
+    <div id="formRegister" style="display:none;">
+      <div class="form-group">
+        <label>Nama Lengkap</label>
+        <input type="text" id="regNama" placeholder="Nama lengkap santri">
+      </div>
+      <div class="form-group">
+        <label>Username (Tanpa Spasi)</label>
+        <input type="text" id="regUsername" placeholder="contoh: ahmad17">
+      </div>
+      <div class="form-group">
+        <label>Buat PIN (4-6 Digit)</label>
+        <input type="password" id="regPin" inputmode="numeric" maxlength="6" placeholder="1234">
+      </div>
+      <div class="form-group">
+        <label>Pilih Kelas / Kitab (Ditentukan Guru)</label>
+        <select id="regKelas"></select>
+      </div>
+      <button type="button" class="btn btn-primary btn-block" onclick="handleSantriRegister()">Daftar & Simpan di HP</button>
+    </div>
+
+    <p id="authError" style="font-size:12px;color:var(--text-secondary);text-align:center;margin-top:12px;display:none;"></p>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<header>
+  <div class="brand">
+    <div class="brand-icon">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    </div>
+    <div>
+      <h1 id="headerSantriName">Balai Pengajian</h1>
+      <span id="headerSantriSub">Portal Santri Mandiri</span>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:6px;">
+    <div class="status-pill">
+      <span id="syncDot" class="status-dot"></span>
+      <span id="syncLabel">Lokal</span>
+    </div>
+    <button type="button" class="btn btn-sm" onclick="openChangePinModal()" title="Ubah PIN Sandi">
+      <svg class="icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </button>
+    <button type="button" class="btn btn-sm" onclick="logoutSantri()" title="Ganti Akun">
+      <svg class="icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section id="sec-absensi" class="section active">
+    <h2 class="section-title">Kehadiran Pribadi Saya</h2>
+
+    <div id="santriAttSummary" class="neu-card"></div>
+
+    <div class="grid-4" style="margin-bottom:14px;" id="santriAttCounts"></div>
+
+    <h3 style="font-size:14px;margin-bottom:10px;color:var(--text-secondary);">Riwayat Sesi Pengajian Saya</h3>
+    <div id="santriAttHistory"></div>
+  </section>
+
+  <section id="sec-materi" class="section">
+    <h2 class="section-title">Materi Belajar & Kitab</h2>
+    <div class="pill-group" id="materiFilter"></div>
+    <div id="materiList"></div>
+  </section>
+
+  <section id="sec-kuis" class="section">
+    <h2 class="section-title">Kuis Cerdas</h2>
+
+    <div id="quizIntro" class="neu-card">
+      <span class="badge" style="margin-bottom:8px;">Ujian Interaktif Mandiri</span>
+      <h3 style="font-size:16px;margin-bottom:6px;" id="quizTitleDisplay">Kuis Cerdas Balai Pengajian</h3>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;" id="quizMetaDisplay">Memuat informasi soal...</p>
+      <div class="neu-inset" style="padding:12px;margin-bottom:14px;font-size:13px;">
+        <div style="color:var(--text-secondary);font-size:11px;">Peserta Aktif</div>
+        <div style="font-weight:700;" id="quizActiveParticipant">-</div>
+      </div>
+      <button type="button" class="btn btn-primary btn-block" onclick="startQuiz()">Mulai Kuis Sekarang</button>
+    </div>
+
+    <div id="quizArena" style="display:none;">
+      <div class="neu-card" style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:13px;font-weight:700;" id="quizProgress">Soal 1 / 1</span>
+        <span class="badge" style="background:var(--accent);color:var(--accent-text);font-size:13px;" id="quizTimer">00:00</span>
+      </div>
+      <div id="quizQuestionBox" class="neu-card"></div>
+      <div style="display:flex;gap:8px;">
+        <button type="button" class="btn" id="btnPrevQ" style="flex:1;" onclick="prevQuestion()">Sebelumnya</button>
+        <button type="button" class="btn btn-primary" id="btnNextQ" style="flex:1;" onclick="nextQuestion()">Berikutnya</button>
+      </div>
+    </div>
+
+    <div id="quizResult" class="neu-card" style="display:none;text-align:center;padding:24px 16px;">
+      <span class="badge" style="margin-bottom:8px;">Hasil Akhir Kuis</span>
+      <div style="font-size:34px;font-weight:800;margin:6px 0;" id="resScore">0 Poin</div>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;" id="resDetail"></p>
+      <button type="button" class="btn btn-primary btn-block" onclick="finishQuizView()">Lihat Klasemen Kejuaraan</button>
+    </div>
+  </section>
+
+  <section id="sec-pustaka" class="section">
+    <h2 class="section-title">Link Kitab, Buku & Aplikasi</h2>
+    <div id="linkList"></div>
+  </section>
+
+  <section id="sec-kejuaraan" class="section">
+    <h2 class="section-title">Kejuaraan Kuis Cerdas</h2>
+    <div id="podiumBox" class="podium-grid"></div>
+    <div class="neu-card">
+      <h3 style="font-size:14px;margin-bottom:10px;">Papan Peringkat Lengkap</h3>
+      <div id="leaderboardList"></div>
+    </div>
+  </section>
+</main>
+
+<nav class="bottom-nav">
+  <button type="button" class="nav-item active" onclick="switchTab('absensi', this)">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    <span>Absensi</span>
+  </button>
+  <button type="button" class="nav-item" onclick="switchTab('materi', this)">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    <span>Materi</span>
+  </button>
+  <button type="button" class="nav-item" onclick="switchTab('kuis', this)">
+    <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <span>Kuis</span>
+  </button>
+  <button type="button" class="nav-item" onclick="switchTab('pustaka', this)">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+    <span>Pustaka</span>
+  </button>
+  <button type="button" class="nav-item" onclick="switchTab('kejuaraan', this)">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+    <span>Juara</span>
+  </button>
+</nav>
+
+<div id="modalReadMateri" class="modal-backdrop">
+  <div class="modal-box">
+    <span class="badge" id="readBadge" style="margin-bottom:8px;"></span>
+    <h3 id="readTitle" style="font-size:17px;margin-bottom:12px;"></h3>
+    <div id="readBody" style="font-size:14px;color:var(--text-primary);white-space:pre-line;line-height:1.7;margin-bottom:16px;"></div>
+    <button type="button" class="btn btn-primary btn-block" onclick="closeModalRead()">Tutup Bacaan</button>
+  </div>
+</div>
+
+<div id="modalChangePin" class="modal-backdrop">
+  <div class="modal-box">
+    <h3 style="font-size:16px;margin-bottom:4px;">Ubah PIN Sandi Akun</h3>
+    <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;" id="pinModalUserLabel">Akun Santri</p>
+    <div class="form-group">
+      <label>PIN Lama</label>
+      <input type="password" id="oldSantriPin" inputmode="numeric" maxlength="6" placeholder="Masukkan PIN saat ini">
+    </div>
+    <div class="form-group">
+      <label>PIN Baru (4-6 Digit)</label>
+      <input type="password" id="newSantriPinInput" inputmode="numeric" maxlength="6" placeholder="Masukkan PIN baru">
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button type="button" class="btn btn-primary" style="flex:1;" onclick="saveNewSantriPin()">Simpan PIN Baru</button>
+      <button type="button" class="btn" onclick="closeChangePinModal()">Batal</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyA_NoIO1F_E5fDmVwex6ad3bT5h2OGmZPE",
+  authDomain: "game-2d1e0.firebaseapp.com",
+  projectId: "game-2d1e0",
+  storageBucket: "game-2d1e0.firebasestorage.app",
+  messagingSenderId: "501200973294",
+  appId: "1:501200973294:web:a423438c589d9ffb57b2ff",
+  measurementId: "G-KYHHP0XW7Z"
+};
+
+const fallbackState = {
+  kelasList: [
+    "Umum",
+    "Safinatun Najah",
+    "Matan Taqrib",
+    "Aqidatul Awam",
+    "Taisirul Khallaq"
+  ],
+  santri: [
+    { id: "s1", nama: "Muhammad Rizki", username: "rizki", pin: "1111", kelas: "Safinatun Najah" },
+    { id: "s2", nama: "Cut Nabila", username: "nabila", pin: "2222", kelas: "Safinatun Najah" },
+    { id: "s4", nama: "Siti Aisyah", username: "aisyah", pin: "4444", kelas: "Umum" }
+  ],
+  absensi: {},
+  materi: [
+    {
+      id: "m1",
+      judul: "Rukun Wudhu dalam Mazhab Syafi'i",
+      kategori: "Fiqih",
+      kitab: "Safinatun Najah",
+      isi: "Rukun wudhu ada enam perkara: Pertama niat ketika membasuh muka, kedua membasuh seluruh muka, ketiga membasuh kedua tangan hingga siku, keempat mengusap sebagian kepala, kelima membasuh kedua kaki hingga mata kaki, dan keenam tertib.",
+      tanggal: "2026-11-18"
+    },
+    {
+      id: "m2",
+      judul: "Adab Menuntut Ilmu di Balai Pengajian",
+      kategori: "Akhlak",
+      kitab: "Umum",
+      isi: "Setiap santri hendaknya meluruskan niat ikhlas karena Allah SWT, memuliakan guru, menjaga kebersihan majelis ilmu, dan mengamalkan ilmu yang dipelajari.",
+      tanggal: "2026-11-18"
+    }
+  ],
+  kuisConfig: { judul: "Musabaqah Fahmil Kutub Mingguan", durasi: 180 },
+  kuisSoal: [
+    {
+      id: "q1",
+      pertanyaan: "Berapakah jumlah rukun wudhu menurut kitab Safinatun Najah?",
+      opsi: ["4 perkara", "5 perkara", "6 perkara", "7 perkara"],
+      kunci: 2,
+      poin: 25
+    }
+  ],
+  skor: [],
+  pustaka: [
+    {
+      id: "l1",
+      judul: "Al-Maktabah Al-Shamela",
+      jenis: "Kitab Digital",
+      url: "https://shamela.ws",
+      deskripsi: "Perpustakaan digital kitab-kitab turats Islam lengkap"
+    }
+  ]
+};
+
+function ensureKelasList(stateObj) {
+  let list = Array.isArray(stateObj.kelasList) ? [...stateObj.kelasList] : [];
+  if (!list.includes("Umum")) list.unshift("Umum");
+  stateObj.kelasList = list;
+  return stateObj;
+}
+
+let appState = ensureKelasList(JSON.parse(localStorage.getItem("balai_pengajian_state")) || fallbackState);
+let savedProfile = JSON.parse(localStorage.getItem("santri_saved_profile") || "null");
+let loggedSantriId = localStorage.getItem("santri_session_id") || (savedProfile ? savedProfile.id : "");
+
+if (savedProfile && !appState.santri.some(s => s.id === savedProfile.id)) {
+  appState.santri.push(savedProfile);
+  localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
+}
+
+let docRef = null;
+let selectedKategori = "Semua";
+
+let quizIndex = 0;
+let quizAnswers = {};
+let quizSecondsLeft = 0;
+let quizTimerInterval = null;
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  setTimeout(() => { t.style.display = "none"; }, 2400);
+}
+
+function updateSyncUI(online) {
+  const dot = document.getElementById("syncDot");
+  const lbl = document.getElementById("syncLabel");
+  if (online) {
+    dot.classList.add("online");
+    lbl.textContent = "Online";
+  } else {
+    dot.classList.remove("online");
+    lbl.textContent = "Lokal";
+  }
+}
+
+function populateRegKelasOptions() {
+  const sel = document.getElementById("regKelas");
+  if (!sel) return;
+  const currentVal = sel.value;
+  const list = appState.kelasList || ["Umum"];
+  sel.innerHTML = list.map(k =>
+    `<option value="${k}">${k === "Umum" ? "Umum (Mencakup Semua Kelas & Kitab)" : k}</option>`
+  ).join("");
+  if (currentVal && list.includes(currentVal)) {
+    sel.value = currentVal;
+  }
+}
+
+function initFirebase() {
+  try {
+    if (typeof firebase === "undefined") {
+      updateSyncUI(false);
+      return;
+    }
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+    docRef = db.collection("balai_pengajian").doc("data_utama");
+    docRef.onSnapshot((snapshot) => {
+      if (snapshot.exists) {
+        const cloudData = snapshot.data();
+        const mergedSantri = Array.isArray(cloudData.santri) ? [...cloudData.santri] : [];
+        if (savedProfile && !mergedSantri.some(s => s.id === savedProfile.id)) {
+          mergedSantri.push(savedProfile);
+        }
+        appState = ensureKelasList({ ...fallbackState, ...cloudData, santri: mergedSantri });
+        localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
+        populateRegKelasOptions();
+        verifyActiveSession();
+        renderAll();
+        updateSyncUI(true);
+      }
+    }, () => {
+      updateSyncUI(false);
+    });
+  } catch (e) {
+    updateSyncUI(false);
+  }
+}
+
+function saveSantriSession(santriObj) {
+  loggedSantriId = santriObj.id;
+  savedProfile = santriObj;
+  localStorage.setItem("santri_session_id", santriObj.id);
+  localStorage.setItem("santri_saved_profile", JSON.stringify(santriObj));
+}
+
+function openChangePinModal() {
+  const s = getCurrentSantri();
+  if (!s) return;
+  document.getElementById("pinModalUserLabel").textContent = `${s.nama} (@${s.username || s.id})`;
+  document.getElementById("oldSantriPin").value = "";
+  document.getElementById("newSantriPinInput").value = "";
+  document.getElementById("modalChangePin").classList.add("open");
+}
+
+function closeChangePinModal() {
+  document.getElementById("modalChangePin").classList.remove("open");
+}
+
+async function saveNewSantriPin() {
+  const s = getCurrentSantri();
+  if (!s) return;
+  const oldPin = document.getElementById("oldSantriPin").value.trim();
+  const newPin = document.getElementById("newSantriPinInput").value.trim();
+
+  if (oldPin !== String(s.pin || "1234")) {
+    return showToast("PIN lama tidak sesuai");
+  }
+  if (newPin.length < 4) {
+    return showToast("PIN baru minimal 4 digit");
+  }
+
+  const updated = { ...s, pin: newPin };
+  const idx = appState.santri.findIndex(x => x.id === s.id);
+  if (idx > -1) {
+    appState.santri[idx] = updated;
+  } else {
+    appState.santri.push(updated);
+  }
+  localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
+  saveSantriSession(updated);
+
+  if (docRef) {
+    try {
+      const snap = await docRef.get();
+      const latest = snap.exists ? snap.data() : appState;
+      const list = Array.isArray(latest.santri) ? latest.santri : [];
+      const cIdx = list.findIndex(x => x.id === s.id);
+      if (cIdx > -1) list[cIdx] = updated;
+      else list.push(updated);
+      await docRef.set({ ...latest, santri: list });
+    } catch (e) {}
+  }
+
+  closeChangePinModal();
+  showToast("PIN akun berhasil diperbarui");
+}
+
+function setAuthMode(mode) {
+  document.getElementById("authError").style.display = "none";
+  if (mode === "login") {
+    document.getElementById("btnModeLogin").classList.add("active");
+    document.getElementById("btnModeRegister").classList.remove("active");
+    document.getElementById("formLogin").style.display = "block";
+    document.getElementById("formRegister").style.display = "none";
+  } else {
+    populateRegKelasOptions();
+    document.getElementById("btnModeRegister").classList.add("active");
+    document.getElementById("btnModeLogin").classList.remove("active");
+    document.getElementById("formRegister").style.display = "block";
+    document.getElementById("formLogin").style.display = "none";
+  }
+}
+
+function showAuthError(msg) {
+  const el = document.getElementById("authError");
+  el.textContent = msg;
+  el.style.display = "block";
+}
+
+function handleSantriLogin() {
+  const uname = document.getElementById("loginUsername").value.trim().toLowerCase();
+  const pin = document.getElementById("loginPin").value.trim();
+  if (!uname || !pin) return showAuthError("Masukkan username dan PIN Anda.");
+
+  const found = appState.santri.find(s => (s.username || s.id).toLowerCase() === uname && String(s.pin || "1234") === pin);
+  if (!found) {
+    return showAuthError("Username atau PIN tidak cocok. Gunakan akun 'rizki' PIN '1111' atau klik Daftar Baru.");
+  }
+
+  saveSantriSession(found);
+  document.getElementById("loginUsername").value = "";
+  document.getElementById("loginPin").value = "";
+  document.getElementById("authError").style.display = "none";
+  verifyActiveSession();
+  renderAll();
+  showToast("Akun tersimpan di HP • " + found.nama);
+}
+
+async function handleSantriRegister() {
+  const nama = document.getElementById("regNama").value.trim();
+  const username = document.getElementById("regUsername").value.trim().toLowerCase().replace(/\s+/g, "");
+  const pin = document.getElementById("regPin").value.trim();
+  const kelas = document.getElementById("regKelas").value || "Umum";
+
+  if (!nama || !username || pin.length < 4) {
+    return showAuthError("Lengkapi nama, username, dan PIN minimal 4 digit.");
+  }
+  if (appState.santri.some(s => (s.username || "").toLowerCase() === username)) {
+    return showAuthError("Username sudah dipakai. Gunakan username lain.");
+  }
+
+  const newSantri = { id: "s" + Date.now(), nama, username, pin, kelas };
+  appState.santri.push(newSantri);
+  localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
+  saveSantriSession(newSantri);
+
+  if (docRef) {
+    try {
+      const snap = await docRef.get();
+      const latest = snap.exists ? snap.data() : appState;
+      const list = Array.isArray(latest.santri) ? latest.santri : [];
+      if (!list.some(s => (s.username || "").toLowerCase() === username)) {
+        list.push(newSantri);
+        await docRef.set({ ...latest, santri: list });
+      }
+    } catch (e) {}
+  }
+
+  document.getElementById("regNama").value = "";
+  document.getElementById("regUsername").value = "";
+  document.getElementById("regPin").value = "";
+  verifyActiveSession();
+  renderAll();
+  showToast("Akun dibuat & tersimpan permanen di HP");
+}
+
+function logoutSantri() {
+  clearInterval(quizTimerInterval);
+  loggedSantriId = "";
+  savedProfile = null;
+  localStorage.removeItem("santri_session_id");
+  localStorage.removeItem("santri_saved_profile");
+  populateRegKelasOptions();
+  document.getElementById("authScreen").classList.remove("hidden");
+}
+
+function getCurrentSantri() {
+  if (!loggedSantriId && !savedProfile) return null;
+  return appState.santri.find(s => s.id === loggedSantriId) || savedProfile || null;
+}
+
+function verifyActiveSession() {
+  const current = getCurrentSantri();
+  const overlay = document.getElementById("authScreen");
+  if (!current) {
+    populateRegKelasOptions();
+    overlay.classList.remove("hidden");
+    return;
+  }
+  overlay.classList.add("hidden");
+  document.getElementById("headerSantriName").textContent = current.nama;
+  document.getElementById("headerSantriSub").textContent = `${current.kelas} • @${current.username || current.id}`;
+  document.getElementById("quizActiveParticipant").textContent = `${current.nama} (${current.kelas})`;
+}
+
+function switchTab(tab, el) {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+  document.getElementById("sec-" + tab).classList.add("active");
+  el.classList.add("active");
+}
+
+function renderSantriAbsensi() {
+  const s = getCurrentSantri();
+  if (!s) return;
+
+  const keys = Object.keys(appState.absensi).sort().reverse();
+  let h = 0, i = 0, sk = 0, a = 0;
+  const rows = [];
+
+  keys.forEach(k => {
+    const st = appState.absensi[k][s.id];
+    if (st) {
+      if (st === "Hadir") h++;
+      else if (st === "Izin") i++;
+      else if (st === "Sakit") sk++;
+      else if (st === "Alpa") a++;
+      const [tgl, sesi] = k.split("_");
+      rows.push({ tgl, sesi, st });
+    }
+  });
+
+  const tot = h + i + sk + a;
+  const pct = tot > 0 ? Math.round((h / tot) * 100) : 0;
+
+  document.getElementById("santriAttSummary").innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:15px;font-weight:700;">${s.nama}</div>
+        <div style="font-size:12px;color:var(--text-secondary);">Kelas: ${s.kelas}</div>
+      </div>
+      <div style="font-size:22px;font-weight:800;">${pct}%</div>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:${pct}%;"></div></div>
+    <div style="font-size:11px;color:var(--text-secondary);margin-top:6px;">Rekap mandiri dari ${tot} sesi pengajian yang tercatat</div>
+  `;
+
+  document.getElementById("santriAttCounts").innerHTML = [
+    { l: "Hadir", v: h },
+    { l: "Izin", v: i },
+    { l: "Sakit", v: sk },
+    { l: "Alpa", v: a }
+  ].map(x => `
+    <div class="stat-box">
+      <div class="stat-val">${x.v}</div>
+      <div class="stat-lbl">${x.l}</div>
+    </div>
+  `).join("");
+
+  const histEl = document.getElementById("santriAttHistory");
+  if (rows.length === 0) {
+    histEl.innerHTML = `<div class="neu-card" style="text-align:center;color:var(--text-secondary);font-size:13px;">Belum ada catatan kehadiran pribadi Anda.</div>`;
+  } else {
+    histEl.innerHTML = rows.map(r => `
+      <div class="neu-card" style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;">
+        <div>
+          <div style="font-size:13px;font-weight:700;">Pengajian ${r.sesi}</div>
+          <div style="font-size:11px;color:var(--text-secondary);">${r.tgl}</div>
+        </div>
+        <span class="badge" style="${r.st === "Hadir" ? "background:var(--accent);color:var(--accent-text);" : ""}">${r.st}</span>
+      </div>
+    `).join("");
+  }
+}
+
+function renderMateri() {
+  const s = getCurrentSantri();
+  const santriKelas = s ? s.kelas : "Umum";
+  const cats = ["Semua", "Fiqih", "Tauhid", "Tasawuf", "Tajwid", "Akhlak"];
+  document.getElementById("materiFilter").innerHTML = cats.map(c => `
+    <button type="button" class="pill ${selectedKategori === c ? "active" : ""}" onclick="filterMateri('${c}')">${c}</button>
+  `).join("");
+
+  const relevantMateri = appState.materi.filter(m => {
+    if (santriKelas === "Umum") return true;
+    return m.kitab === santriKelas || m.kitab === "Umum";
+  });
+
+  const filtered = selectedKategori === "Semua"
+    ? relevantMateri
+    : relevantMateri.filter(m => m.kategori === selectedKategori);
+
+  const listEl = document.getElementById("materiList");
+
+  if (filtered.length === 0) {
+    listEl.innerHTML = `<div class="neu-card" style="text-align:center;color:var(--text-secondary);font-size:13px;">Belum ada materi tersedia untuk kelas ${santriKelas}.</div>`;
+    return;
+  }
+
+  listEl.innerHTML = filtered.map(m => `
+    <div class="neu-card">
+      <span class="badge" style="margin-bottom:6px;">${m.kategori} • ${m.kitab}</span>
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:6px;">${m.judul}</h3>
+      <p style="font-size:13px;color:var(--text-secondary);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px;">${m.isi}</p>
+      <button type="button" class="btn btn-sm" onclick="openReadMateri('${m.id}')">Baca Selengkapnya</button>
+    </div>
+  `).join("");
+}
+
+function filterMateri(cat) {
+  selectedKategori = cat;
+  renderMateri();
+}
+
+function openReadMateri(id) {
+  const m = appState.materi.find(x => x.id === id);
+  if (!m) return;
+  document.getElementById("readBadge").textContent = `${m.kategori} • ${m.kitab}`;
+  document.getElementById("readTitle").textContent = m.judul;
+  document.getElementById("readBody").textContent = m.isi;
+  document.getElementById("modalReadMateri").classList.add("open");
+}
+
+function closeModalRead() {
+  document.getElementById("modalReadMateri").classList.remove("open");
+}
+
+function renderQuizIntro() {
+  document.getElementById("quizTitleDisplay").textContent = appState.kuisConfig.judul;
+  const totalPoin = appState.kuisSoal.reduce((sum, q) => sum + Number(q.poin || 0), 0);
+  document.getElementById("quizMetaDisplay").textContent = `Jumlah Soal: ${appState.kuisSoal.length} Pertanyaan • Waktu: ${Math.floor(appState.kuisConfig.durasi / 60)} Menit • Maksimal ${totalPoin} Poin`;
+}
+
+function startQuiz() {
+  const s = getCurrentSantri();
+  if (!s) return verifyActiveSession();
+  if (appState.kuisSoal.length === 0) return showToast("Guru belum menambahkan soal kuis");
+
+  quizIndex = 0;
+  quizAnswers = {};
+  quizSecondsLeft = Number(appState.kuisConfig.durasi) || 180;
+
+  document.getElementById("quizIntro").style.display = "none";
+  document.getElementById("quizResult").style.display = "none";
+  document.getElementById("quizArena").style.display = "block";
+
+  renderQuestion();
+  clearInterval(quizTimerInterval);
+  updateTimerLabel();
+  quizTimerInterval = setInterval(() => {
+    quizSecondsLeft--;
+    updateTimerLabel();
+    if (quizSecondsLeft <= 0) {
+      clearInterval(quizTimerInterval);
+      submitQuiz();
+    }
+  }, 1000);
+}
+
+function updateTimerLabel() {
+  const m = String(Math.floor(quizSecondsLeft / 60)).padStart(2, "0");
+  const s = String(quizSecondsLeft % 60).padStart(2, "0");
+  document.getElementById("quizTimer").textContent = `${m}:${s}`;
+}
+
+function renderQuestion() {
+  const total = appState.kuisSoal.length;
+  const q = appState.kuisSoal[quizIndex];
+  const huruf = ["A", "B", "C", "D"];
+
+  document.getElementById("quizProgress").textContent = `Soal ${quizIndex + 1} dari ${total}`;
+  document.getElementById("btnPrevQ").disabled = quizIndex === 0;
+  document.getElementById("btnNextQ").textContent = quizIndex === total - 1 ? "Selesai & Kirim" : "Berikutnya";
+
+  document.getElementById("quizQuestionBox").innerHTML = `
+    <span class="badge" style="margin-bottom:8px;">Bobot ${q.poin} Poin</span>
+    <div style="font-size:15px;font-weight:700;margin-bottom:14px;">${q.pertanyaan}</div>
+    <div>
+      ${q.opsi.map((op, idx) => `
+        <button type="button" class="quiz-opt ${quizAnswers[q.id] === idx ? "selected" : ""}" onclick="selectOption('${q.id}', ${idx})">
+          <strong>${huruf[idx]}.</strong> ${op}
+        </button>
+      `).join("")}
+    </div>
+  `;
+}
+
+function selectOption(qId, idx) {
+  quizAnswers[qId] = idx;
+  renderQuestion();
+}
+
+function prevQuestion() {
+  if (quizIndex > 0) {
+    quizIndex--;
+    renderQuestion();
+  }
+}
+
+function nextQuestion() {
+  if (quizIndex < appState.kuisSoal.length - 1) {
+    quizIndex++;
+    renderQuestion();
+  } else {
+    submitQuiz();
+  }
+}
+
+async function submitQuiz() {
+  clearInterval(quizTimerInterval);
+  let totalPoin = 0;
+  let benar = 0;
+  const total = appState.kuisSoal.length;
+
+  appState.kuisSoal.forEach(q => {
+    if (quizAnswers[q.id] === Number(q.kunci)) {
+      benar++;
+      totalPoin += Number(q.poin || 20);
+    }
+  });
+
+  const santriObj = getCurrentSantri();
+  const activeId = santriObj ? santriObj.id : loggedSantriId;
+  const nama = santriObj ? santriObj.nama : "Santri";
+  const nowStr = new Date().toLocaleString("id-ID", { dateStyle: "short", timeStyle: "short" });
+
+  const existingIdx = appState.skor.findIndex(x => x.santriId === activeId);
+  const newEntry = {
+    id: "sc" + Date.now(),
+    santriId: activeId,
+    nama,
+    poin: totalPoin,
+    benar,
+    total,
+    waktu: nowStr
+  };
+
+  if (existingIdx > -1) {
+    if (totalPoin >= appState.skor[existingIdx].poin) {
+      appState.skor[existingIdx] = newEntry;
+    }
+  } else {
+    appState.skor.push(newEntry);
+  }
+
+  localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
+
+  if (docRef) {
+    try {
+      const snap = await docRef.get();
+      const latest = snap.exists ? snap.data() : appState;
+      const latestScores = Array.isArray(latest.skor) ? latest.skor : [];
+      const idx = latestScores.findIndex(x => x.santriId === activeId);
+      if (idx > -1) {
+        if (totalPoin >= latestScores[idx].poin) latestScores[idx] = newEntry;
+      } else {
+        latestScores.push(newEntry);
+      }
+      await docRef.set({ ...latest, skor: latestScores });
+      showToast("Skor terkirim ke Guru");
+    } catch (e) {
+      showToast("Tersimpan lokal");
+    }
+  }
+
+  document.getElementById("quizArena").style.display = "none";
+  document.getElementById("quizResult").style.display = "block";
+  document.getElementById("resScore").textContent = `${totalPoin} Poin`;
+  document.getElementById("resDetail").textContent = `${nama} menjawab benar ${benar} dari ${total} soal.`;
+  renderKejuaraan();
+}
+
+function finishQuizView() {
+  document.getElementById("quizResult").style.display = "none";
+  document.getElementById("quizIntro").style.display = "block";
+  const navBtns = document.querySelectorAll(".nav-item");
+  switchTab("kejuaraan", navBtns[4]);
+}
+
+function renderLinks() {
+  const listEl = document.getElementById("linkList");
+  if (appState.pustaka.length === 0) {
+    listEl.innerHTML = `<div class="neu-card" style="text-align:center;color:var(--text-secondary);font-size:13px;">Belum ada tautan pustaka dari Guru.</div>`;
+    return;
+  }
+  listEl.innerHTML = appState.pustaka.map(l => `
+    <div class="neu-card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+      <div>
+        <span class="badge" style="margin-bottom:4px;">${l.jenis}</span>
+        <div style="font-weight:700;font-size:14px;">${l.judul}</div>
+        <div style="font-size:12px;color:var(--text-secondary);">${l.deskripsi}</div>
+      </div>
+      <a href="${l.url}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;flex-shrink:0;">Buka</a>
+    </div>
+  `).join("");
+}
+
+function renderKejuaraan() {
+  const sorted = [...appState.skor].sort((a, b) => b.poin - a.poin);
+  const podiumEl = document.getElementById("podiumBox");
+  const lbEl = document.getElementById("leaderboardList");
+  const activeId = (getCurrentSantri() || {}).id || loggedSantriId;
+
+  if (sorted.length === 0) {
+    podiumEl.innerHTML = "";
+    lbEl.innerHTML = `<div style="font-size:13px;color:var(--text-secondary);text-align:center;">Belum ada peserta di papan kejuaraan.</div>`;
+    return;
+  }
+
+  const order = [1, 0, 2];
+  podiumEl.innerHTML = order.map(rankIdx => {
+    const item = sorted[rankIdx];
+    if (!item) return `<div></div>`;
+    const isFirst = rankIdx === 0;
+    return `
+      <div class="podium-card" style="${isFirst ? "border-color:var(--accent);padding-top:18px;padding-bottom:18px;" : ""}">
+        <span class="badge" style="${isFirst ? "background:var(--accent);color:var(--accent-text);" : ""}">Juara ${rankIdx + 1}</span>
+        <div style="font-size:13px;font-weight:700;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.nama}</div>
+        <div style="font-size:16px;font-weight:800;margin-top:2px;">${item.poin}</div>
+        <div style="font-size:10px;color:var(--text-secondary);">Poin</div>
+      </div>
+    `;
+  }).join("");
+
+  lbEl.innerHTML = sorted.map((sc, idx) => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);${sc.santriId === activeId ? "font-weight:700;" : ""}">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="badge" style="${idx < 3 ? "background:var(--accent);color:var(--accent-text);" : ""}">#${idx + 1}</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;">${sc.nama} ${sc.santriId === activeId ? "(Saya)" : ""}</div>
+          <div style="font-size:11px;color:var(--text-secondary);">Benar ${sc.benar}/${sc.total} soal</div>
+        </div>
+      </div>
+      <div style="font-weight:800;font-size:14px;">${sc.poin} Poin</div>
+    </div>
+  `).join("");
+}
+
+function renderAll() {
+  populateRegKelasOptions();
+  renderSantriAbsensi();
+  renderMateri();
+  renderQuizIntro();
+  renderLinks();
+  renderKejuaraan();
+}
+
+populateRegKelasOptions();
+verifyActiveSession();
+renderAll();
+initFirebase();
+</script>
+</body>
+</html>

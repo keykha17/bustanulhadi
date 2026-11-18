@@ -374,6 +374,18 @@ main {
   font-weight: 600;
   margin-bottom: 3px;
 }
+.clickable-row {
+  cursor: pointer;
+  padding: 11px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  margin-bottom: 8px;
+  transition: transform 0.12s ease;
+}
+.clickable-row:active {
+  transform: scale(0.985);
+}
 .quiz-opt {
   width: 100%;
   text-align: left;
@@ -615,10 +627,10 @@ main {
         <button type="button" class="pill" onclick="setSantriPeriod('mingguan', this)">Mingguan</button>
         <button type="button" class="pill" onclick="setSantriPeriod('bulanan', this)">Bulanan</button>
       </div>
-      <div id="santriDateWrap" style="display:none;margin-bottom:6px;">
+      <div id="santriDateWrap" style="display:none;margin-bottom:8px;">
         <input type="date" id="santriRefDate" onchange="renderSantriAbsensi()">
       </div>
-      <div id="santriMonthWrap" style="display:none;margin-bottom:6px;">
+      <div id="santriMonthWrap" style="display:none;margin-bottom:8px;">
         <input type="month" id="santriRefMonth" onchange="renderSantriAbsensi()">
       </div>
       <div id="santriPeriodDesc" style="font-size:11px;color:var(--text-secondary);"></div>
@@ -641,10 +653,17 @@ main {
       <div id="santriDistChart"></div>
     </div>
 
-    <h3 style="font-size:14px;margin-bottom:10px;color:var(--text-secondary);">Riwayat Sesi Pengajian Saya</h3>
+    <h3 style="font-size:14px;margin-bottom:8px;color:var(--text-secondary);">Riwayat Sesi Pengajian Saya</h3>
+    <div class="pill-group" id="santriStatusFilterPills" style="margin-bottom:10px;">
+      <button type="button" class="pill active" onclick="setSantriStatusFilter('ALL', this)">Semua</button>
+      <button type="button" class="pill" onclick="setSantriStatusFilter('Hadir', this)">Hadir</button>
+      <button type="button" class="pill" onclick="setSantriStatusFilter('Izin', this)">Izin</button>
+      <button type="button" class="pill" onclick="setSantriStatusFilter('Sakit', this)">Sakit</button>
+      <button type="button" class="pill" onclick="setSantriStatusFilter('Alpa', this)">Alpa</button>
+    </div>
     <div class="search-wrap" id="wrapSearchSantriAtt">
       <svg class="icon search-ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="searchSantriAtt" placeholder="Cari tanggal (2026-11), sesi, atau status..." oninput="onSearchInput('searchSantriAtt','wrapSearchSantriAtt',renderSantriAbsensi)">
+      <input type="text" id="searchSantriAtt" placeholder="Cari tanggal (2026-11) atau sesi..." oninput="onSearchInput('searchSantriAtt','wrapSearchSantriAtt',renderSantriAbsensi)">
       <button type="button" class="search-clear" onclick="clearSearch('searchSantriAtt','wrapSearchSantriAtt',renderSantriAbsensi)">×</button>
     </div>
     <div id="santriAttHistory"></div>
@@ -714,7 +733,10 @@ main {
     <h2 class="section-title">Kejuaraan Kuis Cerdas</h2>
     <div id="podiumBox" class="podium-grid"></div>
     <div class="neu-card">
-      <h3 style="font-size:14px;margin-bottom:10px;">Papan Peringkat Lengkap</h3>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <h3 style="font-size:14px;">Papan Peringkat Lengkap</h3>
+        <span class="badge">Klik untuk Detail</span>
+      </div>
       <div class="search-wrap" id="wrapSearchJuara">
         <svg class="icon search-ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" id="searchJuara" placeholder="Cari nama peserta di papan peringkat..." oninput="onSearchInput('searchJuara','wrapSearchJuara',renderKejuaraan)">
@@ -747,6 +769,21 @@ main {
     <span>Juara</span>
   </button>
 </nav>
+
+<div id="modalDetailPeserta" class="modal-backdrop">
+  <div class="modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:12px;">
+      <div>
+        <span class="badge" id="detPesertaKelas" style="margin-bottom:4px;">Kelas</span>
+        <h3 id="detPesertaNama" style="font-size:18px;font-weight:800;">Nama Santri</h3>
+      </div>
+      <button type="button" class="btn btn-sm" onclick="closeModalPeserta()">Tutup</button>
+    </div>
+    <div class="neu-inset" style="padding:12px;margin-bottom:12px;" id="detPesertaSkorBox"></div>
+    <div class="grid-4" style="margin-bottom:14px;" id="detPesertaStats"></div>
+    <button type="button" class="btn btn-primary btn-block" onclick="closeModalPeserta()">Tutup Detail</button>
+  </div>
+</div>
 
 <div id="modalReadMateri" class="modal-backdrop">
   <div class="modal-box">
@@ -874,6 +911,7 @@ if (savedProfile && !appState.santri.some(s => s.id === savedProfile.id)) {
 let docRef = null;
 let selectedKategori = "Semua";
 let santriPeriodMode = "semua";
+let santriStatusFilter = "ALL";
 
 let quizIndex = 0;
 let quizAnswers = {};
@@ -1175,6 +1213,13 @@ function setSantriPeriod(mode, btnEl) {
   renderSantriAbsensi();
 }
 
+function setSantriStatusFilter(status, btnEl) {
+  santriStatusFilter = status;
+  document.querySelectorAll("#santriStatusFilterPills .pill").forEach(p => p.classList.remove("active"));
+  if (btnEl) btnEl.classList.add("active");
+  renderSantriAbsensi();
+}
+
 function renderVerticalBarChart(items) {
   if (!items || items.length === 0) {
     return `<div style="font-size:12px;color:var(--text-secondary);text-align:center;padding:20px 0;">Belum ada data sesi pada periode ini.</div>`;
@@ -1358,18 +1403,22 @@ function renderSantriAbsensi() {
         `;
       }).join("");
 
+  let filteredRows = santriStatusFilter === "ALL"
+    ? rows
+    : rows.filter(r => r.st === santriStatusFilter);
+
   const q = getQuery("searchSantriAtt");
-  const filteredRows = q
-    ? rows.filter(r =>
-        (r.tgl || "").toLowerCase().includes(q) ||
-        (r.sesi || "").toLowerCase().includes(q) ||
-        (r.st || "").toLowerCase().includes(q)
-      )
-    : rows;
+  if (q) {
+    filteredRows = filteredRows.filter(r =>
+      (r.tgl || "").toLowerCase().includes(q) ||
+      (r.sesi || "").toLowerCase().includes(q) ||
+      (r.st || "").toLowerCase().includes(q)
+    );
+  }
 
   const histEl = document.getElementById("santriAttHistory");
   if (filteredRows.length === 0) {
-    histEl.innerHTML = `<div class="neu-card" style="text-align:center;color:var(--text-secondary);font-size:13px;">${rows.length === 0 ? "Belum ada catatan kehadiran pribadi Anda." : "Riwayat tidak ditemukan."}</div>`;
+    histEl.innerHTML = `<div class="neu-card" style="text-align:center;color:var(--text-secondary);font-size:13px;">${rows.length === 0 ? "Belum ada catatan kehadiran pribadi Anda." : "Riwayat tidak ditemukan pada filter status ini."}</div>`;
   } else {
     histEl.innerHTML = filteredRows.map(r => `
       <div class="neu-card" style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;">
@@ -1657,6 +1706,54 @@ function renderLinks() {
   `).join("");
 }
 
+function openPesertaDetail(santriId) {
+  const s = appState.santri.find(x => x.id === santriId);
+  const sc = appState.skor.find(x => x.santriId === santriId);
+  if (!s && !sc) return;
+
+  const nama = s ? s.nama : sc.nama;
+  const kelas = s ? s.kelas : "Santri";
+
+  let h = 0, i = 0, sk = 0, a = 0;
+  Object.keys(appState.absensi).forEach(k => {
+    const st = (appState.absensi[k] || {})[santriId];
+    if (st === "Hadir") h++;
+    else if (st === "Izin") i++;
+    else if (st === "Sakit") sk++;
+    else if (st === "Alpa") a++;
+  });
+  const tot = h + i + sk + a;
+  const pct = tot > 0 ? Math.round((h / tot) * 100) : 0;
+
+  document.getElementById("detPesertaKelas").textContent = `${kelas} • Kehadiran ${pct}%`;
+  document.getElementById("detPesertaNama").textContent = nama;
+
+  document.getElementById("detPesertaSkorBox").innerHTML = sc
+    ? `<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">
+         <span>Skor Kuis: <strong>${sc.benar}/${sc.total}</strong> benar</span>
+         <span class="badge" style="background:var(--accent);color:var(--accent-text);">${sc.poin} Poin</span>
+       </div>`
+    : `<div style="font-size:12px;color:var(--text-secondary);">Belum ada data skor kuis.</div>`;
+
+  document.getElementById("detPesertaStats").innerHTML = [
+    { l: "Hadir", v: h },
+    { l: "Izin", v: i },
+    { l: "Sakit", v: sk },
+    { l: "Alpa", v: a }
+  ].map(x => `
+    <div class="stat-box" style="padding:8px 4px;">
+      <div class="stat-val" style="font-size:16px;">${x.v}</div>
+      <div class="stat-lbl">${x.l}</div>
+    </div>
+  `).join("");
+
+  document.getElementById("modalDetailPeserta").classList.add("open");
+}
+
+function closeModalPeserta() {
+  document.getElementById("modalDetailPeserta").classList.remove("open");
+}
+
 function renderKejuaraan() {
   const sorted = [...appState.skor].sort((a, b) => b.poin - a.poin).map((sc, idx) => ({ ...sc, rank: idx + 1 }));
   const podiumEl = document.getElementById("podiumBox");
@@ -1676,7 +1773,7 @@ function renderKejuaraan() {
     if (!item) return `<div></div>`;
     const isFirst = rankIdx === 0;
     return `
-      <div class="podium-card" style="${isFirst ? "border-color:var(--accent);padding-top:18px;padding-bottom:18px;" : ""}">
+      <div class="podium-card" style="cursor:pointer;${isFirst ? "border-color:var(--accent);padding-top:18px;padding-bottom:18px;" : ""}" onclick="openPesertaDetail('${item.santriId}')">
         <span class="badge" style="${isFirst ? "background:var(--accent);color:var(--accent-text);" : ""}">Juara ${rankIdx + 1}</span>
         <div style="font-size:13px;font-weight:700;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.nama}</div>
         <div style="font-size:16px;font-weight:800;margin-top:2px;">${item.poin}</div>
@@ -1693,7 +1790,7 @@ function renderKejuaraan() {
     lbEl.innerHTML = `<div style="font-size:12px;color:var(--text-secondary);text-align:center;padding:12px 0;">Peserta tidak ditemukan.</div>`;
   } else {
     lbEl.innerHTML = filteredList.map(sc => `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);${sc.santriId === activeId ? "font-weight:700;" : ""}">
+      <div class="clickable-row" style="display:flex;justify-content:space-between;align-items:center;${sc.santriId === activeId ? "border-color:var(--accent);" : ""}" onclick="openPesertaDetail('${sc.santriId}')">
         <div style="display:flex;align-items:center;gap:10px;">
           <span class="badge" style="${sc.rank <= 3 ? "background:var(--accent);color:var(--accent-text);" : ""}">#${sc.rank}</span>
           <div>

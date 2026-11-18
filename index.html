@@ -697,7 +697,7 @@ main {
     <h2 class="section-title">Kuis Cerdas</h2>
 
     <div id="quizIntro" class="neu-card">
-      <span class="badge" style="margin-bottom:8px;">Bebas Diulang • Kumpul Fleksibel</span>
+      <span class="badge" style="margin-bottom:8px;" id="quizRuleBadge">Bebas Diulang • Pengurangan Poin Jika Salah</span>
       <h3 style="font-size:16px;margin-bottom:6px;" id="quizTitleDisplay">Kuis Cerdas Balai Pengajian</h3>
       <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;" id="quizMetaDisplay">Memuat informasi soal...</p>
       <div class="neu-inset" style="padding:12px;margin-bottom:14px;font-size:13px;">
@@ -714,10 +714,13 @@ main {
           <span style="font-size:13px;font-weight:700;display:block;" id="quizProgress">Soal 1 / 1</span>
           <span style="font-size:11px;color:var(--text-secondary);" id="quizAnsweredCount">Terjawab: 0 soal</span>
         </div>
-        <button type="button" class="btn btn-primary btn-sm" onclick="openConfirmFinishQuiz()">
-          <svg class="icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          Selesai
-        </button>
+        <div style="display:flex;gap:6px;">
+          <button type="button" class="btn btn-sm" onclick="clearCurrentAnswer()" title="Kosongkan jawaban soal ini agar tidak kena pengurangan">Kosongkan</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="openConfirmFinishQuiz()">
+            <svg class="icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Selesai
+          </button>
+        </div>
       </div>
       <div id="quizQuestionBox" class="neu-card"></div>
       <div style="display:flex;gap:8px;">
@@ -730,7 +733,8 @@ main {
       <div class="neu-card" style="text-align:center;padding:24px 16px;">
         <span class="badge" style="margin-bottom:8px;">Nilai Otomatis Terdata</span>
         <div style="font-size:34px;font-weight:800;margin:6px 0;" id="resScore">0 Poin</div>
-        <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;" id="resDetail"></p>
+        <p style="font-size:13px;color:var(--text-secondary);margin-bottom:10px;" id="resDetail"></p>
+        <div id="resBreakdown" class="neu-inset" style="padding:10px;font-size:12px;margin-bottom:16px;"></div>
         <div style="display:flex;gap:8px;">
           <button type="button" class="btn" style="flex:1;" onclick="resetToQuizIntro()">Ikut Kuis Lagi</button>
           <button type="button" class="btn btn-primary" style="flex:1;" onclick="finishQuizView()">Lihat Klasemen</button>
@@ -912,7 +916,7 @@ const fallbackState = {
   ],
   absensi: {},
   materi: [],
-  kuisConfig: { judul: "Musabaqah Fahmil Kutub BUSTANUL HADI" },
+  kuisConfig: { judul: "Musabaqah Fahmil Kutub BUSTANUL HADI", penaltiSalah: 5 },
   kuisSoal: [],
   skor: [],
   pustaka: [
@@ -930,6 +934,8 @@ function ensureKelasList(stateObj) {
   let list = Array.isArray(stateObj.kelasList) ? [...stateObj.kelasList] : [];
   if (!list.includes("Umum")) list.unshift("Umum");
   stateObj.kelasList = list;
+  stateObj.kuisConfig = stateObj.kuisConfig || { judul: "Musabaqah Fahmil Kutub BUSTANUL HADI", penaltiSalah: 5 };
+  if (stateObj.kuisConfig.penaltiSalah === undefined) stateObj.kuisConfig.penaltiSalah = 5;
   return stateObj;
 }
 
@@ -950,6 +956,11 @@ let santriStatusFilter = "ALL";
 let activeQuizQuestions = [];
 let quizIndex = 0;
 let quizAnswers = {};
+
+function getPenaltyPoints() {
+  const val = Number(appState.kuisConfig?.penaltiSalah);
+  return !isNaN(val) && val >= 0 ? val : 5;
+}
 
 function onSearchInput(inputId, wrapId, renderFn) {
   const inp = document.getElementById(inputId);
@@ -1565,8 +1576,16 @@ function getExistingQuizRecord(santriId) {
 function renderQuizIntro() {
   const titleEl = document.getElementById("quizTitleDisplay");
   const metaEl = document.getElementById("quizMetaDisplay");
+  const ruleBadge = document.getElementById("quizRuleBadge");
   const bannerEl = document.getElementById("quizLastScoreBanner");
   const startBtn = document.getElementById("btnStartQuiz");
+
+  const penalti = getPenaltyPoints();
+  if (ruleBadge) {
+    ruleBadge.textContent = penalti > 0
+      ? `Bebas Diulang • Salah -${penalti} Poin • Kosong 0`
+      : "Bebas Diulang • Tanpa Pengurangan Poin";
+  }
 
   if (titleEl && appState.kuisConfig) {
     titleEl.textContent = appState.kuisConfig.judul || "Kuis Cerdas Balai Pengajian";
@@ -1575,7 +1594,9 @@ function renderQuizIntro() {
   const uniqueSoal = getUniqueQuizQuestions();
   const totalPoin = uniqueSoal.reduce((sum, q) => sum + Number(q.poin || 0), 0);
   if (metaEl) {
-    metaEl.textContent = `Jumlah Soal: ${uniqueSoal.length} Pertanyaan Unik • Selesai hanya saat tombol Selesai ditekan • Maksimal ${totalPoin} Poin`;
+    metaEl.textContent = penalti > 0
+      ? `Jumlah Soal: ${uniqueSoal.length} Pertanyaan • Benar +Poin, Salah -${penalti} Poin, Kosong 0 • Maksimal ${totalPoin} Poin`
+      : `Jumlah Soal: ${uniqueSoal.length} Pertanyaan • Maksimal ${totalPoin} Poin`;
   }
 
   const s = getCurrentSantri();
@@ -1585,12 +1606,13 @@ function renderQuizIntro() {
   if (startBtn) startBtn.disabled = false;
 
   if (existingRecord) {
+    const salahTxt = existingRecord.salah !== undefined ? `, Salah ${existingRecord.salah}` : "";
     const dijawabInfo = existingRecord.dijawab !== undefined ? ` (${existingRecord.dijawab}/${existingRecord.total} dijawab)` : "";
     if (bannerEl) {
       bannerEl.style.display = "block";
       bannerEl.innerHTML = `
         <strong style="display:block;margin-bottom:3px;color:var(--text-primary);">Nilai Terdata Sebelumnya: ${existingRecord.poin} Poin</strong>
-        <span>Benar ${existingRecord.benar}/${existingRecord.total}${dijawabInfo} pada ${existingRecord.waktu}. Anda bebas mengikuti kuis ini kembali kapan saja.</span>
+        <span>Benar ${existingRecord.benar}${salahTxt} dari ${existingRecord.total}${dijawabInfo} pada ${existingRecord.waktu}. Anda bebas mengikuti kuis ini kembali kapan saja.</span>
       `;
     }
     if (startBtn) startBtn.textContent = "Mulai Ulang Kuis";
@@ -1642,6 +1664,7 @@ function renderQuestion() {
   const q = activeQuizQuestions[quizIndex];
   const huruf = ["A", "B", "C", "D"];
   const answeredCount = Object.keys(quizAnswers).length;
+  const penalti = getPenaltyPoints();
 
   document.getElementById("quizProgress").textContent = `Soal ${quizIndex + 1} dari ${total}`;
   document.getElementById("quizAnsweredCount").textContent = `Terjawab: ${answeredCount} dari ${total} soal`;
@@ -1649,7 +1672,10 @@ function renderQuestion() {
   document.getElementById("btnNextQ").disabled = quizIndex === total - 1;
 
   document.getElementById("quizQuestionBox").innerHTML = `
-    <span class="badge" style="margin-bottom:8px;">Bobot ${q.poin} Poin</span>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <span class="badge">Benar +${q.poin} Poin</span>
+      <span class="badge">${penalti > 0 ? "Salah -" + penalti + " Poin" : "Salah 0 Poin"}</span>
+    </div>
     <div style="font-size:15px;font-weight:700;margin-bottom:14px;">${q.pertanyaan}</div>
     <div>
       ${q.opsi.map((op, idx) => `
@@ -1662,8 +1688,21 @@ function renderQuestion() {
 }
 
 function selectOption(qId, idx) {
-  quizAnswers[qId] = idx;
+  if (quizAnswers[qId] === idx) {
+    delete quizAnswers[qId];
+  } else {
+    quizAnswers[qId] = idx;
+  }
   renderQuestion();
+}
+
+function clearCurrentAnswer() {
+  const q = activeQuizQuestions[quizIndex];
+  if (q && quizAnswers[q.id] !== undefined) {
+    delete quizAnswers[q.id];
+    renderQuestion();
+    showToast("Jawaban dikosongkan (0 poin)");
+  }
 }
 
 function prevQuestion() {
@@ -1683,15 +1722,16 @@ function nextQuestion() {
 function openConfirmFinishQuiz() {
   const total = activeQuizQuestions.length;
   const answeredCount = Object.keys(quizAnswers).length;
+  const penalti = getPenaltyPoints();
   const msgEl = document.getElementById("confirmQuizMsg");
 
   if (msgEl) {
     if (answeredCount === 0) {
       msgEl.textContent = `Anda belum menjawab satu soal pun dari ${total} soal. Jika tombol Selesai ditekan sekarang, nilai akan otomatis terdata 0 poin.`;
     } else if (answeredCount < total) {
-      msgEl.textContent = `Anda baru menjawab ${answeredCount} dari ${total} soal. Akhiri kuis sekarang dan data nilainya secara otomatis?`;
+      msgEl.textContent = `Anda menjawab ${answeredCount} dari ${total} soal (${total - answeredCount} soal kosong = 0 poin, jawaban salah dikurangi ${penalti} poin). Akhiri kuis sekarang?`;
     } else {
-      msgEl.textContent = `Seluruh ${total} soal telah dijawab. Akhiri kuis dan data nilainya sekarang?`;
+      msgEl.textContent = `Seluruh ${total} soal telah dijawab (jawaban salah dikurangi ${penalti} poin). Akhiri kuis dan data nilainya sekarang?`;
     }
   }
 
@@ -1711,6 +1751,7 @@ function renderQuizReview() {
   const huruf = ["A", "B", "C", "D"];
   const reviewEl = document.getElementById("quizReviewList");
   const reviewTitleEl = document.getElementById("quizReviewTitle");
+  const penalti = getPenaltyPoints();
   if (!reviewEl) return;
 
   const answeredList = activeQuizQuestions
@@ -1738,13 +1779,16 @@ function renderQuizReview() {
     const isCorrect = userAns === correctIdx;
     const userText = `${huruf[userAns]}. ${q.opsi[userAns]}`;
     const correctText = `${huruf[correctIdx]}. ${q.opsi[correctIdx]}`;
+    const deltaLabel = isCorrect
+      ? `Benar (+${q.poin} Poin)`
+      : (penalti > 0 ? `Salah (-${penalti} Poin)` : "Salah (0 Poin)");
 
     return `
       <div class="neu-card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
           <span class="badge">Soal #${origIdx + 1}</span>
           <span class="badge" style="${isCorrect ? "background:var(--accent);color:var(--accent-text);" : ""}">
-            ${isCorrect ? "Benar (+" + q.poin + " Poin)" : "0 Poin"}
+            ${deltaLabel}
           </span>
         </div>
         <div style="font-size:14px;font-weight:700;margin-bottom:10px;">${q.pertanyaan}</div>
@@ -1767,19 +1811,30 @@ async function submitQuiz() {
   const santriObj = getCurrentSantri();
   const activeId = santriObj ? santriObj.id : loggedSantriId;
   const nama = santriObj ? santriObj.nama : "Santri";
+  const penalti = getPenaltyPoints();
 
-  let totalPoin = 0;
+  let poinBenar = 0;
+  let poinPengurangan = 0;
   let benar = 0;
+  let salah = 0;
   const total = activeQuizQuestions.length;
   const dijawab = Object.keys(quizAnswers).length;
+  const kosong = total - dijawab;
 
   activeQuizQuestions.forEach(q => {
-    if (quizAnswers[q.id] !== undefined && quizAnswers[q.id] === Number(q.kunci)) {
-      benar++;
-      totalPoin += Number(q.poin || 20);
+    const ans = quizAnswers[q.id];
+    if (ans !== undefined) {
+      if (ans === Number(q.kunci)) {
+        benar++;
+        poinBenar += Number(q.poin || 20);
+      } else {
+        salah++;
+        poinPengurangan += penalti;
+      }
     }
   });
 
+  const totalPoin = poinBenar - poinPengurangan;
   const nowStr = new Date().toLocaleString("id-ID", { dateStyle: "short", timeStyle: "short" });
 
   const newEntry = {
@@ -1788,6 +1843,7 @@ async function submitQuiz() {
     nama,
     poin: totalPoin,
     benar,
+    salah,
     dijawab,
     total,
     waktu: nowStr
@@ -1805,7 +1861,10 @@ async function submitQuiz() {
   document.getElementById("quizArena").style.display = "none";
   document.getElementById("quizResult").style.display = "block";
   document.getElementById("resScore").textContent = `${totalPoin} Poin`;
-  document.getElementById("resDetail").textContent = `${nama} menjawab ${dijawab} dari ${total} soal (${benar} benar).`;
+  document.getElementById("resDetail").textContent = `${nama} menjawab ${dijawab} dari ${total} soal (${benar} benar, ${salah} salah, ${kosong} kosong).`;
+  document.getElementById("resBreakdown").innerHTML = `
+    Poin Benar: <strong>+${poinBenar}</strong> &nbsp;•&nbsp; Pengurangan Salah: <strong>-${poinPengurangan}</strong> &nbsp;•&nbsp; Skor Akhir: <strong>${totalPoin} Poin</strong>
+  `;
 
   renderQuizReview();
   renderQuizIntro();
@@ -1894,10 +1953,10 @@ function openPesertaDetail(santriId) {
   document.getElementById("detPesertaKelas").textContent = `${kelas} • Kehadiran ${pct}%`;
   document.getElementById("detPesertaNama").textContent = nama;
 
-  const dijawabInfo = sc && sc.dijawab !== undefined ? ` • Dijawab ${sc.dijawab}/${sc.total}` : "";
+  const salahInfo = sc && sc.salah !== undefined ? ` • Salah ${sc.salah}` : "";
   document.getElementById("detPesertaSkorBox").innerHTML = sc
     ? `<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">
-         <span>Skor Kuis: <strong>${sc.benar}/${sc.total}</strong> benar${dijawabInfo}</span>
+         <span>Benar <strong>${sc.benar}/${sc.total}</strong>${salahInfo}</span>
          <span class="badge" style="background:var(--accent);color:var(--accent-text);">${sc.poin} Poin</span>
        </div>`
     : `<div style="font-size:12px;color:var(--text-secondary);">Belum ada data skor kuis.</div>`;
@@ -1957,14 +2016,14 @@ function renderKejuaraan() {
     lbEl.innerHTML = `<div style="font-size:12px;color:var(--text-secondary);text-align:center;padding:12px 0;">Peserta tidak ditemukan.</div>`;
   } else {
     lbEl.innerHTML = filteredList.map(sc => {
-      const dijawabTag = sc.dijawab !== undefined ? ` • Dijawab ${sc.dijawab}/${sc.total}` : "";
+      const salahTag = sc.salah !== undefined ? ` • Salah ${sc.salah}` : "";
       return `
         <div class="clickable-row" style="display:flex;justify-content:space-between;align-items:center;${sc.santriId === activeId ? "border-color:var(--accent);" : ""}" onclick="openPesertaDetail('${sc.santriId}')">
           <div style="display:flex;align-items:center;gap:10px;">
             <span class="badge" style="${sc.rank <= 3 ? "background:var(--accent);color:var(--accent-text);" : ""}">#${sc.rank}</span>
             <div>
               <div style="font-size:13px;font-weight:700;">${sc.nama} ${sc.santriId === activeId ? "(Saya)" : ""}</div>
-              <div style="font-size:11px;color:var(--text-secondary);">Benar ${sc.benar}/${sc.total}${dijawabTag}</div>
+              <div style="font-size:11px;color:var(--text-secondary);">Benar ${sc.benar}/${sc.total}${salahTag}</div>
             </div>
           </div>
           <div style="font-weight:800;font-size:14px;">${sc.poin} Poin</div>

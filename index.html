@@ -83,6 +83,11 @@ body {
   transform: scale(0.97);
   box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
 }
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
 .btn-primary {
   background: var(--accent);
   color: var(--accent-text);
@@ -684,34 +689,44 @@ main {
     <h2 class="section-title">Kuis Cerdas</h2>
 
     <div id="quizIntro" class="neu-card">
-      <span class="badge" style="margin-bottom:8px;">Ujian Interaktif Mandiri</span>
+      <span class="badge" style="margin-bottom:8px;">Bebas Diulang • Kumpul Fleksibel</span>
       <h3 style="font-size:16px;margin-bottom:6px;" id="quizTitleDisplay">Kuis Cerdas Balai Pengajian</h3>
       <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;" id="quizMetaDisplay">Memuat informasi soal...</p>
       <div class="neu-inset" style="padding:12px;margin-bottom:14px;font-size:13px;">
         <div style="color:var(--text-secondary);font-size:11px;">Peserta Aktif</div>
         <div style="font-weight:700;" id="quizActiveParticipant">-</div>
       </div>
-      <button type="button" class="btn btn-primary btn-block" onclick="startQuiz()">Mulai Kuis Sekarang</button>
+      <div id="quizLastScoreBanner" class="neu-inset" style="padding:12px;margin-bottom:14px;font-size:12px;display:none;"></div>
+      <button type="button" id="btnStartQuiz" class="btn btn-primary btn-block" onclick="startQuiz()">Mulai Kuis Sekarang</button>
     </div>
 
     <div id="quizArena" style="display:none;">
-      <div class="neu-card" style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:13px;font-weight:700;" id="quizProgress">Soal 1 / 1</span>
-        <span class="badge" style="background:var(--accent);color:var(--accent-text);font-size:13px;" id="quizTimer">00:00</span>
+      <div class="neu-card" style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <div>
+          <span style="font-size:13px;font-weight:700;display:block;" id="quizProgress">Soal 1 / 1</span>
+          <span style="font-size:11px;color:var(--text-secondary);" id="quizAnsweredCount">Terjawab: 0 soal</span>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="openConfirmFinishQuiz()">
+          <svg class="icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Selesai
+        </button>
       </div>
       <div id="quizQuestionBox" class="neu-card"></div>
       <div style="display:flex;gap:8px;">
         <button type="button" class="btn" id="btnPrevQ" style="flex:1;" onclick="prevQuestion()">Sebelumnya</button>
-        <button type="button" class="btn btn-primary" id="btnNextQ" style="flex:1;" onclick="nextQuestion()">Berikutnya</button>
+        <button type="button" class="btn" id="btnNextQ" style="flex:1;" onclick="nextQuestion()">Berikutnya</button>
       </div>
     </div>
 
     <div id="quizResult" style="display:none;">
       <div class="neu-card" style="text-align:center;padding:24px 16px;">
-        <span class="badge" style="margin-bottom:8px;">Hasil Akhir Kuis</span>
+        <span class="badge" style="margin-bottom:8px;">Nilai Otomatis Terdata</span>
         <div style="font-size:34px;font-weight:800;margin:6px 0;" id="resScore">0 Poin</div>
         <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;" id="resDetail"></p>
-        <button type="button" class="btn btn-primary btn-block" onclick="finishQuizView()">Lihat Klasemen Kejuaraan</button>
+        <div style="display:flex;gap:8px;">
+          <button type="button" class="btn" style="flex:1;" onclick="resetToQuizIntro()">Ikut Kuis Lagi</button>
+          <button type="button" class="btn btn-primary" style="flex:1;" onclick="finishQuizView()">Lihat Klasemen</button>
+        </div>
       </div>
 
       <h3 style="font-size:15px;font-weight:700;margin:16px 0 10px;">Pembahasan & Kunci Jawaban</h3>
@@ -769,6 +784,17 @@ main {
     <span>Juara</span>
   </button>
 </nav>
+
+<div id="modalConfirmQuiz" class="modal-backdrop">
+  <div class="modal-box">
+    <h3 style="font-size:16px;margin-bottom:6px;">Selesaikan Kuis Sekarang?</h3>
+    <p id="confirmQuizMsg" style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6;"></p>
+    <div style="display:flex;gap:8px;">
+      <button type="button" class="btn btn-primary" style="flex:1;" onclick="confirmAndSubmitQuiz()">Ya, Selesai & Data Nilai</button>
+      <button type="button" class="btn" onclick="closeConfirmFinishQuiz()">Lanjut Kerjakan</button>
+    </div>
+  </div>
+</div>
 
 <div id="modalDetailPeserta" class="modal-backdrop">
   <div class="modal-box">
@@ -878,7 +904,7 @@ const fallbackState = {
   ],
   absensi: {},
   materi: [],
-  kuisConfig: { judul: "Musabaqah Fahmil Kutub BUSTANUL HADI", durasi: 180 },
+  kuisConfig: { judul: "Musabaqah Fahmil Kutub BUSTANUL HADI" },
   kuisSoal: [],
   skor: [],
   pustaka: [
@@ -913,15 +939,14 @@ let selectedKategori = "Semua";
 let santriPeriodMode = "semua";
 let santriStatusFilter = "ALL";
 
+let activeQuizQuestions = [];
 let quizIndex = 0;
 let quizAnswers = {};
-let quizSecondsLeft = 0;
-let quizTimerInterval = null;
 
 function onSearchInput(inputId, wrapId, renderFn) {
   const inp = document.getElementById(inputId);
   const wrap = document.getElementById(wrapId);
-  if (wrap) {
+  if (wrap && inp) {
     if (inp.value.length > 0) wrap.classList.add("has-text");
     else wrap.classList.remove("has-text");
   }
@@ -943,20 +968,22 @@ function getQuery(inputId) {
 
 function showToast(msg) {
   const t = document.getElementById("toast");
+  if (!t) return;
   t.textContent = msg;
   t.style.display = "block";
   setTimeout(() => { t.style.display = "none"; }, 2400);
 }
 
-function updateSyncUI(online) {
+function updateSyncUI(online, customText) {
   const dot = document.getElementById("syncDot");
   const lbl = document.getElementById("syncLabel");
+  if (!dot || !lbl) return;
   if (online) {
     dot.classList.add("online");
-    lbl.textContent = "Online";
+    lbl.textContent = customText || "Online";
   } else {
     dot.classList.remove("online");
-    lbl.textContent = "Lokal";
+    lbl.textContent = customText || "Lokal";
   }
 }
 
@@ -976,7 +1003,7 @@ function populateRegKelasOptions() {
 function initFirebase() {
   try {
     if (typeof firebase === "undefined") {
-      updateSyncUI(false);
+      updateSyncUI(false, "Lokal");
       return;
     }
     if (!firebase.apps.length) {
@@ -985,6 +1012,7 @@ function initFirebase() {
     const db = firebase.firestore();
     docRef = db.collection("balai_pengajian").doc("data_utama");
     docRef.onSnapshot((snapshot) => {
+      updateSyncUI(true, "Online");
       if (snapshot.exists) {
         const cloudData = snapshot.data();
         const mergedSantri = Array.isArray(cloudData.santri) ? [...cloudData.santri] : [];
@@ -996,13 +1024,12 @@ function initFirebase() {
         populateRegKelasOptions();
         verifyActiveSession();
         renderAll();
-        updateSyncUI(true);
       }
     }, () => {
-      updateSyncUI(false);
+      updateSyncUI(false, "Lokal");
     });
   } catch (e) {
-    updateSyncUI(false);
+    updateSyncUI(false, "Lokal");
   }
 }
 
@@ -1083,6 +1110,7 @@ function setAuthMode(mode) {
 
 function showAuthError(msg) {
   const el = document.getElementById("authError");
+  if (!el) return;
   el.textContent = msg;
   el.style.display = "block";
 }
@@ -1145,7 +1173,6 @@ async function handleSantriRegister() {
 }
 
 function logoutSantri() {
-  clearInterval(quizTimerInterval);
   loggedSantriId = "";
   savedProfile = null;
   localStorage.removeItem("santri_session_id");
@@ -1164,20 +1191,24 @@ function verifyActiveSession() {
   const overlay = document.getElementById("authScreen");
   if (!current) {
     populateRegKelasOptions();
-    overlay.classList.remove("hidden");
+    if (overlay) overlay.classList.remove("hidden");
     return;
   }
-  overlay.classList.add("hidden");
-  document.getElementById("headerSantriName").textContent = current.nama;
-  document.getElementById("headerSantriSub").textContent = `${current.kelas} • @${current.username || current.id}`;
-  document.getElementById("quizActiveParticipant").textContent = `${current.nama} (${current.kelas})`;
+  if (overlay) overlay.classList.add("hidden");
+  const nameEl = document.getElementById("headerSantriName");
+  const subEl = document.getElementById("headerSantriSub");
+  const partEl = document.getElementById("quizActiveParticipant");
+  if (nameEl) nameEl.textContent = current.nama;
+  if (subEl) subEl.textContent = `${current.kelas} • @${current.username || current.id}`;
+  if (partEl) partEl.textContent = `${current.nama} (${current.kelas})`;
 }
 
 function switchTab(tab, el) {
   document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
   document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
-  document.getElementById("sec-" + tab).classList.add("active");
-  el.classList.add("active");
+  const target = document.getElementById("sec-" + tab);
+  if (target) target.classList.add("active");
+  if (el) el.classList.add("active");
 }
 
 function getWeekBounds(dateStr) {
@@ -1243,7 +1274,7 @@ function renderSantriAbsensi() {
   const s = getCurrentSantri();
   if (!s) return;
 
-  const allKeys = Object.keys(appState.absensi).sort();
+  const allKeys = Object.keys(appState.absensi || {}).sort();
   const refDate = document.getElementById("santriRefDate").value || new Date().toISOString().slice(0, 10);
   const refMonth = document.getElementById("santriRefMonth").value || refDate.slice(0, 7);
 
@@ -1274,7 +1305,7 @@ function renderSantriAbsensi() {
   const rows = [];
 
   [...periodKeys].reverse().forEach(k => {
-    const st = appState.absensi[k][s.id];
+    const st = (appState.absensi[k] || {})[s.id];
     if (st) {
       if (st === "Hadir") h++;
       else if (st === "Izin") i++;
@@ -1316,7 +1347,7 @@ function renderSantriAbsensi() {
   if (santriPeriodMode === "harian") {
     document.getElementById("santriTrendTitle").textContent = `Grafik Harian (${refDate})`;
     periodKeys.forEach(k => {
-      const st = appState.absensi[k][s.id];
+      const st = (appState.absensi[k] || {})[s.id];
       if (st) {
         const sesi = k.split("_")[1] || "Sesi";
         chartItems.push({
@@ -1338,7 +1369,7 @@ function renderSantriAbsensi() {
       const dayKeys = periodKeys.filter(k => k.startsWith(dStr + "_"));
       let dH = 0, dTot = 0;
       dayKeys.forEach(k => {
-        const st = appState.absensi[k][s.id];
+        const st = (appState.absensi[k] || {})[s.id];
         if (st) {
           dTot++;
           if (st === "Hadir") dH++;
@@ -1358,7 +1389,7 @@ function renderSantriAbsensi() {
       : "Grafik Tren Kehadiran Saya";
     const byDate = {};
     periodKeys.forEach(k => {
-      const st = appState.absensi[k][s.id];
+      const st = (appState.absensi[k] || {})[s.id];
       if (st) {
         const tgl = k.split("_")[0];
         if (!byDate[tgl]) byDate[tgl] = { h: 0, tot: 0 };
@@ -1440,7 +1471,7 @@ function renderMateri() {
     <button type="button" class="pill ${selectedKategori === c ? "active" : ""}" onclick="filterMateri('${c}')">${c}</button>
   `).join("");
 
-  const relevantMateri = appState.materi.filter(m => {
+  const relevantMateri = (appState.materi || []).filter(m => {
     if (santriKelas === "Umum") return true;
     return m.kitab === santriKelas || m.kitab === "Umum";
   });
@@ -1480,7 +1511,7 @@ function filterMateri(cat) {
 }
 
 function openReadMateri(id) {
-  const m = appState.materi.find(x => x.id === id);
+  const m = (appState.materi || []).find(x => x.id === id);
   if (!m) return;
   document.getElementById("readBadge").textContent = `${m.kategori} • ${m.kitab}`;
   document.getElementById("readTitle").textContent = m.judul;
@@ -1492,52 +1523,122 @@ function closeModalRead() {
   document.getElementById("modalReadMateri").classList.remove("open");
 }
 
+function getUniqueQuizQuestions() {
+  const seenIds = new Set();
+  const seenTexts = new Set();
+  const uniqueList = [];
+
+  (appState.kuisSoal || []).forEach(q => {
+    if (!q || !q.pertanyaan || !Array.isArray(q.opsi) || q.opsi.length < 4) return;
+    const normText = q.pertanyaan.trim().toLowerCase().replace(/\s+/g, " ");
+    if ((q.id && seenIds.has(q.id)) || seenTexts.has(normText)) return;
+    if (q.id) seenIds.add(q.id);
+    seenTexts.add(normText);
+    uniqueList.push(q);
+  });
+
+  return uniqueList;
+}
+
+function shuffleArray(arr) {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function getExistingQuizRecord(santriId) {
+  if (!santriId) return null;
+  return (appState.skor || []).find(x => x.santriId === santriId) || null;
+}
+
 function renderQuizIntro() {
-  document.getElementById("quizTitleDisplay").textContent = appState.kuisConfig.judul;
-  const totalPoin = appState.kuisSoal.reduce((sum, q) => sum + Number(q.poin || 0), 0);
-  document.getElementById("quizMetaDisplay").textContent = `Jumlah Soal: ${appState.kuisSoal.length} Pertanyaan • Waktu: ${Math.floor(appState.kuisConfig.durasi / 60)} Menit • Maksimal ${totalPoin} Poin`;
+  const titleEl = document.getElementById("quizTitleDisplay");
+  const metaEl = document.getElementById("quizMetaDisplay");
+  const bannerEl = document.getElementById("quizLastScoreBanner");
+  const startBtn = document.getElementById("btnStartQuiz");
+
+  if (titleEl && appState.kuisConfig) {
+    titleEl.textContent = appState.kuisConfig.judul || "Kuis Cerdas Balai Pengajian";
+  }
+
+  const uniqueSoal = getUniqueQuizQuestions();
+  const totalPoin = uniqueSoal.reduce((sum, q) => sum + Number(q.poin || 0), 0);
+  if (metaEl) {
+    metaEl.textContent = `Jumlah Soal: ${uniqueSoal.length} Pertanyaan Unik • Selesai hanya saat tombol Selesai ditekan • Maksimal ${totalPoin} Poin`;
+  }
+
+  const s = getCurrentSantri();
+  const activeId = s ? s.id : loggedSantriId;
+  const existingRecord = getExistingQuizRecord(activeId);
+
+  if (startBtn) startBtn.disabled = false;
+
+  if (existingRecord) {
+    const dijawabInfo = existingRecord.dijawab !== undefined ? ` (${existingRecord.dijawab}/${existingRecord.total} dijawab)` : "";
+    if (bannerEl) {
+      bannerEl.style.display = "block";
+      bannerEl.innerHTML = `
+        <strong style="display:block;margin-bottom:3px;color:var(--text-primary);">Nilai Terdata Sebelumnya: ${existingRecord.poin} Poin</strong>
+        <span>Benar ${existingRecord.benar}/${existingRecord.total}${dijawabInfo} pada ${existingRecord.waktu}. Anda bebas mengikuti kuis ini kembali kapan saja.</span>
+      `;
+    }
+    if (startBtn) startBtn.textContent = "Mulai Ulang Kuis";
+  } else {
+    if (bannerEl) bannerEl.style.display = "none";
+    if (startBtn) startBtn.textContent = "Mulai Kuis Sekarang";
+  }
 }
 
 function startQuiz() {
   const s = getCurrentSantri();
   if (!s) return verifyActiveSession();
-  if (appState.kuisSoal.length === 0) return showToast("Guru belum menambahkan soal kuis");
 
+  const uniqueSoal = getUniqueQuizQuestions();
+  if (uniqueSoal.length === 0) return showToast("Guru belum menambahkan soal kuis");
+
+  const randomizedQuestions = shuffleArray(uniqueSoal).map(q => {
+    const correctIdx = Number(q.kunci);
+    const taggedOptions = q.opsi.map((text, idx) => ({
+      text,
+      isCorrect: idx === correctIdx
+    }));
+    const shuffledOptions = shuffleArray(taggedOptions);
+    const newCorrectIdx = shuffledOptions.findIndex(o => o.isCorrect);
+
+    return {
+      id: q.id,
+      pertanyaan: q.pertanyaan,
+      opsi: shuffledOptions.map(o => o.text),
+      kunci: newCorrectIdx,
+      poin: Number(q.poin || 20),
+      penjelasan: q.penjelasan || ""
+    };
+  });
+
+  activeQuizQuestions = randomizedQuestions;
   quizIndex = 0;
   quizAnswers = {};
-  quizSecondsLeft = Number(appState.kuisConfig.durasi) || 180;
 
   document.getElementById("quizIntro").style.display = "none";
   document.getElementById("quizResult").style.display = "none";
   document.getElementById("quizArena").style.display = "block";
 
   renderQuestion();
-  clearInterval(quizTimerInterval);
-  updateTimerLabel();
-  quizTimerInterval = setInterval(() => {
-    quizSecondsLeft--;
-    updateTimerLabel();
-    if (quizSecondsLeft <= 0) {
-      clearInterval(quizTimerInterval);
-      submitQuiz();
-    }
-  }, 1000);
-}
-
-function updateTimerLabel() {
-  const m = String(Math.floor(quizSecondsLeft / 60)).padStart(2, "0");
-  const s = String(quizSecondsLeft % 60).padStart(2, "0");
-  document.getElementById("quizTimer").textContent = `${m}:${s}`;
 }
 
 function renderQuestion() {
-  const total = appState.kuisSoal.length;
-  const q = appState.kuisSoal[quizIndex];
+  const total = activeQuizQuestions.length;
+  const q = activeQuizQuestions[quizIndex];
   const huruf = ["A", "B", "C", "D"];
+  const answeredCount = Object.keys(quizAnswers).length;
 
   document.getElementById("quizProgress").textContent = `Soal ${quizIndex + 1} dari ${total}`;
+  document.getElementById("quizAnsweredCount").textContent = `Terjawab: ${answeredCount} dari ${total} soal`;
   document.getElementById("btnPrevQ").disabled = quizIndex === 0;
-  document.getElementById("btnNextQ").textContent = quizIndex === total - 1 ? "Selesai & Kirim" : "Berikutnya";
+  document.getElementById("btnNextQ").disabled = quizIndex === total - 1;
 
   document.getElementById("quizQuestionBox").innerHTML = `
     <span class="badge" style="margin-bottom:8px;">Bobot ${q.poin} Poin</span>
@@ -1565,30 +1666,77 @@ function prevQuestion() {
 }
 
 function nextQuestion() {
-  if (quizIndex < appState.kuisSoal.length - 1) {
+  if (quizIndex < activeQuizQuestions.length - 1) {
     quizIndex++;
     renderQuestion();
-  } else {
-    submitQuiz();
   }
+}
+
+function openConfirmFinishQuiz() {
+  const total = activeQuizQuestions.length;
+  const answeredCount = Object.keys(quizAnswers).length;
+  const msgEl = document.getElementById("confirmQuizMsg");
+
+  if (msgEl) {
+    if (answeredCount === 0) {
+      msgEl.textContent = `Anda belum menjawab satu soal pun dari ${total} soal. Jika tombol Selesai ditekan sekarang, nilai akan otomatis terdata 0 poin.`;
+    } else if (answeredCount < total) {
+      msgEl.textContent = `Anda baru menjawab ${answeredCount} dari ${total} soal. Akhiri kuis sekarang dan data nilainya secara otomatis?`;
+    } else {
+      msgEl.textContent = `Seluruh ${total} soal telah dijawab. Akhiri kuis dan data nilainya sekarang?`;
+    }
+  }
+
+  document.getElementById("modalConfirmQuiz").classList.add("open");
+}
+
+function closeConfirmFinishQuiz() {
+  document.getElementById("modalConfirmQuiz").classList.remove("open");
+}
+
+function confirmAndSubmitQuiz() {
+  closeConfirmFinishQuiz();
+  submitQuiz();
 }
 
 function renderQuizReview() {
   const huruf = ["A", "B", "C", "D"];
   const reviewEl = document.getElementById("quizReviewList");
-  reviewEl.innerHTML = appState.kuisSoal.map((q, idx) => {
+  const reviewTitleEl = document.getElementById("quizReviewTitle");
+  if (!reviewEl) return;
+
+  const answeredList = activeQuizQuestions
+    .map((q, origIdx) => ({ q, origIdx }))
+    .filter(item => quizAnswers[item.q.id] !== undefined);
+
+  if (answeredList.length === 0) {
+    if (reviewTitleEl) reviewTitleEl.style.display = "none";
+    reviewEl.innerHTML = `
+      <div class="neu-card" style="text-align:center;color:var(--text-secondary);font-size:13px;">
+        Tidak ada soal yang dijawab pada sesi ini. Kunci jawaban tetap dirahasiakan.
+      </div>
+    `;
+    return;
+  }
+
+  if (reviewTitleEl) {
+    reviewTitleEl.style.display = "block";
+    reviewTitleEl.textContent = `Pembahasan & Kunci Jawaban (${answeredList.length} Soal Dijawab)`;
+  }
+
+  reviewEl.innerHTML = answeredList.map(({ q, origIdx }) => {
     const userAns = quizAnswers[q.id];
     const correctIdx = Number(q.kunci);
     const isCorrect = userAns === correctIdx;
-    const userText = userAns !== undefined ? `${huruf[userAns]}. ${q.opsi[userAns]}` : "Tidak dijawab";
+    const userText = `${huruf[userAns]}. ${q.opsi[userAns]}`;
     const correctText = `${huruf[correctIdx]}. ${q.opsi[correctIdx]}`;
 
     return `
       <div class="neu-card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <span class="badge">Soal #${idx + 1}</span>
+          <span class="badge">Soal #${origIdx + 1}</span>
           <span class="badge" style="${isCorrect ? "background:var(--accent);color:var(--accent-text);" : ""}">
-            ${isCorrect ? "Benar (+" + q.poin + " Poin)" : "Kurang Tepat (0 Poin)"}
+            ${isCorrect ? "Benar (+" + q.poin + " Poin)" : "0 Poin"}
           </span>
         </div>
         <div style="font-size:14px;font-weight:700;margin-bottom:10px;">${q.pertanyaan}</div>
@@ -1607,74 +1755,84 @@ function renderQuizReview() {
   }).join("");
 }
 
+
 async function submitQuiz() {
-  clearInterval(quizTimerInterval);
+  const santriObj = getCurrentSantri();
+  const activeId = santriObj ? santriObj.id : loggedSantriId;
+  const nama = santriObj ? santriObj.nama : "Santri";
+
   let totalPoin = 0;
   let benar = 0;
-  const total = appState.kuisSoal.length;
+  const total = activeQuizQuestions.length;
+  const dijawab = Object.keys(quizAnswers).length;
 
-  appState.kuisSoal.forEach(q => {
-    if (quizAnswers[q.id] === Number(q.kunci)) {
+  activeQuizQuestions.forEach(q => {
+    if (quizAnswers[q.id] !== undefined && quizAnswers[q.id] === Number(q.kunci)) {
       benar++;
       totalPoin += Number(q.poin || 20);
     }
   });
 
-  const santriObj = getCurrentSantri();
-  const activeId = santriObj ? santriObj.id : loggedSantriId;
-  const nama = santriObj ? santriObj.nama : "Santri";
   const nowStr = new Date().toLocaleString("id-ID", { dateStyle: "short", timeStyle: "short" });
 
-  const existingIdx = appState.skor.findIndex(x => x.santriId === activeId);
   const newEntry = {
     id: "sc" + Date.now(),
     santriId: activeId,
     nama,
     poin: totalPoin,
     benar,
+    dijawab,
     total,
     waktu: nowStr
   };
 
+  if (!Array.isArray(appState.skor)) appState.skor = [];
+  const existingIdx = appState.skor.findIndex(x => x.santriId === activeId);
   if (existingIdx > -1) {
-    if (totalPoin >= appState.skor[existingIdx].poin) {
-      appState.skor[existingIdx] = newEntry;
-    }
+    appState.skor[existingIdx] = newEntry;
   } else {
     appState.skor.push(newEntry);
   }
-
   localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
+
+  document.getElementById("quizArena").style.display = "none";
+  document.getElementById("quizResult").style.display = "block";
+  document.getElementById("resScore").textContent = `${totalPoin} Poin`;
+  document.getElementById("resDetail").textContent = `${nama} menjawab ${dijawab} dari ${total} soal (${benar} benar).`;
+
+  renderQuizReview();
+  renderQuizIntro();
+  renderKejuaraan();
 
   if (docRef) {
     try {
       const snap = await docRef.get();
       const latest = snap.exists ? snap.data() : appState;
       const latestScores = Array.isArray(latest.skor) ? latest.skor : [];
-      const idx = latestScores.findIndex(x => x.santriId === activeId);
-      if (idx > -1) {
-        if (totalPoin >= latestScores[idx].poin) latestScores[idx] = newEntry;
+      const cIdx = latestScores.findIndex(x => x.santriId === activeId);
+      if (cIdx > -1) {
+        latestScores[cIdx] = newEntry;
       } else {
         latestScores.push(newEntry);
       }
       await docRef.set({ ...latest, skor: latestScores });
-      showToast("Skor terkirim ke Guru");
+      showToast("Nilai otomatis terdata & terkirim ke Guru");
     } catch (e) {
-      showToast("Tersimpan lokal");
+      showToast("Nilai otomatis terdata secara lokal");
     }
+  } else {
+    showToast("Nilai otomatis terdata");
   }
+}
 
-  document.getElementById("quizArena").style.display = "none";
-  document.getElementById("quizResult").style.display = "block";
-  document.getElementById("resScore").textContent = `${totalPoin} Poin`;
-  document.getElementById("resDetail").textContent = `${nama} menjawab benar ${benar} dari ${total} soal.`;
-  renderQuizReview();
-  renderKejuaraan();
+function resetToQuizIntro() {
+  document.getElementById("quizResult").style.display = "none";
+  document.getElementById("quizIntro").style.display = "block";
+  renderQuizIntro();
 }
 
 function finishQuizView() {
-  document.getElementById("quizResult").style.display = "none";
-  document.getElementById("quizIntro").style.display = "block";
+  resetToQuizIntro();
   const navBtns = document.querySelectorAll(".nav-item");
   switchTab("kejuaraan", navBtns[4]);
 }
@@ -1682,13 +1840,14 @@ function finishQuizView() {
 function renderLinks() {
   const listEl = document.getElementById("linkList");
   const q = getQuery("searchSantriPustaka");
+  const pustakaArr = Array.isArray(appState.pustaka) ? appState.pustaka : [];
   const filtered = q
-    ? appState.pustaka.filter(l =>
+    ? pustakaArr.filter(l =>
         (l.judul || "").toLowerCase().includes(q) ||
         (l.jenis || "").toLowerCase().includes(q) ||
         (l.deskripsi || "").toLowerCase().includes(q)
       )
-    : appState.pustaka;
+    : pustakaArr;
 
   if (filtered.length === 0) {
     listEl.innerHTML = `<div class="neu-card" style="text-align:center;color:var(--text-secondary);font-size:13px;">Tidak ada tautan pustaka yang cocok.</div>`;
@@ -1707,15 +1866,15 @@ function renderLinks() {
 }
 
 function openPesertaDetail(santriId) {
-  const s = appState.santri.find(x => x.id === santriId);
-  const sc = appState.skor.find(x => x.santriId === santriId);
+  const s = (appState.santri || []).find(x => x.id === santriId);
+  const sc = (appState.skor || []).find(x => x.santriId === santriId);
   if (!s && !sc) return;
 
   const nama = s ? s.nama : sc.nama;
   const kelas = s ? s.kelas : "Santri";
 
   let h = 0, i = 0, sk = 0, a = 0;
-  Object.keys(appState.absensi).forEach(k => {
+  Object.keys(appState.absensi || {}).forEach(k => {
     const st = (appState.absensi[k] || {})[santriId];
     if (st === "Hadir") h++;
     else if (st === "Izin") i++;
@@ -1728,9 +1887,10 @@ function openPesertaDetail(santriId) {
   document.getElementById("detPesertaKelas").textContent = `${kelas} • Kehadiran ${pct}%`;
   document.getElementById("detPesertaNama").textContent = nama;
 
+  const dijawabInfo = sc && sc.dijawab !== undefined ? ` • Dijawab ${sc.dijawab}/${sc.total}` : "";
   document.getElementById("detPesertaSkorBox").innerHTML = sc
     ? `<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">
-         <span>Skor Kuis: <strong>${sc.benar}/${sc.total}</strong> benar</span>
+         <span>Skor Kuis: <strong>${sc.benar}/${sc.total}</strong> benar${dijawabInfo}</span>
          <span class="badge" style="background:var(--accent);color:var(--accent-text);">${sc.poin} Poin</span>
        </div>`
     : `<div style="font-size:12px;color:var(--text-secondary);">Belum ada data skor kuis.</div>`;
@@ -1755,7 +1915,7 @@ function closeModalPeserta() {
 }
 
 function renderKejuaraan() {
-  const sorted = [...appState.skor].sort((a, b) => b.poin - a.poin).map((sc, idx) => ({ ...sc, rank: idx + 1 }));
+  const sorted = [...(appState.skor || [])].sort((a, b) => b.poin - a.poin).map((sc, idx) => ({ ...sc, rank: idx + 1 }));
   const podiumEl = document.getElementById("podiumBox");
   const lbEl = document.getElementById("leaderboardList");
   const activeId = (getCurrentSantri() || {}).id || loggedSantriId;
@@ -1789,18 +1949,21 @@ function renderKejuaraan() {
   if (filteredList.length === 0) {
     lbEl.innerHTML = `<div style="font-size:12px;color:var(--text-secondary);text-align:center;padding:12px 0;">Peserta tidak ditemukan.</div>`;
   } else {
-    lbEl.innerHTML = filteredList.map(sc => `
-      <div class="clickable-row" style="display:flex;justify-content:space-between;align-items:center;${sc.santriId === activeId ? "border-color:var(--accent);" : ""}" onclick="openPesertaDetail('${sc.santriId}')">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span class="badge" style="${sc.rank <= 3 ? "background:var(--accent);color:var(--accent-text);" : ""}">#${sc.rank}</span>
-          <div>
-            <div style="font-size:13px;font-weight:700;">${sc.nama} ${sc.santriId === activeId ? "(Saya)" : ""}</div>
-            <div style="font-size:11px;color:var(--text-secondary);">Benar ${sc.benar}/${sc.total} soal</div>
+    lbEl.innerHTML = filteredList.map(sc => {
+      const dijawabTag = sc.dijawab !== undefined ? ` • Dijawab ${sc.dijawab}/${sc.total}` : "";
+      return `
+        <div class="clickable-row" style="display:flex;justify-content:space-between;align-items:center;${sc.santriId === activeId ? "border-color:var(--accent);" : ""}" onclick="openPesertaDetail('${sc.santriId}')">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="badge" style="${sc.rank <= 3 ? "background:var(--accent);color:var(--accent-text);" : ""}">#${sc.rank}</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;">${sc.nama} ${sc.santriId === activeId ? "(Saya)" : ""}</div>
+              <div style="font-size:11px;color:var(--text-secondary);">Benar ${sc.benar}/${sc.total}${dijawabTag}</div>
+            </div>
           </div>
+          <div style="font-weight:800;font-size:14px;">${sc.poin} Poin</div>
         </div>
-        <div style="font-weight:800;font-size:14px;">${sc.poin} Poin</div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
   }
 }
 
@@ -1819,8 +1982,8 @@ document.getElementById("santriRefMonth").value = todayIso.slice(0, 7);
 
 populateRegKelasOptions();
 verifyActiveSession();
-renderAll();
 initFirebase();
+renderAll();
 </script>
 </body>
 </html>

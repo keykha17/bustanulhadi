@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="color-scheme" content="light dark">
 <title>BUSTANUL HADI - Portal Santri</title>
-<meta name="theme-color" content="#141414">
+<meta name="theme-color" content="#f7f7f7">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -220,6 +220,7 @@ header {
   border: 1px solid var(--border);
   font-size: 11px;
   color: var(--text-secondary);
+  cursor: pointer;
 }
 .status-dot {
   width: 7px;
@@ -537,6 +538,7 @@ main {
   font-size: 12px;
   font-weight: 700;
   display: none;
+  white-space: nowrap;
 }
 .icon {
   width: 18px;
@@ -615,10 +617,10 @@ main {
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:6px;">
-    <div class="status-pill">
+    <button type="button" class="status-pill" onclick="manualSyncNow()" title="Klik untuk sinkronisasi sekarang">
       <span id="syncDot" class="status-dot"></span>
       <span id="syncLabel">Lokal</span>
-    </div>
+    </button>
     <button type="button" class="btn btn-sm" onclick="openChangePinModal()" title="Ubah PIN Sandi">
       <svg class="icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
     </button>
@@ -697,7 +699,7 @@ main {
     <h2 class="section-title">Kuis Cerdas</h2>
 
     <div id="quizIntro" class="neu-card">
-      <span class="badge" style="margin-bottom:8px;" id="quizRuleBadge">Bebas Diulang • Pengurangan Poin Jika Salah</span>
+      <span class="badge" style="margin-bottom:8px;" id="quizRuleBadge">Bebas Diulang • Bisa Dimainkan Offline</span>
       <h3 style="font-size:16px;margin-bottom:6px;" id="quizTitleDisplay">Kuis Cerdas Balai Pengajian</h3>
       <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;" id="quizMetaDisplay">Memuat informasi soal...</p>
       <div class="neu-inset" style="padding:12px;margin-bottom:14px;font-size:13px;">
@@ -731,7 +733,7 @@ main {
 
     <div id="quizResult" style="display:none;">
       <div class="neu-card" style="text-align:center;padding:24px 16px;">
-        <span class="badge" style="margin-bottom:8px;">Nilai Otomatis Terdata</span>
+        <span class="badge" style="margin-bottom:8px;" id="resSyncBadge">Nilai Otomatis Terdata</span>
         <div style="font-size:34px;font-weight:800;margin:6px 0;" id="resScore">0 Poin</div>
         <p style="font-size:13px;color:var(--text-secondary);margin-bottom:10px;" id="resDetail"></p>
         <div id="resBreakdown" class="neu-inset" style="padding:10px;font-size:12px;margin-bottom:16px;"></div>
@@ -943,12 +945,50 @@ let appState = ensureKelasList(JSON.parse(localStorage.getItem("balai_pengajian_
 let savedProfile = JSON.parse(localStorage.getItem("santri_saved_profile") || "null");
 let loggedSantriId = localStorage.getItem("santri_session_id") || (savedProfile ? savedProfile.id : "");
 
+// Antrean Sinkronisasi Offline -> Online
+let pendingQueue = JSON.parse(localStorage.getItem("santri_pending_sync_queue") || '{"scores":{},"santriUpdates":{}}');
+if (!pendingQueue || typeof pendingQueue !== "object") pendingQueue = { scores: {}, santriUpdates: {} };
+if (!pendingQueue.scores) pendingQueue.scores = {};
+if (!pendingQueue.santriUpdates) pendingQueue.santriUpdates = {};
+
+function savePendingQueue() {
+  localStorage.setItem("santri_pending_sync_queue", JSON.stringify(pendingQueue));
+  refreshSyncBadge();
+}
+
+function hasPendingSync() {
+  return Object.keys(pendingQueue.scores).length > 0 || Object.keys(pendingQueue.santriUpdates).length > 0;
+}
+
+function applyPendingQueueToLocalState(stateObj) {
+  if (!Array.isArray(stateObj.santri)) stateObj.santri = [];
+  if (!Array.isArray(stateObj.skor)) stateObj.skor = [];
+
+  Object.values(pendingQueue.santriUpdates).forEach(u => {
+    const idx = stateObj.santri.findIndex(x => x.id === u.id);
+    if (idx > -1) stateObj.santri[idx] = { ...stateObj.santri[idx], ...u };
+    else stateObj.santri.push(u);
+  });
+
+  Object.values(pendingQueue.scores).forEach(sc => {
+    const idx = stateObj.skor.findIndex(x => x.santriId === sc.santriId);
+    if (idx > -1) stateObj.skor[idx] = sc;
+    else stateObj.skor.push(sc);
+  });
+
+  return stateObj;
+}
+
+applyPendingQueueToLocalState(appState);
+
 if (savedProfile && !appState.santri.some(s => s.id === savedProfile.id)) {
   appState.santri.push(savedProfile);
   localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
 }
 
 let docRef = null;
+let firebaseReady = false;
+let isSyncingNow = false;
 let selectedKategori = "Semua";
 let santriPeriodMode = "semua";
 let santriStatusFilter = "ALL";
@@ -990,21 +1030,119 @@ function showToast(msg) {
   if (!t) return;
   t.textContent = msg;
   t.style.display = "block";
-  setTimeout(() => { t.style.display = "none"; }, 2400);
+  setTimeout(() => { t.style.display = "none"; }, 2600);
 }
 
-function updateSyncUI(online, customText) {
+function refreshSyncBadge() {
   const dot = document.getElementById("syncDot");
   const lbl = document.getElementById("syncLabel");
   if (!dot || !lbl) return;
-  if (online) {
+
+  const isOnline = navigator.onLine && firebaseReady;
+  const pendingCount = Object.keys(pendingQueue.scores).length + Object.keys(pendingQueue.santriUpdates).length;
+
+  if (isSyncingNow) {
     dot.classList.add("online");
-    lbl.textContent = customText || "Online";
+    lbl.textContent = "Sinkron...";
+  } else if (isOnline && pendingCount === 0) {
+    dot.classList.add("online");
+    lbl.textContent = "Online";
+  } else if (pendingCount > 0) {
+    dot.classList.remove("online");
+    lbl.textContent = `Antre (${pendingCount})`;
   } else {
     dot.classList.remove("online");
-    lbl.textContent = customText || "Lokal";
+    lbl.textContent = "Lokal";
   }
 }
+
+async function flushPendingSync(silent) {
+  if (!hasPendingSync()) {
+    refreshSyncBadge();
+    return;
+  }
+  if (!navigator.onLine) {
+    refreshSyncBadge();
+    if (!silent) showToast("Sedang offline. Nilai tersimpan & otomatis terkirim saat online.");
+    return;
+  }
+  if (!docRef) {
+    initFirebase();
+    if (!docRef) return;
+  }
+  if (isSyncingNow) return;
+
+  isSyncingNow = true;
+  refreshSyncBadge();
+
+  try {
+    const snap = await docRef.get();
+    const latest = snap.exists ? snap.data() : appState;
+    const latestSantri = Array.isArray(latest.santri) ? [...latest.santri] : [];
+    const latestScores = Array.isArray(latest.skor) ? [...latest.skor] : [];
+
+    Object.values(pendingQueue.santriUpdates).forEach(u => {
+      const idx = latestSantri.findIndex(x => x.id === u.id);
+      if (idx > -1) latestSantri[idx] = { ...latestSantri[idx], ...u };
+      else latestSantri.push(u);
+    });
+
+    Object.values(pendingQueue.scores).forEach(sc => {
+      const idx = latestScores.findIndex(x => x.santriId === sc.santriId);
+      if (idx > -1) latestScores[idx] = sc;
+      else latestScores.push(sc);
+    });
+
+    await docRef.set({
+      ...latest,
+      santri: latestSantri,
+      skor: latestScores
+    });
+
+    pendingQueue = { scores: {}, santriUpdates: {} };
+    savePendingQueue();
+    firebaseReady = true;
+    if (!silent) showToast("Sinkronisasi ke Guru berhasil");
+  } catch (e) {
+    firebaseReady = false;
+    if (!silent) showToast("Menunggu jaringan stabil untuk kirim data...");
+  } finally {
+    isSyncingNow = false;
+    refreshSyncBadge();
+  }
+}
+
+function manualSyncNow() {
+  if (!navigator.onLine) {
+    return showToast(hasPendingSync()
+      ? "HP sedang offline. Data aman di HP & otomatis terkirim saat internet aktif."
+      : "Mode Offline aktif. Soal & materi tetap bisa dibuka.");
+  }
+  if (!firebaseReady || !docRef) {
+    initFirebase();
+  }
+  if (hasPendingSync()) {
+    flushPendingSync(false);
+  } else {
+    showToast("Data sudah sinkron dengan server Guru");
+  }
+}
+
+// Dipanggil otomatis oleh Android BroadcastReceiver atau event online browser
+window.onAndroidNetworkChanged = function (isOnline) {
+  if (isOnline) {
+    if (!firebaseReady || !docRef) {
+      initFirebase();
+    }
+    flushPendingSync(false);
+  } else {
+    firebaseReady = false;
+    refreshSyncBadge();
+  }
+};
+
+window.addEventListener("online", () => window.onAndroidNetworkChanged(true));
+window.addEventListener("offline", () => window.onAndroidNetworkChanged(false));
 
 function populateRegKelasOptions() {
   const sel = document.getElementById("regKelas");
@@ -1022,7 +1160,8 @@ function populateRegKelasOptions() {
 function initFirebase() {
   try {
     if (typeof firebase === "undefined") {
-      updateSyncUI(false, "Lokal");
+      firebaseReady = false;
+      refreshSyncBadge();
       return;
     }
     if (!firebase.apps.length) {
@@ -1031,24 +1170,36 @@ function initFirebase() {
     const db = firebase.firestore();
     docRef = db.collection("balai_pengajian").doc("data_utama");
     docRef.onSnapshot((snapshot) => {
-      updateSyncUI(true, "Online");
+      firebaseReady = true;
       if (snapshot.exists) {
         const cloudData = snapshot.data();
         const mergedSantri = Array.isArray(cloudData.santri) ? [...cloudData.santri] : [];
         if (savedProfile && !mergedSantri.some(s => s.id === savedProfile.id)) {
           mergedSantri.push(savedProfile);
         }
-        appState = ensureKelasList({ ...fallbackState, ...cloudData, santri: mergedSantri });
+        const mergedState = ensureKelasList({ ...fallbackState, ...cloudData, santri: mergedSantri });
+        appState = applyPendingQueueToLocalState(mergedState);
         localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
+
+        const updatedMe = appState.santri.find(x => x.id === loggedSantriId);
+        if (updatedMe) saveSantriSession(updatedMe);
+
         populateRegKelasOptions();
         verifyActiveSession();
         renderAll();
       }
+      if (hasPendingSync()) {
+        flushPendingSync(true);
+      } else {
+        refreshSyncBadge();
+      }
     }, () => {
-      updateSyncUI(false, "Lokal");
+      firebaseReady = false;
+      refreshSyncBadge();
     });
   } catch (e) {
-    updateSyncUI(false, "Lokal");
+    firebaseReady = false;
+    refreshSyncBadge();
   }
 }
 
@@ -1087,28 +1238,22 @@ async function saveNewSantriPin() {
 
   const updated = { ...s, pin: newPin };
   const idx = appState.santri.findIndex(x => x.id === s.id);
-  if (idx > -1) {
-    appState.santri[idx] = updated;
-  } else {
-    appState.santri.push(updated);
-  }
+  if (idx > -1) appState.santri[idx] = updated;
+  else appState.santri.push(updated);
+
   localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
   saveSantriSession(updated);
 
-  if (docRef) {
-    try {
-      const snap = await docRef.get();
-      const latest = snap.exists ? snap.data() : appState;
-      const list = Array.isArray(latest.santri) ? latest.santri : [];
-      const cIdx = list.findIndex(x => x.id === s.id);
-      if (cIdx > -1) list[cIdx] = updated;
-      else list.push(updated);
-      await docRef.set({ ...latest, santri: list });
-    } catch (e) {}
-  }
+  pendingQueue.santriUpdates[updated.id] = updated;
+  savePendingQueue();
 
   closeChangePinModal();
-  showToast("PIN akun berhasil diperbarui");
+  if (navigator.onLine) {
+    await flushPendingSync(true);
+    showToast("PIN akun diperbarui & tersinkron");
+  } else {
+    showToast("PIN disimpan offline & otomatis dikirim saat online");
+  }
 }
 
 function setAuthMode(mode) {
@@ -1171,24 +1316,21 @@ async function handleSantriRegister() {
   localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
   saveSantriSession(newSantri);
 
-  if (docRef) {
-    try {
-      const snap = await docRef.get();
-      const latest = snap.exists ? snap.data() : appState;
-      const list = Array.isArray(latest.santri) ? latest.santri : [];
-      if (!list.some(s => (s.username || "").toLowerCase() === username)) {
-        list.push(newSantri);
-        await docRef.set({ ...latest, santri: list });
-      }
-    } catch (e) {}
-  }
+  pendingQueue.santriUpdates[newSantri.id] = newSantri;
+  savePendingQueue();
 
   document.getElementById("regNama").value = "";
   document.getElementById("regUsername").value = "";
   document.getElementById("regPin").value = "1234";
   verifyActiveSession();
   renderAll();
-  showToast("Akun dibuat & tersimpan permanen di HP");
+
+  if (navigator.onLine) {
+    await flushPendingSync(true);
+    showToast("Akun dibuat & tersinkron ke Guru");
+  } else {
+    showToast("Akun tersimpan di HP & otomatis dikirim saat online");
+  }
 }
 
 function logoutSantri() {
@@ -1583,8 +1725,8 @@ function renderQuizIntro() {
   const penalti = getPenaltyPoints();
   if (ruleBadge) {
     ruleBadge.textContent = penalti > 0
-      ? `Bebas Diulang • Salah -${penalti} Poin • Kosong 0`
-      : "Bebas Diulang • Tanpa Pengurangan Poin";
+      ? `Bebas Diulang • Bisa Offline • Salah -${penalti} Poin`
+      : "Bebas Diulang • Bisa Offline • Tanpa Pengurangan";
   }
 
   if (titleEl && appState.kuisConfig) {
@@ -1594,25 +1736,32 @@ function renderQuizIntro() {
   const uniqueSoal = getUniqueQuizQuestions();
   const totalPoin = uniqueSoal.reduce((sum, q) => sum + Number(q.poin || 0), 0);
   if (metaEl) {
-    metaEl.textContent = penalti > 0
-      ? `Jumlah Soal: ${uniqueSoal.length} Pertanyaan • Benar +Poin, Salah -${penalti} Poin, Kosong 0 • Maksimal ${totalPoin} Poin`
-      : `Jumlah Soal: ${uniqueSoal.length} Pertanyaan • Maksimal ${totalPoin} Poin`;
+    metaEl.textContent = uniqueSoal.length === 0
+      ? "Belum ada soal tersimpan di perangkat. Hubungkan internet sekali untuk mengunduh soal dari Guru."
+      : (penalti > 0
+          ? `Jumlah Soal: ${uniqueSoal.length} Pertanyaan • Benar +Poin, Salah -${penalti} Poin, Kosong 0 • Maksimal ${totalPoin} Poin`
+          : `Jumlah Soal: ${uniqueSoal.length} Pertanyaan • Maksimal ${totalPoin} Poin`);
   }
 
   const s = getCurrentSantri();
   const activeId = s ? s.id : loggedSantriId;
   const existingRecord = getExistingQuizRecord(activeId);
+  const isPendingScore = activeId && Boolean(pendingQueue.scores[activeId]);
 
   if (startBtn) startBtn.disabled = false;
 
   if (existingRecord) {
     const salahTxt = existingRecord.salah !== undefined ? `, Salah ${existingRecord.salah}` : "";
     const dijawabInfo = existingRecord.dijawab !== undefined ? ` (${existingRecord.dijawab}/${existingRecord.total} dijawab)` : "";
+    const statusSyncText = isPendingScore
+      ? " [Tersimpan Offline — Menunggu Internet untuk Kirim ke Guru]"
+      : " [Tersinkron ke Guru]";
+
     if (bannerEl) {
       bannerEl.style.display = "block";
       bannerEl.innerHTML = `
         <strong style="display:block;margin-bottom:3px;color:var(--text-primary);">Nilai Terdata Sebelumnya: ${existingRecord.poin} Poin</strong>
-        <span>Benar ${existingRecord.benar}${salahTxt} dari ${existingRecord.total}${dijawabInfo} pada ${existingRecord.waktu}. Anda bebas mengikuti kuis ini kembali kapan saja.</span>
+        <span>Benar ${existingRecord.benar}${salahTxt} dari ${existingRecord.total}${dijawabInfo} pada ${existingRecord.waktu}.${statusSyncText}</span>
       `;
     }
     if (startBtn) startBtn.textContent = "Mulai Ulang Kuis";
@@ -1627,7 +1776,9 @@ function startQuiz() {
   if (!s) return verifyActiveSession();
 
   const uniqueSoal = getUniqueQuizQuestions();
-  if (uniqueSoal.length === 0) return showToast("Guru belum menambahkan soal kuis");
+  if (uniqueSoal.length === 0) {
+    return showToast("Soal belum tersedia. Sambungkan internet sekali untuk memuat soal dari Guru.");
+  }
 
   const randomizedQuestions = shuffleArray(uniqueSoal).map(q => {
     const correctIdx = Number(q.kunci);
@@ -1858,6 +2009,10 @@ async function submitQuiz() {
   }
   localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
 
+  // Masukkan ke antrean sinkronisasi offline -> online
+  pendingQueue.scores[activeId] = newEntry;
+  savePendingQueue();
+
   document.getElementById("quizArena").style.display = "none";
   document.getElementById("quizResult").style.display = "block";
   document.getElementById("resScore").textContent = `${totalPoin} Poin`;
@@ -1870,24 +2025,19 @@ async function submitQuiz() {
   renderQuizIntro();
   renderKejuaraan();
 
-  if (docRef) {
-    try {
-      const snap = await docRef.get();
-      const latest = snap.exists ? snap.data() : appState;
-      const latestScores = Array.isArray(latest.skor) ? latest.skor : [];
-      const cIdx = latestScores.findIndex(x => x.santriId === activeId);
-      if (cIdx > -1) {
-        latestScores[cIdx] = newEntry;
-      } else {
-        latestScores.push(newEntry);
-      }
-      await docRef.set({ ...latest, skor: latestScores });
+  const resBadge = document.getElementById("resSyncBadge");
+  if (navigator.onLine) {
+    await flushPendingSync(true);
+    if (!hasPendingSync()) {
+      if (resBadge) resBadge.textContent = "Tersimpan & Terkirim ke Guru";
       showToast("Nilai otomatis terdata & terkirim ke Guru");
-    } catch (e) {
-      showToast("Nilai otomatis terdata secara lokal");
+    } else {
+      if (resBadge) resBadge.textContent = "Tersimpan Lokal (Antre Kirim)";
+      showToast("Nilai tersimpan lokal & otomatis terkirim saat jaringan stabil");
     }
   } else {
-    showToast("Nilai otomatis terdata");
+    if (resBadge) resBadge.textContent = "Tersimpan Offline (Antre Kirim)";
+    showToast("Nilai tersimpan offline & otomatis dikirim saat internet aktif");
   }
 }
 
@@ -1926,9 +2076,16 @@ function renderLinks() {
         <div style="font-weight:700;font-size:14px;">${l.judul}</div>
         <div style="font-size:12px;color:var(--text-secondary);">${l.deskripsi}</div>
       </div>
-      <a href="${l.url}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;flex-shrink:0;">Buka</a>
+      <button type="button" class="btn btn-primary btn-sm" style="flex-shrink:0;" onclick="openPustakaUrl('${l.url}')">Buka</button>
     </div>
   `).join("");
+}
+
+function openPustakaUrl(url) {
+  if (!navigator.onLine) {
+    return showToast("Pustaka online membutuhkan koneksi internet.");
+  }
+  window.location.href = url;
 }
 
 function openPesertaDetail(santriId) {
@@ -2017,13 +2174,14 @@ function renderKejuaraan() {
   } else {
     lbEl.innerHTML = filteredList.map(sc => {
       const salahTag = sc.salah !== undefined ? ` • Salah ${sc.salah}` : "";
+      const isPending = Boolean(pendingQueue.scores[sc.santriId]);
       return `
         <div class="clickable-row" style="display:flex;justify-content:space-between;align-items:center;${sc.santriId === activeId ? "border-color:var(--accent);" : ""}" onclick="openPesertaDetail('${sc.santriId}')">
           <div style="display:flex;align-items:center;gap:10px;">
             <span class="badge" style="${sc.rank <= 3 ? "background:var(--accent);color:var(--accent-text);" : ""}">#${sc.rank}</span>
             <div>
               <div style="font-size:13px;font-weight:700;">${sc.nama} ${sc.santriId === activeId ? "(Saya)" : ""}</div>
-              <div style="font-size:11px;color:var(--text-secondary);">Benar ${sc.benar}/${sc.total}${salahTag}</div>
+              <div style="font-size:11px;color:var(--text-secondary);">Benar ${sc.benar}/${sc.total}${salahTag}${isPending ? " • Antre Kirim" : ""}</div>
             </div>
           </div>
           <div style="font-weight:800;font-size:14px;">${sc.poin} Poin</div>
@@ -2040,6 +2198,7 @@ function renderAll() {
   renderQuizIntro();
   renderLinks();
   renderKejuaraan();
+  refreshSyncBadge();
 }
 
 const todayIso = new Date().toISOString().slice(0, 10);
@@ -2099,7 +2258,7 @@ renderAll();
       start_url: window.location.href,
       display: "standalone",
       background_color: "#121212",
-      theme_color: "#141414",
+      theme_color: "#171717",
       icons: [
         { src: pngDataUrl, sizes: "192x192", type: "image/png", purpose: "any maskable" },
         { src: pngDataUrl, sizes: "512x512", type: "image/png", purpose: "any maskable" }
@@ -2111,6 +2270,24 @@ renderAll();
     if (manifestEl) manifestEl.href = URL.createObjectURL(manifestBlob);
   };
   img.src = svgUrl;
+})();
+
+(function syncAndroidSystemBars() {
+  function applyThemeColors() {
+    const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const barColor = isDark ? "#171717" : "#f7f7f7";
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) metaTheme.setAttribute("content", barColor);
+
+    if (window.Android && typeof window.Android.setSystemBarColor === "function") {
+      window.Android.setSystemBarColor(barColor, isDark);
+    }
+  }
+
+  applyThemeColors();
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyThemeColors);
+  }
 })();
 </script>
 </body>

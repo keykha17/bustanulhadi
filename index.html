@@ -2,856 +2,211 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<title>BUSTANUL HADI - Portal Santri</title>
+<title>BUSTANUL HADI - Portal & Game Kuis Santri</title>
 <meta name="theme-color" content="#f7f7f7">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="BUSTANUL HADI">
-<link id="appFavicon" rel="icon" type="image/svg+xml" href="">
-<link id="appAppleIcon" rel="apple-touch-icon" href="">
-<link id="appManifest" rel="manifest" href="">
 <style>
-:root {
-  --bg: #f0f0f0;
-  --surface: #f7f7f7;
-  --surface-elevated: #ffffff;
-  --border: #dcdcdc;
-  --text-primary: #141414;
-  --text-secondary: #525252;
-  --text-muted: #737373;
-  --accent: #141414;
-  --accent-text: #ffffff;
-  --shadow-dark: #d1d1d1;
-  --shadow-light: #ffffff;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #121212;
-    --surface: #171717;
-    --surface-elevated: #1e1e1e;
-    --border: #2a2a2a;
-    --text-primary: #f5f5f5;
-    --text-secondary: #a3a3a3;
-    --text-muted: #737373;
-    --accent: #ffffff;
-    --accent-text: #121212;
-    --shadow-dark: #0a0a0a;
-    --shadow-light: #222222;
-  }
-}
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  -webkit-tap-highlight-color: transparent;
-}
-body {
-  background-color: var(--bg);
-  color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  min-height: 100vh;
-  padding-bottom: 84px;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-.neu-card {
-  background: var(--surface);
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  box-shadow: 6px 6px 14px var(--shadow-dark), -4px -4px 10px var(--shadow-light);
-  padding: 16px;
-  margin-bottom: 14px;
-}
-.neu-inset {
-  background: var(--bg);
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -3px -3px 7px var(--shadow-light);
-}
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: var(--surface-elevated);
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 10px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 4px 4px 8px var(--shadow-dark), -2px -2px 6px var(--shadow-light);
-  transition: transform 0.12s ease;
-}
-.btn:active {
-  transform: scale(0.97);
-  box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
-}
-.btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-  transform: none;
-}
-.btn-primary {
-  background: var(--accent);
-  color: var(--accent-text);
-  border-color: var(--accent);
-}
-.btn-sm {
-  padding: 7px 10px;
-  font-size: 12px;
-  border-radius: 10px;
-}
-.btn-block {
-  width: 100%;
-}
-select, input {
-  width: 100%;
-  background: var(--bg);
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 11px 13px;
-  font-size: 14px;
-  font-family: inherit;
-  box-shadow: inset 3px 3px 7px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
-  outline: none;
-}
-input:focus, select:focus {
-  border-color: var(--text-secondary);
-}
-label {
-  display: block;
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
-  font-weight: 600;
-}
-.form-group {
-  margin-bottom: 12px;
-}
-.search-wrap {
-  position: relative;
-  margin-bottom: 12px;
-}
-.search-wrap svg.search-ico {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 16px;
-  height: 16px;
-  color: var(--text-muted);
-  pointer-events: none;
-}
-.search-wrap input {
-  padding-left: 36px;
-  padding-right: 34px;
-  font-size: 13px;
-}
-.search-clear {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--surface-elevated);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 12px;
-  line-height: 1;
-}
-.search-wrap.has-text .search-clear {
-  display: flex;
-}
-header {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.brand-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 11px;
-  background: var(--surface-elevated);
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 3px 3px 7px var(--shadow-dark), -2px -2px 5px var(--shadow-light);
-}
-.brand h1 {
-  font-size: 15px;
-  font-weight: 700;
-}
-.brand span {
-  font-size: 11px;
-  color: var(--text-secondary);
-  display: block;
-}
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: var(--surface-elevated);
-  border: 1px solid var(--border);
-  font-size: 11px;
-  color: var(--text-secondary);
-  cursor: pointer;
-}
-.status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--text-muted);
-}
-.status-dot.online {
-  background: var(--accent);
-}
-main {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 16px;
-}
-.section {
-  display: none;
-}
-.section.active {
-  display: block;
-}
-.section-title {
-  font-size: 17px;
-  font-weight: 700;
-  margin-bottom: 14px;
-}
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.grid-4 {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-}
-.stat-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 12px 8px;
-  text-align: center;
-  box-shadow: 4px 4px 10px var(--shadow-dark), -3px -3px 7px var(--shadow-light);
-}
-.stat-val {
-  font-size: 19px;
-  font-weight: 800;
-  color: var(--accent);
-}
-.stat-lbl {
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin-top: 2px;
-}
-.pill-group {
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-  margin-bottom: 12px;
-}
-.pill {
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  font-size: 12px;
-  font-weight: 600;
-  white-space: nowrap;
-  cursor: pointer;
-}
-.pill.active {
-  background: var(--accent);
-  color: var(--accent-text);
-  border-color: var(--accent);
-}
-.badge {
-  display: inline-block;
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  background: var(--surface-elevated);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-}
-.bar-track {
-  width: 100%;
-  height: 8px;
-  background: var(--bg);
-  border-radius: 999px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  margin-top: 8px;
-}
-.bar-fill {
-  height: 100%;
-  background: var(--accent);
-  border-radius: 999px;
-  transition: width 0.3s ease;
-}
-.vchart-wrap {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  height: 148px;
-  padding: 14px 10px 8px;
-  overflow-x: auto;
-  border-radius: 12px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  box-shadow: inset 3px 3px 7px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light);
-}
-.vchart-col {
-  flex: 1;
-  min-width: 44px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
-}
-.vchart-val {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-.vchart-bar-bg {
-  width: 22px;
-  height: 86px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-}
-.vchart-bar-fill {
-  width: 100%;
-  background: var(--accent);
-  border-radius: 5px 5px 0 0;
-  transition: height 0.35s ease;
-}
-.vchart-lbl {
-  font-size: 10px;
-  color: var(--text-secondary);
-  text-align: center;
-  white-space: nowrap;
-  max-width: 56px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.dist-row {
-  margin-bottom: 10px;
-}
-.dist-row:last-child {
-  margin-bottom: 0;
-}
-.dist-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  font-weight: 600;
-  margin-bottom: 3px;
-}
-.clickable-row {
-  cursor: pointer;
-  padding: 11px 10px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface-elevated);
-  margin-bottom: 8px;
-  transition: transform 0.12s ease;
-}
-.clickable-row:active {
-  transform: scale(0.985);
-}
-.quiz-opt {
-  width: 100%;
-  text-align: left;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  margin-bottom: 8px;
-  transition: all 0.12s ease;
-}
-.quiz-opt.selected {
-  background: var(--accent);
-  color: var(--accent-text);
-  border-color: var(--accent);
-  font-weight: 700;
-}
-.podium-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  align-items: end;
-  margin-bottom: 16px;
-}
-.podium-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 12px 8px;
-  text-align: center;
-  box-shadow: 4px 4px 10px var(--shadow-dark), -3px -3px 7px var(--shadow-light);
-}
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 40;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  padding: 6px 4px 10px;
-}
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  font-size: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 4px 0;
-}
-.nav-item.active {
-  color: var(--accent);
-}
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  background: rgba(0, 0, 0, 0.72);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-}
-.modal-backdrop.open {
-  display: flex;
-}
-.modal-box {
-  width: 100%;
-  max-width: 480px;
-  max-height: 88vh;
-  overflow-y: auto;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 18px;
-}
-.auth-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  overflow-y: auto;
-}
-.auth-overlay.hidden {
-  display: none;
-}
-.tab-switch {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  padding: 4px;
-  border-radius: 12px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  margin-bottom: 16px;
-}
-.tab-btn {
-  padding: 8px;
-  border-radius: 9px;
-  border: none;
-  background: transparent;
-  color: var(--text-secondary);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.tab-btn.active {
-  background: var(--accent);
-  color: var(--accent-text);
-}
-.toast {
-  position: fixed;
-  top: 66px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 80;
-  background: var(--accent);
-  color: var(--accent-text);
-  padding: 9px 16px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-  display: none;
-  white-space: nowrap;
-}
-.icon {
-  width: 18px;
-  height: 18px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+:root{--bg:#f0f0f0;--surface:#f7f7f7;--elev:#fff;--border:#dcdcdc;--tx:#141414;--tx2:#525252;--tx3:#737373;--accent:#141414;--acc-tx:#fff;--sd:#d1d1d1;--sl:#fff;--ok:#15803d;--bad:#b91c1c}
+@media(prefers-color-scheme:dark){:root{--bg:#121212;--surface:#171717;--elev:#1e1e1e;--border:#2a2a2a;--tx:#f5f5f5;--tx2:#a3a3a3;--tx3:#737373;--accent:#fff;--acc-tx:#121212;--sd:#0a0a0a;--sl:#222;--ok:#22c55e;--bad:#f87171}}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5;min-height:100vh;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+.neu-card{background:var(--surface);border-radius:16px;border:1px solid var(--border);box-shadow:6px 6px 14px var(--sd),-4px -4px 10px var(--sl);padding:16px;margin-bottom:14px}
+.neu-inset{background:var(--bg);border-radius:12px;border:1px solid var(--border);box-shadow:inset 4px 4px 8px var(--sd),inset -3px -3px 7px var(--sl)}
+.sh{box-shadow:3px 3px 8px var(--sd),-2px -2px 5px var(--sl)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--elev);color:var(--tx);border:1px solid var(--border);border-radius:12px;padding:10px 15px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:4px 4px 8px var(--sd),-2px -2px 6px var(--sl);transition:transform .12s}
+.btn:active{transform:scale(.97)}.btn:disabled{opacity:.5}
+.btn-primary{background:var(--accent);color:var(--acc-tx);border-color:var(--accent)}
+.btn-sm{padding:6px 10px;font-size:11px;border-radius:10px}.btn-block{width:100%}
+input{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--border);border-radius:12px;padding:11px 13px;font-size:16px;font-family:inherit;box-shadow:inset 3px 3px 7px var(--sd),inset -2px -2px 5px var(--sl);outline:none}
+input:focus{border-color:var(--accent)}
+label{display:block;font-size:11px;color:var(--tx2);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+header{position:sticky;top:0;z-index:40;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;padding-top:calc(12px + env(safe-area-inset-top,0px));display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:36px;height:36px;border-radius:11px;background:var(--elev);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 7px var(--sd),-2px -2px 5px var(--sl)}
+.brand h1{font-size:15px;font-weight:800}.brand span{font-size:11px;color:var(--tx2);display:block}
+.header-right{display:flex;align-items:center;gap:6px}
+.status-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:var(--elev);border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--tx);cursor:pointer}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--tx3)}.status-dot.online{background:var(--ok)}
+main{max-width:720px;margin:0 auto;padding:16px}
+.section{display:none}.section.active{display:block;animation:fade .2s}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.section-title{font-size:17px;font-weight:800;margin-bottom:14px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center;box-shadow:4px 4px 10px var(--sd),-3px -3px 7px var(--sl)}
+.stat-val{font-size:18px;font-weight:800}.stat-lbl{font-size:11px;color:var(--tx2);margin-top:2px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:7px;font-size:11px;font-weight:700;background:var(--elev);border:1px solid var(--border);color:var(--tx2)}
+.badge.me{background:var(--accent);color:var(--acc-tx);margin-left:4px}
+.bar-track{width:100%;height:8px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border);margin-top:6px}
+.bar-fill{height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+.pill-group{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px}
+.pill{padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--tx2);font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer}
+.pill.active{background:var(--accent);color:var(--acc-tx);border-color:var(--accent)}
+.quiz-option{width:100%;text-align:left;padding:13px 14px;border-radius:13px;background:var(--elev);border:1px solid var(--border);color:var(--tx);font-size:14px;font-weight:600;margin-bottom:9px;cursor:pointer;display:flex;align-items:center;gap:10px;box-shadow:3px 3px 8px var(--sd),-2px -2px 5px var(--sl);transition:transform .1s}
+.quiz-option:active{transform:scale(.985)}
+.quiz-option.selected{background:var(--accent);color:var(--acc-tx);border-color:var(--accent)}
+.quiz-option.correct{background:var(--ok);color:#fff;border-color:var(--ok)}
+.quiz-option.wrong{background:var(--bad);color:#fff;border-color:var(--bad)}
+.quiz-option:disabled{cursor:default}.quiz-option:disabled:not(.correct):not(.wrong){opacity:.55}
+.quiz-opt-letter{width:24px;height:24px;border-radius:7px;border:1px solid currentColor;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.explain{font-size:12px;font-weight:700;margin:2px 0 6px;min-height:18px}
+.podium-stage{display:grid;grid-template-columns:1fr 1.15fr 1fr;align-items:flex-end;gap:8px;padding:18px 8px 10px;margin-bottom:14px;border-radius:16px;background:var(--bg);border:1px solid var(--border);box-shadow:inset 4px 4px 9px var(--sd),inset -3px -3px 8px var(--sl)}
+.podium-slot{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0}
+.podium-avatar{width:44px;height:44px;border-radius:50%;background:var(--elev);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;margin-bottom:6px;position:relative;box-shadow:3px 3px 8px var(--sd),-2px -2px 6px var(--sl)}
+.rank-1 .podium-avatar{width:54px;height:54px;font-size:18px;background:var(--accent);color:var(--acc-tx);border-color:var(--accent);margin-top:14px}
+.podium-crown{position:absolute;top:-15px;left:50%;transform:translateX(-50%);width:20px;height:20px;color:var(--tx)}
+.podium-name{font-size:12px;font-weight:800;max-width:92px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.podium-pts{font-size:10px;font-weight:700;color:var(--tx2);margin-bottom:6px}
+.podium-pedestal{width:100%;border-radius:11px 11px 6px 6px;background:var(--elev);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;box-shadow:3px 3px 7px var(--sd),-2px -2px 5px var(--sl)}
+.rank-1 .podium-pedestal{height:76px;background:var(--accent);color:var(--acc-tx);border-color:var(--accent);font-size:20px}
+.rank-2 .podium-pedestal{height:56px}.rank-3 .podium-pedestal{height:44px}
+.lb-row{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:13px;background:var(--elev);border:1px solid var(--border);margin-bottom:8px;box-shadow:3px 3px 7px var(--sd),-2px -2px 5px var(--sl)}
+.lb-row.is-me{border:2px solid var(--accent)}
+.lb-rank{width:28px;height:28px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.lb-row.top .lb-rank{background:var(--accent);color:var(--acc-tx);border-color:var(--accent)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:var(--surface);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);padding:6px 4px calc(10px + env(safe-area-inset-bottom,0px))}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--tx3);font-size:10px;font-weight:700;cursor:pointer;padding:4px 0}
+.nav-item.active{color:var(--accent)}
+.login-screen{position:fixed;inset:0;z-index:70;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:18px;overflow-y:auto}
+.login-box{width:100%;max-width:420px}
+.modal-backdrop{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px}
+.modal-backdrop.open{display:flex}
+.modal-box{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px}
+.toast{position:fixed;top:calc(66px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:95;background:var(--accent);color:var(--acc-tx);padding:8px 16px;border-radius:999px;font-size:12px;font-weight:700;display:none;max-width:92%;text-align:center}
+.icon{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.coin-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:var(--accent);color:var(--acc-tx);font-size:11px;font-weight:800;cursor:pointer}
+.pass-wrap{position:relative}
+.pass-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--tx2);font-size:11px;font-weight:700;cursor:pointer;padding:6px}
+.empty{text-align:center;color:var(--tx2);font-size:13px;padding:12px 0}
+.row{display:flex;justify-content:space-between;align-items:center}
 </style>
 </head>
 <body>
-
-<div id="authScreen" class="auth-overlay">
-  <div class="neu-card" style="width:100%;max-width:380px;padding:24px;">
-    <div style="text-align:center;margin-bottom:16px;">
-      <div class="brand-icon" style="width:50px;height:50px;margin:0 auto 12px;">
-        <svg class="icon" style="width:24px;height:24px;" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      </div>
-      <h2 style="font-size:18px;margin-bottom:4px;">BUSTANUL HADI</h2>
-      <p style="font-size:12px;color:var(--text-secondary);">Masuk sekali, akun otomatis tersimpan di HP Anda (PIN Default: 1234)</p>
-    </div>
-
-    <div class="tab-switch">
-      <button type="button" id="btnModeLogin" class="tab-btn active" onclick="setAuthMode('login')">Masuk Akun</button>
-      <button type="button" id="btnModeRegister" class="tab-btn" onclick="setAuthMode('register')">Daftar Baru</button>
-    </div>
-
-    <div id="formLogin">
-      <div class="form-group">
-        <label>Username Santri (Nama Depan Huruf Kecil)</label>
-        <input type="text" id="loginUsername" autocomplete="off" placeholder="Contoh: aswir">
-      </div>
-      <div class="form-group">
-        <label>PIN Pribadi</label>
-        <input type="password" id="loginPin" inputmode="numeric" maxlength="6" placeholder="Default: 1234">
-      </div>
-      <button type="button" class="btn btn-primary btn-block" onclick="handleSantriLogin()">Masuk ke Portal Santri</button>
-    </div>
-
-    <div id="formRegister" style="display:none;">
-      <div class="form-group">
-        <label>Nama Lengkap</label>
-        <input type="text" id="regNama" placeholder="Nama lengkap santri">
-      </div>
-      <div class="form-group">
-        <label>Username (Tanpa Spasi)</label>
-        <input type="text" id="regUsername" placeholder="contoh: ahmad17">
-      </div>
-      <div class="form-group">
-        <label>Buat PIN (4-6 Digit)</label>
-        <input type="password" id="regPin" inputmode="numeric" maxlength="6" value="1234">
-      </div>
-      <div class="form-group">
-        <label>Pilih Kelas / Kitab (Ditentukan Guru)</label>
-        <select id="regKelas"></select>
-      </div>
-      <button type="button" class="btn btn-primary btn-block" onclick="handleSantriRegister()">Daftar & Simpan di HP</button>
-    </div>
-
-    <p id="authError" style="font-size:12px;color:var(--text-secondary);text-align:center;margin-top:12px;display:none;"></p>
-  </div>
-</div>
-
 <div id="toast" class="toast"></div>
 
-<header>
-  <div class="brand">
-    <div class="brand-icon">
-      <svg class="icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-    </div>
-    <div>
-      <h1 id="headerSantriName">BUSTANUL HADI</h1>
-      <span id="headerSantriSub">Portal Santri Mandiri</span>
-    </div>
+<!-- LOGIN -->
+<div id="loginScreen" class="login-screen"><div class="login-box"><div class="neu-card" style="padding:22px">
+  <div class="row" style="justify-content:flex-start;gap:12px;margin-bottom:16px">
+    <div class="brand-icon" style="width:44px;height:44px"><svg class="icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+    <div><h1 style="font-size:18px;font-weight:800">BUSTANUL HADI</h1><span style="font-size:12px;color:var(--tx2)">Portal Santri & Game Kuis</span></div>
   </div>
-  <div style="display:flex;align-items:center;gap:6px;">
-    <button type="button" class="status-pill" onclick="manualSyncNow()" title="Klik untuk sinkronisasi sekarang">
-      <span id="syncDot" class="status-dot"></span>
-      <span id="syncLabel">Lokal</span>
-    </button>
-    <button type="button" class="btn btn-sm" onclick="openChangePinModal()" title="Ubah PIN Sandi">
-      <svg class="icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-    </button>
-    <button type="button" class="btn btn-sm" onclick="logoutSantri()" title="Ganti Akun">
-      <svg class="icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-    </button>
+  <label for="loginNamaInput">Nama Santri</label>
+  <input type="text" id="loginNamaInput" placeholder="Ketik nama Anda (contoh: Aswir)" autocomplete="off" autocapitalize="words" style="margin-bottom:10px">
+  <label for="loginPassword">Sandi Santri</label>
+  <div class="pass-wrap" style="margin-bottom:12px"><input type="password" id="loginPassword" placeholder="Masukkan sandi (awal: 1234)"><button type="button" class="pass-toggle" data-toggle="loginPassword">Lihat</button></div>
+  <div id="loginKoinPreview" class="neu-inset row" style="padding:11px 12px;margin-bottom:14px"></div>
+  <button type="button" class="btn btn-primary btn-block" id="btnLogin">Masuk Portal Santri</button>
+  <div style="font-size:11px;color:var(--tx3);text-align:center;margin-top:10px">Sandi awal: <strong>1234</strong> (ubah di menu Beranda setelah masuk)</div>
+</div></div></div>
+
+<!-- UBAH SANDI -->
+<div id="modalUbahSandi" class="modal-backdrop"><div class="modal-box">
+  <div class="row" style="margin-bottom:12px"><h3 style="font-size:16px;font-weight:800">Ubah Sandi Akun</h3><button type="button" class="btn btn-sm" id="btnTutupSandi">Tutup</button></div>
+  <p style="font-size:12px;color:var(--tx2);margin-bottom:12px">Ganti sandi pribadi agar koin dan progres kuis tetap aman.</p>
+  <label>Sandi Lama</label><div class="pass-wrap" style="margin-bottom:10px"><input type="password" id="oldPassInput" placeholder="Sandi saat ini"><button type="button" class="pass-toggle" data-toggle="oldPassInput">Lihat</button></div>
+  <label>Sandi Baru</label><div class="pass-wrap" style="margin-bottom:10px"><input type="password" id="newPassInput" placeholder="Minimal 4 karakter"><button type="button" class="pass-toggle" data-toggle="newPassInput">Lihat</button></div>
+  <label>Konfirmasi Sandi Baru</label><div class="pass-wrap" style="margin-bottom:14px"><input type="password" id="confirmPassInput" placeholder="Ulangi sandi baru"><button type="button" class="pass-toggle" data-toggle="confirmPassInput">Lihat</button></div>
+  <button type="button" class="btn btn-primary btn-block" id="btnSimpanSandi">Simpan Sandi Baru</button>
+</div></div>
+
+<header>
+  <div class="brand"><div class="brand-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+    <div><h1 id="headerSantriName">Santri</h1><span id="headerSantriKelas">BUSTANUL HADI</span></div></div>
+  <div class="header-right">
+    <div class="coin-pill" data-goto="kuis"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8"/><path d="M9.5 10.5c0-1 1.1-1.5 2.5-1.5s2.5.5 2.5 1.5-1.1 1.5-2.5 1.5-2.5.5-2.5 1.5 1.1 1.5 2.5 1.5 2.5-.5 2.5-1.5"/></svg><span id="headerCoinCount">0</span></div>
+    <button type="button" class="status-pill" id="btnSync"><span id="syncDot" class="status-dot"></span><span id="syncLabel">Lokal</span></button>
   </div>
 </header>
 
 <main>
-  <section id="sec-absensi" class="section active">
-    <h2 class="section-title">Analisa Kehadiran Pribadi</h2>
-
+  <section id="sec-beranda" class="section active">
     <div class="neu-card">
-      <label>Filter Periode Analisa</label>
-      <div class="pill-group" id="santriPeriodPills" style="margin-bottom:8px;">
-        <button type="button" class="pill active" onclick="setSantriPeriod('semua', this)">Semua</button>
-        <button type="button" class="pill" onclick="setSantriPeriod('harian', this)">Harian</button>
-        <button type="button" class="pill" onclick="setSantriPeriod('mingguan', this)">Mingguan</button>
-        <button type="button" class="pill" onclick="setSantriPeriod('bulanan', this)">Bulanan</button>
+      <div class="row" style="align-items:flex-start;gap:8px;margin-bottom:10px">
+        <div><span class="badge" id="berandaKelasBadge">Kelas</span><h2 style="font-size:18px;font-weight:800;margin-top:4px" id="berandaNamaTitle"></h2></div>
+        <div style="display:flex;gap:6px"><button type="button" class="btn btn-sm" id="btnBukaSandi">Ubah Sandi</button><button type="button" class="btn btn-sm" id="btnKeluar">Keluar</button></div>
       </div>
-      <div id="santriDateWrap" style="display:none;margin-bottom:8px;">
-        <input type="date" id="santriRefDate" onchange="renderSantriAbsensi()">
+      <div class="neu-inset row" style="padding:12px">
+        <div><div style="font-size:11px;color:var(--tx2);font-weight:700">TOTAL KOIN TERKUMPUL</div><div style="font-size:24px;font-weight:800" id="berandaTotalKoin">0 Koin</div><div style="font-size:11px;color:var(--tx3)" id="berandaPendingInfo"></div></div>
+        <button type="button" class="btn btn-primary" data-goto="kuis">Main Kuis</button>
       </div>
-      <div id="santriMonthWrap" style="display:none;margin-bottom:8px;">
-        <input type="month" id="santriRefMonth" onchange="renderSantriAbsensi()">
-      </div>
-      <div id="santriPeriodDesc" style="font-size:11px;color:var(--text-secondary);"></div>
     </div>
-
-    <div id="santriAttSummary" class="neu-card"></div>
-
-    <div class="grid-4" style="margin-bottom:14px;" id="santriAttCounts"></div>
-
+    <div class="neu-card" id="berandaAbsensiSummary"></div>
+    <div class="grid-4" style="margin-bottom:14px" id="berandaAbsensiGrid"></div>
     <div class="neu-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <h3 style="font-size:14px;" id="santriTrendTitle">Grafik Tren Kehadiran Saya</h3>
-        <span class="badge">Persentase</span>
-      </div>
-      <div id="santriTrendChart"></div>
+      <div class="row" style="margin-bottom:12px"><h3 style="font-size:15px;font-weight:800">🏆 Podium Juara Koin</h3><span class="badge" id="berandaMyRankBadge">Peringkat #-</span></div>
+      <div id="berandaPodiumContainer"></div><div id="berandaTopLeaderboard"></div>
     </div>
-
-    <div class="neu-card">
-      <h3 style="font-size:14px;margin-bottom:10px;">Grafik Komposisi Kehadiran</h3>
-      <div id="santriDistChart"></div>
-    </div>
-
-    <h3 style="font-size:14px;margin-bottom:8px;color:var(--text-secondary);">Riwayat Sesi Pengajian Saya</h3>
-    <div class="pill-group" id="santriStatusFilterPills" style="margin-bottom:10px;">
-      <button type="button" class="pill active" onclick="setSantriStatusFilter('ALL', this)">Semua</button>
-      <button type="button" class="pill" onclick="setSantriStatusFilter('Hadir', this)">Hadir</button>
-      <button type="button" class="pill" onclick="setSantriStatusFilter('Izin', this)">Izin</button>
-      <button type="button" class="pill" onclick="setSantriStatusFilter('Sakit', this)">Sakit</button>
-      <button type="button" class="pill" onclick="setSantriStatusFilter('Alpa', this)">Alpa</button>
-    </div>
-    <div class="search-wrap" id="wrapSearchSantriAtt">
-      <svg class="icon search-ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="searchSantriAtt" placeholder="Cari tanggal (2026-11) atau sesi..." oninput="onSearchInput('searchSantriAtt','wrapSearchSantriAtt',renderSantriAbsensi)">
-      <button type="button" class="search-clear" onclick="clearSearch('searchSantriAtt','wrapSearchSantriAtt',renderSantriAbsensi)">×</button>
-    </div>
-    <div id="santriAttHistory"></div>
-  </section>
-
-  <section id="sec-materi" class="section">
-    <h2 class="section-title">Materi Belajar & Kitab</h2>
-    <div class="search-wrap" id="wrapSearchSantriMateri">
-      <svg class="icon search-ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="searchSantriMateri" placeholder="Cari judul bab, kitab, atau isi pelajaran..." oninput="onSearchInput('searchSantriMateri','wrapSearchSantriMateri',renderMateri)">
-      <button type="button" class="search-clear" onclick="clearSearch('searchSantriMateri','wrapSearchSantriMateri',renderMateri)">×</button>
-    </div>
-    <div class="pill-group" id="materiFilter"></div>
-    <div id="materiList"></div>
   </section>
 
   <section id="sec-kuis" class="section">
-    <h2 class="section-title">Kuis Cerdas</h2>
+    <div class="row" style="margin-bottom:14px"><h2 class="section-title" style="margin:0">Game Kuis Santri</h2><span class="badge" id="kuisSaldoBadge">Saldo: 0 Koin</span></div>
 
-    <div id="quizIntro" class="neu-card">
-      <span class="badge" style="margin-bottom:8px;" id="quizRuleBadge">Bebas Diulang • Bisa Dimainkan Offline</span>
-      <h3 style="font-size:16px;margin-bottom:6px;" id="quizTitleDisplay">Kuis Cerdas Balai Pengajian</h3>
-      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;" id="quizMetaDisplay">Memuat informasi soal...</p>
-      <div class="neu-inset" style="padding:12px;margin-bottom:14px;font-size:13px;">
-        <div style="color:var(--text-secondary);font-size:11px;">Peserta Aktif</div>
-        <div style="font-weight:700;" id="quizActiveParticipant">-</div>
-      </div>
-      <div id="quizLastScoreBanner" class="neu-inset" style="padding:12px;margin-bottom:14px;font-size:12px;display:none;"></div>
-      <button type="button" id="btnStartQuiz" class="btn btn-primary btn-block" onclick="startQuiz()">Mulai Kuis Sekarang</button>
-    </div>
-
-    <div id="quizArena" style="display:none;">
-      <div class="neu-card" style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-        <div>
-          <span style="font-size:13px;font-weight:700;display:block;" id="quizProgress">Soal 1 / 1</span>
-          <span style="font-size:11px;color:var(--text-secondary);" id="quizAnsweredCount">Terjawab: 0 soal</span>
+    <div id="quizLobbyView">
+      <div class="neu-card">
+        <h3 style="font-size:15px;margin-bottom:6px">Kumpulkan Koin Sebanyak-Banyaknya!</h3>
+        <p style="font-size:12px;color:var(--tx2);margin-bottom:12px">Setiap jawaban benar menambah koin. Jika keluar di tengah permainan, koin yang sudah didapat tetap tersimpan dan dijumlahkan ke saldo sebelumnya. Satu sesi berisi maksimal <strong id="maxSoalInfo">10</strong> soal acak.</p>
+        <div class="grid-2" style="margin-bottom:12px">
+          <div class="neu-inset" style="padding:10px"><div style="font-size:11px;color:var(--tx2)">Koin Sebelumnya</div><div style="font-size:18px;font-weight:800" id="lobbyKoinLama">0 Koin</div></div>
+          <div class="neu-inset" style="padding:10px"><div style="font-size:11px;color:var(--tx2)">Bank Soal</div><div style="font-size:18px;font-weight:800" id="lobbyJumlahSoal">0 Soal</div></div>
         </div>
-        <div style="display:flex;gap:6px;">
-          <button type="button" class="btn btn-sm" onclick="clearCurrentAnswer()" title="Kosongkan jawaban soal ini agar tidak kena pengurangan">Kosongkan</button>
-          <button type="button" class="btn btn-primary btn-sm" onclick="openConfirmFinishQuiz()">
-            <svg class="icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            Selesai
-          </button>
-        </div>
+        <label>Filter Materi / Kitab Soal</label>
+        <div class="pill-group" id="quizCategoryPills"></div>
+        <button type="button" class="btn btn-primary btn-block" id="btnMulai">Mulai Main & Kumpulkan Koin</button>
       </div>
-      <div id="quizQuestionBox" class="neu-card"></div>
-      <div style="display:flex;gap:8px;">
-        <button type="button" class="btn" id="btnPrevQ" style="flex:1;" onclick="prevQuestion()">Sebelumnya</button>
-        <button type="button" class="btn" id="btnNextQ" style="flex:1;" onclick="nextQuestion()">Berikutnya</button>
+      <div class="neu-card">
+        <div class="row" style="margin-bottom:12px"><h3 style="font-size:15px;font-weight:800">⭐ Leaderboard Klasemen Koin</h3><span class="badge" id="kuisTotalPesertaBadge">0 Santri</span></div>
+        <div id="kuisPodiumContainer"></div><div id="kuisFullLeaderboard"></div>
       </div>
     </div>
 
-    <div id="quizResult" style="display:none;">
-      <div class="neu-card" style="text-align:center;padding:24px 16px;">
-        <span class="badge" style="margin-bottom:8px;" id="resSyncBadge">Nilai Otomatis Terdata</span>
-        <div style="font-size:34px;font-weight:800;margin:6px 0;" id="resScore">0 Poin</div>
-        <p style="font-size:13px;color:var(--text-secondary);margin-bottom:10px;" id="resDetail"></p>
-        <div id="resBreakdown" class="neu-inset" style="padding:10px;font-size:12px;margin-bottom:16px;"></div>
-        <div style="display:flex;gap:8px;">
-          <button type="button" class="btn" style="flex:1;" onclick="resetToQuizIntro()">Ikut Kuis Lagi</button>
-          <button type="button" class="btn btn-primary" style="flex:1;" onclick="finishQuizView()">Lihat Klasemen</button>
+    <div id="quizPlayView" style="display:none">
+      <div class="neu-card">
+        <div class="row" style="margin-bottom:8px"><span class="badge" id="playProgressBadge">Soal 1/10</span><span class="badge" id="playSessionCoinBadge">+0 Koin Sesi Ini</span></div>
+        <div class="bar-track" style="margin-bottom:14px"><div class="bar-fill" id="playProgressBar" style="width:0"></div></div>
+        <div style="font-size:11px;color:var(--tx2);margin-bottom:4px" id="playSoalKategori"></div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:14px" id="playSoalTeks"></div>
+        <div id="playOptionsList"></div>
+        <div class="explain" id="playFeedback"></div>
+        <div style="display:flex;gap:8px;margin-top:6px">
+          <button type="button" class="btn" style="flex:1" id="btnKeluarKuis">Keluar & Simpan</button>
+          <button type="button" class="btn btn-primary" style="flex:1.4" id="btnNextSoal">Periksa Jawaban</button>
         </div>
       </div>
+    </div>
 
-      <h3 id="quizReviewTitle" style="font-size:15px;font-weight:700;margin:16px 0 10px;">Pembahasan & Kunci Jawaban</h3>
-      <div id="quizReviewList"></div>
+    <div id="quizResultView" style="display:none">
+      <div class="neu-card" style="text-align:center;padding:22px 16px">
+        <span class="badge" style="margin-bottom:8px" id="resHeaderBadge">Sesi Kuis Selesai</span>
+        <h3 style="font-size:18px;font-weight:800;margin-bottom:4px" id="resHeaderTitle"></h3>
+        <p style="font-size:12px;color:var(--tx2);margin-bottom:16px" id="resSyncStatusText"></p>
+        <div class="neu-inset" style="padding:14px;margin-bottom:14px;text-align:left">
+          <div class="row" style="padding:5px 0;font-size:13px"><span style="color:var(--tx2)">Koin Sebelumnya</span><strong id="resKoinLama"></strong></div>
+          <div class="row" style="padding:5px 0;font-size:13px"><span style="color:var(--tx2)">Koin Sesi Ini</span><strong id="resKoinBaru"></strong></div>
+          <div style="border-top:1px solid var(--border);margin:6px 0"></div>
+          <div class="row" style="padding:5px 0;font-size:15px"><strong>Total Koin Sekarang</strong><strong id="resKoinTotal"></strong></div>
+        </div>
+        <div class="grid-2" style="margin-bottom:14px">
+          <div class="stat-box"><div class="stat-val" id="resBenarCount">0</div><div class="stat-lbl">Jawaban Benar</div></div>
+          <div class="stat-box"><div class="stat-val" id="resSalahCount">0</div><div class="stat-lbl">Jawaban Salah</div></div>
+        </div>
+        <button type="button" class="btn btn-primary btn-block" id="btnKembaliLobby">Kembali & Lihat Leaderboard</button>
+      </div>
     </div>
   </section>
 
-  <section id="sec-pustaka" class="section">
-    <h2 class="section-title">Link Kitab, Buku & Aplikasi</h2>
-    <div class="search-wrap" id="wrapSearchSantriPustaka">
-      <svg class="icon search-ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="searchSantriPustaka" placeholder="Cari kitab digital, buku PDF, atau aplikasi..." oninput="onSearchInput('searchSantriPustaka','wrapSearchSantriPustaka',renderLinks)">
-      <button type="button" class="search-clear" onclick="clearSearch('searchSantriPustaka','wrapSearchSantriPustaka',renderLinks)">×</button>
-    </div>
-    <div id="linkList"></div>
-  </section>
-
-  <section id="sec-kejuaraan" class="section">
-    <h2 class="section-title">Kejuaraan Kuis Cerdas</h2>
-    <div id="podiumBox" class="podium-grid"></div>
-    <div class="neu-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <h3 style="font-size:14px;">Papan Peringkat Lengkap</h3>
-        <span class="badge">Klik untuk Detail</span>
-      </div>
-      <div class="search-wrap" id="wrapSearchJuara">
-        <svg class="icon search-ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="searchJuara" placeholder="Cari nama peserta di papan peringkat..." oninput="onSearchInput('searchJuara','wrapSearchJuara',renderKejuaraan)">
-        <button type="button" class="search-clear" onclick="clearSearch('searchJuara','wrapSearchJuara',renderKejuaraan)">×</button>
-      </div>
-      <div id="leaderboardList"></div>
-    </div>
-  </section>
+  <section id="sec-materi" class="section"><h2 class="section-title">Materi & Kitab Pengajian</h2><div id="materiListContainer"></div></section>
+  <section id="sec-riwayat" class="section"><h2 class="section-title">Riwayat Kehadiran Saya</h2><div id="riwayatLogsContainer"></div></section>
 </main>
 
 <nav class="bottom-nav">
-  <button type="button" class="nav-item active" onclick="switchTab('absensi', this)">
-    <svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-    <span>Absensi</span>
-  </button>
-  <button type="button" class="nav-item" onclick="switchTab('materi', this)">
-    <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-    <span>Materi</span>
-  </button>
-  <button type="button" class="nav-item" onclick="switchTab('kuis', this)">
-    <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-    <span>Kuis</span>
-  </button>
-  <button type="button" class="nav-item" onclick="switchTab('pustaka', this)">
-    <svg class="icon" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-    <span>Pustaka</span>
-  </button>
-  <button type="button" class="nav-item" onclick="switchTab('kejuaraan', this)">
-    <svg class="icon" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55-.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
-    <span>Juara</span>
-  </button>
+  <button type="button" class="nav-item active" data-tab="beranda"><svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Beranda</span></button>
+  <button type="button" class="nav-item" data-tab="kuis"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg><span>Kuis & Peringkat</span></button>
+  <button type="button" class="nav-item" data-tab="materi"><svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>Materi</span></button>
+  <button type="button" class="nav-item" data-tab="riwayat"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Absensi</span></button>
 </nav>
-
-<div id="modalConfirmQuiz" class="modal-backdrop">
-  <div class="modal-box">
-    <h3 style="font-size:16px;margin-bottom:6px;">Selesaikan Kuis Sekarang?</h3>
-    <p id="confirmQuizMsg" style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6;"></p>
-    <div style="display:flex;gap:8px;">
-      <button type="button" class="btn btn-primary" style="flex:1;" onclick="confirmAndSubmitQuiz()">Ya, Selesai & Data Nilai</button>
-      <button type="button" class="btn" onclick="closeConfirmFinishQuiz()">Lanjut Kerjakan</button>
-    </div>
-  </div>
-</div>
-
-<div id="modalDetailPeserta" class="modal-backdrop">
-  <div class="modal-box">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:12px;">
-      <div>
-        <span class="badge" id="detPesertaKelas" style="margin-bottom:4px;">Kelas</span>
-        <h3 id="detPesertaNama" style="font-size:18px;font-weight:800;">Nama Santri</h3>
-      </div>
-      <button type="button" class="btn btn-sm" onclick="closeModalPeserta()">Tutup</button>
-    </div>
-    <div class="neu-inset" style="padding:12px;margin-bottom:12px;" id="detPesertaSkorBox"></div>
-    <div class="grid-4" style="margin-bottom:14px;" id="detPesertaStats"></div>
-    <button type="button" class="btn btn-primary btn-block" onclick="closeModalPeserta()">Tutup Detail</button>
-  </div>
-</div>
-
-<div id="modalReadMateri" class="modal-backdrop">
-  <div class="modal-box">
-    <span class="badge" id="readBadge" style="margin-bottom:8px;"></span>
-    <h3 id="readTitle" style="font-size:17px;margin-bottom:12px;"></h3>
-    <div id="readBody" style="font-size:14px;color:var(--text-primary);white-space:pre-line;line-height:1.7;margin-bottom:16px;"></div>
-    <button type="button" class="btn btn-primary btn-block" onclick="closeModalRead()">Tutup Bacaan</button>
-  </div>
-</div>
-
-<div id="modalChangePin" class="modal-backdrop">
-  <div class="modal-box">
-    <h3 style="font-size:16px;margin-bottom:4px;">Ubah PIN Sandi Akun</h3>
-    <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;" id="pinModalUserLabel">Akun Santri</p>
-    <div class="form-group">
-      <label>PIN Lama</label>
-      <input type="password" id="oldSantriPin" inputmode="numeric" maxlength="6" placeholder="Default: 1234">
-    </div>
-    <div class="form-group">
-      <label>PIN Baru (4-6 Digit)</label>
-      <input type="password" id="newSantriPinInput" inputmode="numeric" maxlength="6" placeholder="Masukkan PIN baru">
-    </div>
-    <div style="display:flex;gap:8px;">
-      <button type="button" class="btn btn-primary" style="flex:1;" onclick="saveNewSantriPin()">Simpan PIN Baru</button>
-      <button type="button" class="btn" onclick="closeChangePinModal()">Batal</button>
-    </div>
-  </div>
-</div>
 
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
@@ -866,1428 +221,560 @@ const firebaseConfig = {
   measurementId: "G-KYHHP0XW7Z"
 };
 
+const MAX_SOAL = 10;
+const KEYS = { state: "balai_pengajian_state", aktif: "bustanul_santri_aktif_id", pass: "bustanul_santri_passwords", pending: "bustanul_pending_koin" };
+const $ = id => document.getElementById(id);
+const esc = v => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const num = v => Number(v) || 0;
+const readJSON = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } };
+const writeJSON = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+
+const namaDefault = [["s1","Aswir"],["s2","Ilham"],["s3","Fikri"],["s4","Radian"],["s5","Ardian"],["s6","Arsya"],["s7","Muhammad"],["s8","Afdal"],["s9","Riski"],["s10","Rifki"],["s11","Agi"],["s12","Ilyas"],["s13","Lia"],["s14","Nabila"],["s15","Dila"],["s16","Indah"],["s17","Viani"],["s18","Pida"],["s19","Fatin"],["s20","Azkia"],["s21","Amira"],["s22","Nur"],["s23","Syakira"],["s24","Amelia"],["s25","Eliza"],["s26","Nia"],["s27","Salsa"],["s28","Aurel"],["s29","Asyura"],["s30","Bela"],["s31","Syifa"],["s32","Laudia"],["s33","Pia"],["sgj7h51","Intan"],["skobtzy","Adiba"],["spq6hoz","Lisa"],["s3n7ier","Nufus"],["s8myfxi","Ula"],["s8b0lzr","Liza"],["sxqzifh","Putri"],["sctopcm","Pira"]];
 const fallbackState = {
-  kelasList: [
-    "Umum",
-    "Matan Taqrib",
-    "Matan Al Jurumiah",
-    "Al Quran"
-  ],
-  santri: [
-    { id: "s1", nama: "Aswir", username: "aswir", pin: "1234", kelas: "Umum" },
-    { id: "s2", nama: "Ilham", username: "ilham", pin: "1234", kelas: "Umum" },
-    { id: "s3", nama: "Fikri", username: "fikri", pin: "1234", kelas: "Umum" },
-    { id: "s4", nama: "Radian", username: "radian", pin: "1234", kelas: "Umum" },
-    { id: "s5", nama: "Ardian", username: "ardian", pin: "1234", kelas: "Umum" },
-    { id: "s6", nama: "Arsya", username: "arsya", pin: "1234", kelas: "Umum" },
-    { id: "s7", nama: "Muhammad", username: "muhammad", pin: "1234", kelas: "Umum" },
-    { id: "s8", nama: "Afdal", username: "afdal", pin: "1234", kelas: "Umum" },
-    { id: "s9", nama: "Riski", username: "riski", pin: "1234", kelas: "Umum" },
-    { id: "s10", nama: "Rifki", username: "rifki", pin: "1234", kelas: "Umum" },
-    { id: "s11", nama: "Agi", username: "agi", pin: "1234", kelas: "Umum" },
-    { id: "s12", nama: "Ilyas", username: "ilyas", pin: "1234", kelas: "Umum" },
-    { id: "s13", nama: "Lia", username: "lia", pin: "1234", kelas: "Umum" },
-    { id: "s14", nama: "Nabila", username: "nabila", pin: "1234", kelas: "Umum" },
-    { id: "s15", nama: "Dila", username: "dila", pin: "1234", kelas: "Umum" },
-    { id: "s16", nama: "Indah", username: "indah", pin: "1234", kelas: "Umum" },
-    { id: "s17", nama: "Viani", username: "viani", pin: "1234", kelas: "Umum" },
-    { id: "s18", nama: "Pida", username: "pida", pin: "1234", kelas: "Umum" },
-    { id: "s19", nama: "Fatin", username: "fatin", pin: "1234", kelas: "Umum" },
-    { id: "s20", nama: "Azkia", username: "azkia", pin: "1234", kelas: "Umum" },
-    { id: "s21", nama: "Amira", username: "amira", pin: "1234", kelas: "Umum" },
-    { id: "s22", nama: "Nur", username: "nur", pin: "1234", kelas: "Umum" },
-    { id: "s23", nama: "Syakira", username: "syakira", pin: "1234", kelas: "Umum" },
-    { id: "s24", nama: "Amelia", username: "amelia", pin: "1234", kelas: "Umum" },
-    { id: "s25", nama: "Eliza", username: "eliza", pin: "1234", kelas: "Umum" },
-    { id: "s26", nama: "Nia", username: "nia", pin: "1234", kelas: "Umum" },
-    { id: "s27", nama: "Salsa", username: "salsa", pin: "1234", kelas: "Umum" },
-    { id: "s28", nama: "Aurel", username: "aurel", pin: "1234", kelas: "Umum" },
-    { id: "s29", nama: "Asyura", username: "asyura", pin: "1234", kelas: "Umum" },
-    { id: "s30", nama: "Bela", username: "bela", pin: "1234", kelas: "Umum" },
-    { id: "s31", nama: "Syifa", username: "syifa", pin: "1234", kelas: "Umum" },
-    { id: "s32", nama: "Laudia", username: "laudia", pin: "1234", kelas: "Umum" },
-    { id: "s33", nama: "Pia", username: "pia", pin: "1234", kelas: "Umum" },
-    { id: "sgj7h51", nama: "Intan", username: "intan", pin: "1234", kelas: "Umum" },
-    { id: "skobtzy", nama: "Adiba", username: "adiba", pin: "1234", kelas: "Umum" },
-    { id: "spq6hoz", nama: "Lisa", username: "lisa", pin: "1234", kelas: "Umum" },
-    { id: "s3n7ier", nama: "Nufus", username: "nufus", pin: "1234", kelas: "Umum" },
-    { id: "s8myfxi", nama: "Ula", username: "ula", pin: "1234", kelas: "Umum" },
-    { id: "s8b0lzr", nama: "Liza", username: "liza", pin: "1234", kelas: "Umum" },
-    { id: "sxqzifh", nama: "Putri", username: "putri", pin: "1234", kelas: "Umum" },
-    { id: "sctopcm", nama: "Pira", username: "pira", pin: "1234", kelas: "Umum" }
-  ],
+  kelasList: ["Umum", "Matan Taqrib", "Matan Al Jurumiah", "Al Quran"],
+  santri: namaDefault.map(([id, nama]) => ({ id, nama, username: nama.toLowerCase(), kelas: "Umum" })),
   absensi: {},
   materi: [],
-  kuisConfig: { judul: "Musabaqah Fahmil Kutub BUSTANUL HADI", penaltiSalah: 5 },
-  kuisSoal: [],
-  skor: [],
-  pustaka: [
-    {
-      id: "l1",
-      judul: "Al-Maktabah Al-Shamela",
-      jenis: "Kitab Digital",
-      url: "https://shamela.ws",
-      deskripsi: "Perpustakaan digital kitab-kitab turats Islam lengkap"
-    }
-  ]
+  kuisSoal: [
+    { id: "q_default_1", kategori: "Umum", pertanyaan: "Berapa jumlah rukun Islam?", opsi: ["3 Perkara", "4 Perkara", "5 Perkara", "6 Perkara"], jawaban: 2, poin: 10 },
+    { id: "q_default_2", kategori: "Umum", pertanyaan: "Berapa jumlah rukun Iman?", opsi: ["5 Perkara", "6 Perkara", "7 Perkara", "8 Perkara"], jawaban: 1, poin: 10 }
+  ],
+  skor: []
 };
 
-function ensureKelasList(stateObj) {
-  let list = Array.isArray(stateObj.kelasList) ? [...stateObj.kelasList] : [];
-  if (!list.includes("Umum")) list.unshift("Umum");
-  stateObj.kelasList = list;
-  stateObj.kuisConfig = stateObj.kuisConfig || { judul: "Musabaqah Fahmil Kutub BUSTANUL HADI", penaltiSalah: 5 };
-  if (stateObj.kuisConfig.penaltiSalah === undefined) stateObj.kuisConfig.penaltiSalah = 5;
-  return stateObj;
-}
+let appState = readJSON(KEYS.state, null) || fallbackState;
+let currentSantriId = localStorage.getItem(KEYS.aktif) || "";
+let docRef = null, unsubSnap = null, isSyncingPending = false, lastFirebaseError = "", toastTimer = null;
 
-let appState = ensureKelasList(JSON.parse(localStorage.getItem("balai_pengajian_state")) || fallbackState);
-let savedProfile = JSON.parse(localStorage.getItem("santri_saved_profile") || "null");
-let loggedSantriId = localStorage.getItem("santri_session_id") || (savedProfile ? savedProfile.id : "");
-
-// Antrean Sinkronisasi Offline -> Online
-let pendingQueue = JSON.parse(localStorage.getItem("santri_pending_sync_queue") || '{"scores":{},"santriUpdates":{}}');
-if (!pendingQueue || typeof pendingQueue !== "object") pendingQueue = { scores: {}, santriUpdates: {} };
-if (!pendingQueue.scores) pendingQueue.scores = {};
-if (!pendingQueue.santriUpdates) pendingQueue.santriUpdates = {};
-
-function savePendingQueue() {
-  localStorage.setItem("santri_pending_sync_queue", JSON.stringify(pendingQueue));
-  refreshSyncBadge();
-}
-
-function hasPendingSync() {
-  return Object.keys(pendingQueue.scores).length > 0 || Object.keys(pendingQueue.santriUpdates).length > 0;
-}
-
-function applyPendingQueueToLocalState(stateObj) {
-  if (!Array.isArray(stateObj.santri)) stateObj.santri = [];
-  if (!Array.isArray(stateObj.skor)) stateObj.skor = [];
-
-  Object.values(pendingQueue.santriUpdates).forEach(u => {
-    const idx = stateObj.santri.findIndex(x => x.id === u.id);
-    if (idx > -1) stateObj.santri[idx] = { ...stateObj.santri[idx], ...u };
-    else stateObj.santri.push(u);
-  });
-
-  Object.values(pendingQueue.scores).forEach(sc => {
-    const idx = stateObj.skor.findIndex(x => x.santriId === sc.santriId);
-    if (idx > -1) stateObj.skor[idx] = sc;
-    else stateObj.skor.push(sc);
-  });
-
-  return stateObj;
-}
-
-applyPendingQueueToLocalState(appState);
-
-if (savedProfile && !appState.santri.some(s => s.id === savedProfile.id)) {
-  appState.santri.push(savedProfile);
-  localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
-}
-
-let docRef = null;
-let firebaseReady = false;
-let isSyncingNow = false;
-let selectedKategori = "Semua";
-let santriPeriodMode = "semua";
-let santriStatusFilter = "ALL";
-
-let activeQuizQuestions = [];
-let quizIndex = 0;
-let quizAnswers = {};
-
-function getPenaltyPoints() {
-  const val = Number(appState.kuisConfig?.penaltiSalah);
-  return !isNaN(val) && val >= 0 ? val : 5;
-}
-
-function onSearchInput(inputId, wrapId, renderFn) {
-  const inp = document.getElementById(inputId);
-  const wrap = document.getElementById(wrapId);
-  if (wrap && inp) {
-    if (inp.value.length > 0) wrap.classList.add("has-text");
-    else wrap.classList.remove("has-text");
-  }
-  renderFn();
-}
-
-function clearSearch(inputId, wrapId, renderFn) {
-  const inp = document.getElementById(inputId);
-  const wrap = document.getElementById(wrapId);
-  if (inp) inp.value = "";
-  if (wrap) wrap.classList.remove("has-text");
-  renderFn();
-}
-
-function getQuery(inputId) {
-  const el = document.getElementById(inputId);
-  return el ? el.value.trim().toLowerCase() : "";
-}
+// State kuis
+let isQuizPlaying = false, isBusy = false, answerChecked = false;
+let selectedQuizCategory = "ALL", quizCats = ["ALL"];
+let activeQuestions = [], currentQIndex = 0, selectedOptionIdx = null;
+let sessionBenar = 0, sessionSalah = 0, sessionKoin = 0;
 
 function showToast(msg) {
-  const t = document.getElementById("toast");
-  if (!t) return;
+  const t = $("toast");
   t.textContent = msg;
   t.style.display = "block";
-  setTimeout(() => { t.style.display = "none"; }, 2600);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.style.display = "none"; }, 2400);
 }
 
-function refreshSyncBadge() {
-  const dot = document.getElementById("syncDot");
-  const lbl = document.getElementById("syncLabel");
-  if (!dot || !lbl) return;
-
-  const isOnline = navigator.onLine && firebaseReady;
-  const pendingCount = Object.keys(pendingQueue.scores).length + Object.keys(pendingQueue.santriUpdates).length;
-
-  if (isSyncingNow) {
-    dot.classList.add("online");
-    lbl.textContent = "Sinkron...";
-  } else if (isOnline && pendingCount === 0) {
-    dot.classList.add("online");
-    lbl.textContent = "Online";
-  } else if (pendingCount > 0) {
-    dot.classList.remove("online");
-    lbl.textContent = `Antre (${pendingCount})`;
-  } else {
-    dot.classList.remove("online");
-    lbl.textContent = "Lokal";
-  }
+function updateSyncUI(online, label) {
+  $("syncDot").classList.toggle("online", !!online);
+  $("syncLabel").textContent = label || (online ? "Online" : "Lokal");
 }
 
-async function flushPendingSync(silent) {
-  if (!hasPendingSync()) {
-    refreshSyncBadge();
-    return;
-  }
-  if (!navigator.onLine) {
-    refreshSyncBadge();
-    if (!silent) showToast("Sedang offline. Nilai tersimpan & otomatis terkirim saat online.");
-    return;
-  }
-  if (!docRef) {
-    initFirebase();
-    if (!docRef) return;
-  }
-  if (isSyncingNow) return;
+function toggleInputPass(id, btn) {
+  const inp = $(id), show = inp.type === "password";
+  inp.type = show ? "text" : "password";
+  btn.textContent = show ? "Sembunyi" : "Lihat";
+}
 
-  isSyncingNow = true;
-  refreshSyncBadge();
+// ===================== SANDI =====================
+const getSantriAktif = () => (appState.santri || []).find(s => s.id === currentSantriId) || null;
+
+function getSandiSantri(s) {
+  if (!s) return "1234";
+  const local = readJSON(KEYS.pass, {});
+  if (local[s.id]) return String(local[s.id]);
+  if (s.password && String(s.password).trim()) return String(s.password).trim();
+  return "1234";
+}
+
+function bukaModalSandi() {
+  ["oldPassInput", "newPassInput", "confirmPassInput"].forEach(i => { $(i).value = ""; $(i).type = "password"; });
+  document.querySelectorAll("#modalUbahSandi .pass-toggle").forEach(b => b.textContent = "Lihat");
+  $("modalUbahSandi").classList.add("open");
+}
+const tutupModalSandi = () => $("modalUbahSandi").classList.remove("open");
+
+async function simpanSandiBaru() {
+  const s = getSantriAktif();
+  if (!s) return;
+  const lama = $("oldPassInput").value.trim(), baru = $("newPassInput").value.trim(), konf = $("confirmPassInput").value.trim();
+  if (lama !== getSandiSantri(s)) return showToast("Sandi lama tidak sesuai!");
+  if (baru.length < 4) return showToast("Sandi baru minimal 4 karakter!");
+  if (baru === lama) return showToast("Sandi baru harus berbeda dari sandi lama!");
+  if (baru !== konf) return showToast("Konfirmasi sandi baru tidak cocok!");
+
+  const local = readJSON(KEYS.pass, {});
+  local[s.id] = baru;
+  writeJSON(KEYS.pass, local);
+  const idx = (appState.santri || []).findIndex(x => x.id === s.id);
+  if (idx >= 0) { appState.santri[idx].password = baru; writeJSON(KEYS.state, appState); }
+
+  let msg = "Sandi berhasil diubah (tersimpan lokal)!";
+  if (navigator.onLine && docRef) {
+    try {
+      await firebase.firestore().runTransaction(async tx => {
+        const snap = await tx.get(docRef);
+        if (!snap.exists) return;
+        const list = Array.isArray(snap.data().santri) ? [...snap.data().santri] : [];
+        const i = list.findIndex(x => x.id === s.id);
+        if (i >= 0) { list[i] = { ...list[i], password: baru }; tx.set(docRef, { santri: list }, { merge: true }); }
+      });
+      msg = "Sandi berhasil diubah & disinkronkan!";
+    } catch (e) { msg = "Sandi tersimpan di HP (belum tersinkron)"; }
+  }
+  tutupModalSandi();
+  showToast(msg);
+}
+
+// ===================== KOIN =====================
+const getPendingMap = () => readJSON(KEYS.pending, {});
+
+function getKoinSantri(id) {
+  const c = (appState.skor || []).find(x => x.santriId === id);
+  const p = getPendingMap()[id];
+  return (c ? num(c.poin) : 0) + (p ? num(p.poin) : 0);
+}
+
+function tambahPending(id, nama, koin, benar, salah, total, waktu) {
+  const map = getPendingMap();
+  const p = map[id] || { poin: 0, benar: 0, salah: 0, total: 0 };
+  map[id] = { nama, poin: num(p.poin) + koin, benar: num(p.benar) + benar, salah: num(p.salah) + salah, total: num(p.total) + total, waktu };
+  writeJSON(KEYS.pending, map);
+}
+
+async function simpanDanAkumulasiKoin(id, nama, koin, benar, salah, total) {
+  const waktu = new Date().toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  const sebelum = getKoinSantri(id);
+  koin = num(koin);
+  if (!koin && !benar && !salah) return { koinSebelumnya: sebelum, koinBaru: 0, totalKoin: sebelum, mode: navigator.onLine && docRef ? "online" : "offline" };
+
+  const offline = () => { tambahPending(id, nama, koin, benar, salah, total, waktu); return { koinSebelumnya: sebelum, koinBaru: koin, totalKoin: sebelum + koin, mode: "offline" }; };
+  if (!navigator.onLine || !docRef) return offline();
 
   try {
-    const snap = await docRef.get();
-    const latest = snap.exists ? snap.data() : appState;
-    const latestSantri = Array.isArray(latest.santri) ? [...latest.santri] : [];
-    const latestScores = Array.isArray(latest.skor) ? [...latest.skor] : [];
-
-    Object.values(pendingQueue.santriUpdates).forEach(u => {
-      const idx = latestSantri.findIndex(x => x.id === u.id);
-      if (idx > -1) latestSantri[idx] = { ...latestSantri[idx], ...u };
-      else latestSantri.push(u);
+    let finalTotal = sebelum + koin;
+    // Ambil pending sekali di luar transaksi agar aman saat transaksi diulang
+    const pend = getPendingMap()[id] || { poin: 0, benar: 0, salah: 0, total: 0 };
+    await firebase.firestore().runTransaction(async tx => {
+      const snap = await tx.get(docRef);
+      const skor = Array.isArray((snap.exists ? snap.data() : {}).skor) ? [...snap.data().skor] : [];
+      const i = skor.findIndex(x => x.santriId === id);
+      const old = i >= 0 ? skor[i] : {};
+      finalTotal = num(old.poin) + koin + num(pend.poin);
+      const rec = {
+        santriId: id, nama, poin: finalTotal, koinTerakhir: koin,
+        benar: num(old.benar) + benar + num(pend.benar),
+        salah: num(old.salah) + salah + num(pend.salah),
+        total: num(old.total) + total + num(pend.total),
+        waktu
+      };
+      if (i >= 0) skor[i] = rec; else skor.push(rec);
+      tx.set(docRef, { skor }, { merge: true });
     });
+    const map = getPendingMap();
+    if (map[id]) { delete map[id]; writeJSON(KEYS.pending, map); }
+    return { koinSebelumnya: sebelum, koinBaru: koin, totalKoin: finalTotal, mode: "online" };
+  } catch (e) { return offline(); }
+}
 
-    Object.values(pendingQueue.scores).forEach(sc => {
-      const idx = latestScores.findIndex(x => x.santriId === sc.santriId);
-      if (idx > -1) latestScores[idx] = sc;
-      else latestScores.push(sc);
+async function sinkronkanPendingKoin() {
+  if (!navigator.onLine || !docRef || isSyncingPending) return;
+  const snapshotMap = getPendingMap();
+  const ids = Object.keys(snapshotMap).filter(id => num((snapshotMap[id] || {}).poin) > 0 || num((snapshotMap[id] || {}).total) > 0);
+  if (!ids.length) return;
+  isSyncingPending = true;
+  try {
+    await firebase.firestore().runTransaction(async tx => {
+      const snap = await tx.get(docRef);
+      const skor = Array.isArray((snap.exists ? snap.data() : {}).skor) ? [...snap.data().skor] : [];
+      ids.forEach(id => {
+        const p = snapshotMap[id], i = skor.findIndex(x => x.santriId === id);
+        const so = (appState.santri || []).find(s => s.id === id);
+        const old = i >= 0 ? skor[i] : {};
+        const rec = {
+          ...old, santriId: id, nama: so ? so.nama : (p.nama || old.nama || id),
+          poin: num(old.poin) + num(p.poin), benar: num(old.benar) + num(p.benar),
+          salah: num(old.salah) + num(p.salah), total: num(old.total) + num(p.total),
+          waktu: p.waktu || old.waktu || new Date().toLocaleString("id-ID")
+        };
+        if (i >= 0) skor[i] = rec; else skor.push(rec);
+      });
+      tx.set(docRef, { skor }, { merge: true });
     });
-
-    await docRef.set({
-      ...latest,
-      santri: latestSantri,
-      skor: latestScores
-    });
-
-    pendingQueue = { scores: {}, santriUpdates: {} };
-    savePendingQueue();
-    firebaseReady = true;
-    if (!silent) showToast("Sinkronisasi ke Guru berhasil");
+    // Hapus hanya yang sudah terkirim (jangan hapus pending baru yang masuk saat sinkron)
+    const now = getPendingMap();
+    ids.forEach(id => { if (now[id] && num(now[id].poin) === num(snapshotMap[id].poin)) delete now[id]; });
+    writeJSON(KEYS.pending, now);
+    showToast("Koin offline berhasil disinkronkan!");
+    renderAll();
   } catch (e) {
-    firebaseReady = false;
-    if (!silent) showToast("Menunggu jaringan stabil untuk kirim data...");
-  } finally {
-    isSyncingNow = false;
-    refreshSyncBadge();
-  }
+  } finally { isSyncingPending = false; }
 }
 
-function manualSyncNow() {
-  if (!navigator.onLine) {
-    return showToast(hasPendingSync()
-      ? "HP sedang offline. Data aman di HP & otomatis terkirim saat internet aktif."
-      : "Mode Offline aktif. Soal & materi tetap bisa dibuka.");
-  }
-  if (!firebaseReady || !docRef) {
-    initFirebase();
-  }
-  if (hasPendingSync()) {
-    flushPendingSync(false);
-  } else {
-    showToast("Data sudah sinkron dengan server Guru");
-  }
-}
-
-// Dipanggil otomatis oleh Android BroadcastReceiver atau event online browser
-window.onAndroidNetworkChanged = function (isOnline) {
-  if (isOnline) {
-    if (!firebaseReady || !docRef) {
-      initFirebase();
+// ===================== FIREBASE =====================
+function initFirebase() {
+  try {
+    if (typeof firebase === "undefined") { lastFirebaseError = "SDK Firebase gagal dimuat (cek izin INTERNET)"; return updateSyncUI(false, "Lokal"); }
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+      try { firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true }); } catch (e) {}
     }
-    flushPendingSync(false);
-  } else {
-    firebaseReady = false;
-    refreshSyncBadge();
-  }
-};
+    docRef = firebase.firestore().collection("balai_pengajian").doc("data_utama");
+    updateSyncUI(false, "Menghubungkan...");
+    if (unsubSnap) unsubSnap();
+    unsubSnap = docRef.onSnapshot(snap => {
+      lastFirebaseError = "";
+      updateSyncUI(true, "Online");
+      if (snap.exists) {
+        const inc = snap.data();
+        appState = { ...fallbackState, ...inc, kuisSoal: Array.isArray(inc.kuisSoal) && inc.kuisSoal.length ? inc.kuisSoal : fallbackState.kuisSoal };
+        writeJSON(KEYS.state, appState);
+        sinkronkanPendingKoin();
+        cekNamaSantriLive();
+        // Jangan merombak layar kuis saat santri sedang bermain
+        isQuizPlaying ? renderBeranda() : renderAll();
+        if (currentSantriId && !getSantriAktif()) keluarAkun();
+      }
+    }, err => { lastFirebaseError = (err && err.message) || "Gagal terhubung ke Firestore"; updateSyncUI(false, "Lokal"); });
+  } catch (e) { lastFirebaseError = e.message || "Error koneksi Firebase"; updateSyncUI(false, "Lokal"); }
+}
 
+function refreshManual() {
+  if (!navigator.onLine) return showToast("Mode Offline • Koin disimpan lokal di HP");
+  showToast(lastFirebaseError ? "Info: " + lastFirebaseError : "Menyinkronkan koin & data...");
+  initFirebase();
+  sinkronkanPendingKoin();
+}
+
+window.onAndroidNetworkChanged = ok => { if (ok) { initFirebase(); sinkronkanPendingKoin(); } else updateSyncUI(false, "Lokal"); };
 window.addEventListener("online", () => window.onAndroidNetworkChanged(true));
 window.addEventListener("offline", () => window.onAndroidNetworkChanged(false));
 
-function populateRegKelasOptions() {
-  const sel = document.getElementById("regKelas");
-  if (!sel) return;
-  const currentVal = sel.value;
-  const list = appState.kelasList || ["Umum"];
-  sel.innerHTML = list.map(k =>
-    `<option value="${k}">${k === "Umum" ? "Umum (Mencakup Semua Kelas & Kitab)" : k}</option>`
-  ).join("");
-  if (currentVal && list.includes(currentVal)) {
-    sel.value = currentVal;
-  }
+// ===================== LOGIN =====================
+function cariSantri(teks) {
+  const q = String(teks || "").trim().toLowerCase();
+  if (!q) return null;
+  return (appState.santri || []).find(s => (s.nama || "").trim().toLowerCase() === q || (s.username || "").trim().toLowerCase() === q) || null;
 }
 
-function initFirebase() {
-  try {
-    if (typeof firebase === "undefined") {
-      firebaseReady = false;
-      refreshSyncBadge();
-      return;
-    }
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-    const db = firebase.firestore();
-    docRef = db.collection("balai_pengajian").doc("data_utama");
-    docRef.onSnapshot((snapshot) => {
-      firebaseReady = true;
-      if (snapshot.exists) {
-        const cloudData = snapshot.data();
-        const mergedSantri = Array.isArray(cloudData.santri) ? [...cloudData.santri] : [];
-        if (savedProfile && !mergedSantri.some(s => s.id === savedProfile.id)) {
-          mergedSantri.push(savedProfile);
-        }
-        const mergedState = ensureKelasList({ ...fallbackState, ...cloudData, santri: mergedSantri });
-        appState = applyPendingQueueToLocalState(mergedState);
-        localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
-
-        const updatedMe = appState.santri.find(x => x.id === loggedSantriId);
-        if (updatedMe) saveSantriSession(updatedMe);
-
-        populateRegKelasOptions();
-        verifyActiveSession();
-        renderAll();
-      }
-      if (hasPendingSync()) {
-        flushPendingSync(true);
-      } else {
-        refreshSyncBadge();
-      }
-    }, () => {
-      firebaseReady = false;
-      refreshSyncBadge();
-    });
-  } catch (e) {
-    firebaseReady = false;
-    refreshSyncBadge();
-  }
+function cekNamaSantriLive() {
+  const box = $("loginKoinPreview"), v = $("loginNamaInput").value;
+  const s = cariSantri(v);
+  const L = t => `<span style="font-size:12px;color:var(--tx2)">${t}</span>`;
+  if (!v.trim()) box.innerHTML = L("Status Akun") + `<strong style="font-size:13px">Ketik nama Anda di atas</strong>`;
+  else if (s) box.innerHTML = L(`${esc(s.nama)} (${esc(s.kelas || "Umum")})`) + `<strong style="font-size:14px">${getKoinSantri(s.id)} Koin</strong>`;
+  else box.innerHTML = L("Nama belum cocok") + `<strong style="font-size:12px">Periksa ejaan nama</strong>`;
 }
 
-function saveSantriSession(santriObj) {
-  loggedSantriId = santriObj.id;
-  savedProfile = santriObj;
-  localStorage.setItem("santri_session_id", santriObj.id);
-  localStorage.setItem("santri_saved_profile", JSON.stringify(santriObj));
-}
+function masukSantri() {
+  const nama = $("loginNamaInput").value.trim();
+  if (!nama) return showToast("Ketik nama santri terlebih dahulu!");
+  const s = cariSantri(nama);
+  if (!s) return showToast("Nama santri tidak ditemukan!");
+  const pass = $("loginPassword").value.trim();
+  if (!pass) return showToast("Masukkan sandi terlebih dahulu!");
+  if (pass !== getSandiSantri(s)) return showToast("Sandi salah! Coba lagi.");
 
-function openChangePinModal() {
-  const s = getCurrentSantri();
-  if (!s) return;
-  document.getElementById("pinModalUserLabel").textContent = `${s.nama} (@${s.username || s.id})`;
-  document.getElementById("oldSantriPin").value = "";
-  document.getElementById("newSantriPinInput").value = "";
-  document.getElementById("modalChangePin").classList.add("open");
-}
-
-function closeChangePinModal() {
-  document.getElementById("modalChangePin").classList.remove("open");
-}
-
-async function saveNewSantriPin() {
-  const s = getCurrentSantri();
-  if (!s) return;
-  const oldPin = document.getElementById("oldSantriPin").value.trim();
-  const newPin = document.getElementById("newSantriPinInput").value.trim();
-
-  if (oldPin !== String(s.pin || "1234")) {
-    return showToast("PIN lama tidak sesuai");
-  }
-  if (newPin.length < 4) {
-    return showToast("PIN baru minimal 4 digit");
-  }
-
-  const updated = { ...s, pin: newPin };
-  const idx = appState.santri.findIndex(x => x.id === s.id);
-  if (idx > -1) appState.santri[idx] = updated;
-  else appState.santri.push(updated);
-
-  localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
-  saveSantriSession(updated);
-
-  pendingQueue.santriUpdates[updated.id] = updated;
-  savePendingQueue();
-
-  closeChangePinModal();
-  if (navigator.onLine) {
-    await flushPendingSync(true);
-    showToast("PIN akun diperbarui & tersinkron");
-  } else {
-    showToast("PIN disimpan offline & otomatis dikirim saat online");
-  }
-}
-
-function setAuthMode(mode) {
-  document.getElementById("authError").style.display = "none";
-  if (mode === "login") {
-    document.getElementById("btnModeLogin").classList.add("active");
-    document.getElementById("btnModeRegister").classList.remove("active");
-    document.getElementById("formLogin").style.display = "block";
-    document.getElementById("formRegister").style.display = "none";
-  } else {
-    populateRegKelasOptions();
-    document.getElementById("btnModeRegister").classList.add("active");
-    document.getElementById("btnModeLogin").classList.remove("active");
-    document.getElementById("formRegister").style.display = "block";
-    document.getElementById("formLogin").style.display = "none";
-  }
-}
-
-function showAuthError(msg) {
-  const el = document.getElementById("authError");
-  if (!el) return;
-  el.textContent = msg;
-  el.style.display = "block";
-}
-
-function handleSantriLogin() {
-  const uname = document.getElementById("loginUsername").value.trim().toLowerCase();
-  const pin = document.getElementById("loginPin").value.trim();
-  if (!uname || !pin) return showAuthError("Masukkan username dan PIN Anda.");
-
-  const found = appState.santri.find(s => (s.username || s.id).toLowerCase() === uname && String(s.pin || "1234") === pin);
-  if (!found) {
-    return showAuthError("Username atau PIN tidak cocok. Gunakan nama depan huruf kecil & PIN 1234.");
-  }
-
-  saveSantriSession(found);
-  document.getElementById("loginUsername").value = "";
-  document.getElementById("loginPin").value = "";
-  document.getElementById("authError").style.display = "none";
-  verifyActiveSession();
+  currentSantriId = s.id;
+  localStorage.setItem(KEYS.aktif, s.id);
+  $("loginPassword").value = "";
+  $("loginScreen").style.display = "none";
+  gotoTab("beranda");
   renderAll();
-  showToast("Akun tersimpan di HP • " + found.nama);
+  showToast("Selamat datang, " + s.nama + "!");
 }
 
-async function handleSantriRegister() {
-  const nama = document.getElementById("regNama").value.trim();
-  const username = document.getElementById("regUsername").value.trim().toLowerCase().replace(/\s+/g, "");
-  const pin = document.getElementById("regPin").value.trim() || "1234";
-  const kelas = document.getElementById("regKelas").value || "Umum";
-
-  if (!nama || !username || pin.length < 4) {
-    return showAuthError("Lengkapi nama, username, dan PIN minimal 4 digit.");
-  }
-  if (appState.santri.some(s => (s.username || "").toLowerCase() === username)) {
-    return showAuthError("Username sudah dipakai. Gunakan username lain.");
-  }
-
-  const newSantri = { id: "s" + Date.now(), nama, username, pin, kelas };
-  appState.santri.push(newSantri);
-  localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
-  saveSantriSession(newSantri);
-
-  pendingQueue.santriUpdates[newSantri.id] = newSantri;
-  savePendingQueue();
-
-  document.getElementById("regNama").value = "";
-  document.getElementById("regUsername").value = "";
-  document.getElementById("regPin").value = "1234";
-  verifyActiveSession();
-  renderAll();
-
-  if (navigator.onLine) {
-    await flushPendingSync(true);
-    showToast("Akun dibuat & tersinkron ke Guru");
-  } else {
-    showToast("Akun tersimpan di HP & otomatis dikirim saat online");
-  }
+async function keluarAkun() {
+  if (isQuizPlaying) { await keluarDanSimpanKuis(); kembaliKeLobbyKuis(); }
+  currentSantriId = "";
+  localStorage.removeItem(KEYS.aktif);
+  $("loginNamaInput").value = "";
+  $("loginPassword").value = "";
+  cekNamaSantriLive();
+  $("loginScreen").style.display = "flex";
 }
 
-function logoutSantri() {
-  loggedSantriId = "";
-  savedProfile = null;
-  localStorage.removeItem("santri_session_id");
-  localStorage.removeItem("santri_saved_profile");
-  populateRegKelasOptions();
-  document.getElementById("authScreen").classList.remove("hidden");
-}
-
-function getCurrentSantri() {
-  if (!loggedSantriId && !savedProfile) return null;
-  return appState.santri.find(s => s.id === loggedSantriId) || savedProfile || null;
-}
-
-function verifyActiveSession() {
-  const current = getCurrentSantri();
-  const overlay = document.getElementById("authScreen");
-  if (!current) {
-    populateRegKelasOptions();
-    if (overlay) overlay.classList.remove("hidden");
-    return;
-  }
-  if (overlay) overlay.classList.add("hidden");
-  const nameEl = document.getElementById("headerSantriName");
-  const subEl = document.getElementById("headerSantriSub");
-  const partEl = document.getElementById("quizActiveParticipant");
-  if (nameEl) nameEl.textContent = current.nama;
-  if (subEl) subEl.textContent = `${current.kelas} • @${current.username || current.id}`;
-  if (partEl) partEl.textContent = `${current.nama} (${current.kelas})`;
-}
-
-function switchTab(tab, el) {
+function gotoTab(tab) {
+  if (isQuizPlaying && tab !== "kuis") return showToast("Selesaikan atau tekan Keluar & Simpan dahulu");
   document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
-  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
-  const target = document.getElementById("sec-" + tab);
-  if (target) target.classList.add("active");
-  if (el) el.classList.add("active");
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.toggle("active", n.dataset.tab === tab));
+  $("sec-" + tab).classList.add("active");
+  window.scrollTo(0, 0);
 }
 
-function getWeekBounds(dateStr) {
-  const parts = dateStr.split("-").map(Number);
-  const d = new Date(parts[0], parts[1] - 1, parts[2]);
-  const day = d.getDay();
-  const diffToMon = (day === 0 ? -6 : 1 - day);
-  const mon = new Date(d);
-  mon.setDate(d.getDate() + diffToMon);
-  const sun = new Date(mon);
-  sun.setDate(mon.getDate() + 6);
-  const fmt = (dt) => `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}-${String(dt.getDate()).padStart(2, "0")}`;
-  return { start: fmt(mon), end: fmt(sun), startObj: mon };
-}
-
-function setSantriPeriod(mode, btnEl) {
-  santriPeriodMode = mode;
-  document.querySelectorAll("#santriPeriodPills .pill").forEach(p => p.classList.remove("active"));
-  if (btnEl) btnEl.classList.add("active");
-
-  const dWrap = document.getElementById("santriDateWrap");
-  const mWrap = document.getElementById("santriMonthWrap");
-  if (mode === "harian" || mode === "mingguan") {
-    dWrap.style.display = "block";
-    mWrap.style.display = "none";
-  } else if (mode === "bulanan") {
-    dWrap.style.display = "none";
-    mWrap.style.display = "block";
-  } else {
-    dWrap.style.display = "none";
-    mWrap.style.display = "none";
-  }
-  renderSantriAbsensi();
-}
-
-function setSantriStatusFilter(status, btnEl) {
-  santriStatusFilter = status;
-  document.querySelectorAll("#santriStatusFilterPills .pill").forEach(p => p.classList.remove("active"));
-  if (btnEl) btnEl.classList.add("active");
-  renderSantriAbsensi();
-}
-
-function renderVerticalBarChart(items) {
-  if (!items || items.length === 0) {
-    return `<div style="font-size:12px;color:var(--text-secondary);text-align:center;padding:20px 0;">Belum ada data sesi pada periode ini.</div>`;
-  }
-  return `
-    <div class="vchart-wrap">
-      ${items.map(it => `
-        <div class="vchart-col" title="${it.fullLabel}: ${it.pct}% (${it.detail})">
-          <div class="vchart-val">${it.pct}%</div>
-          <div class="vchart-bar-bg">
-            <div class="vchart-bar-fill" style="height:${Math.max(it.pct, it.pct > 0 ? 6 : 0)}%;"></div>
-          </div>
-          <div class="vchart-lbl">${it.label}</div>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-function renderSantriAbsensi() {
-  const s = getCurrentSantri();
-  if (!s) return;
-
-  const allKeys = Object.keys(appState.absensi || {}).sort();
-  const refDate = document.getElementById("santriRefDate").value || new Date().toISOString().slice(0, 10);
-  const refMonth = document.getElementById("santriRefMonth").value || refDate.slice(0, 7);
-
-  let periodKeys = [];
-  let descText = "";
-
-  if (santriPeriodMode === "harian") {
-    periodKeys = allKeys.filter(k => k.startsWith(refDate + "_"));
-    descText = `Periode Harian: ${refDate}`;
-  } else if (santriPeriodMode === "mingguan") {
-    const wb = getWeekBounds(refDate);
-    periodKeys = allKeys.filter(k => {
-      const tgl = k.split("_")[0];
-      return tgl >= wb.start && tgl <= wb.end;
-    });
-    descText = `Periode Mingguan: ${wb.start} s.d. ${wb.end}`;
-  } else if (santriPeriodMode === "bulanan") {
-    periodKeys = allKeys.filter(k => k.startsWith(refMonth + "-"));
-    descText = `Periode Bulanan: ${refMonth}`;
-  } else {
-    periodKeys = allKeys;
-    descText = "Seluruh riwayat pengajian yang tercatat";
-  }
-
-  document.getElementById("santriPeriodDesc").textContent = descText;
-
-  let h = 0, i = 0, sk = 0, a = 0;
-  const rows = [];
-
-  [...periodKeys].reverse().forEach(k => {
-    const st = (appState.absensi[k] || {})[s.id];
-    if (st) {
-      if (st === "Hadir") h++;
-      else if (st === "Izin") i++;
-      else if (st === "Sakit") sk++;
-      else if (st === "Alpa") a++;
-      const [tgl, sesi] = k.split("_");
-      rows.push({ tgl, sesi, st });
+// ===================== LEADERBOARD =====================
+function buildCombinedLeaderboard() {
+  const list = Array.isArray(appState.santri) ? appState.santri : [];
+  const map = new Map();
+  (appState.skor || []).forEach(sc => {
+    const so = list.find(x => x.id === sc.santriId);
+    map.set(sc.santriId, { santriId: sc.santriId, nama: (so && so.nama) || sc.nama, kelas: so ? so.kelas || "Umum" : "Umum", poin: num(sc.poin) });
+  });
+  const pend = getPendingMap();
+  Object.keys(pend).forEach(id => {
+    const add = num((pend[id] || {}).poin);
+    if (map.has(id)) map.get(id).poin += add;
+    else {
+      const so = list.find(x => x.id === id);
+      map.set(id, { santriId: id, nama: so ? so.nama : pend[id].nama || id, kelas: so ? so.kelas || "Umum" : "Umum", poin: add });
     }
   });
-
-  const tot = h + i + sk + a;
-  const pct = tot > 0 ? Math.round((h / tot) * 100) : 0;
-
-  document.getElementById("santriAttSummary").innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-      <div>
-        <div style="font-size:15px;font-weight:700;">${s.nama}</div>
-        <div style="font-size:12px;color:var(--text-secondary);">Kelas: ${s.kelas}</div>
-      </div>
-      <div style="font-size:22px;font-weight:800;">${pct}%</div>
-    </div>
-    <div class="bar-track"><div class="bar-fill" style="width:${pct}%;"></div></div>
-    <div style="font-size:11px;color:var(--text-secondary);margin-top:6px;">Rata-rata kehadiran dari ${tot} sesi pada periode terpilih</div>
-  `;
-
-  document.getElementById("santriAttCounts").innerHTML = [
-    { l: "Hadir", v: h },
-    { l: "Izin", v: i },
-    { l: "Sakit", v: sk },
-    { l: "Alpa", v: a }
-  ].map(x => `
-    <div class="stat-box">
-      <div class="stat-val">${x.v}</div>
-      <div class="stat-lbl">${x.l}</div>
-    </div>
-  `).join("");
-
-  let chartItems = [];
-  if (santriPeriodMode === "harian") {
-    document.getElementById("santriTrendTitle").textContent = `Grafik Harian (${refDate})`;
-    periodKeys.forEach(k => {
-      const st = (appState.absensi[k] || {})[s.id];
-      if (st) {
-        const sesi = k.split("_")[1] || "Sesi";
-        chartItems.push({
-          label: sesi,
-          fullLabel: `${refDate} (${sesi})`,
-          pct: st === "Hadir" ? 100 : 0,
-          detail: st
-        });
-      }
-    });
-  } else if (santriPeriodMode === "mingguan") {
-    document.getElementById("santriTrendTitle").textContent = "Grafik Mingguan (Senin - Minggu)";
-    const wb = getWeekBounds(refDate);
-    const hariNama = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
-    for (let idx = 0; idx < 7; idx++) {
-      const cur = new Date(wb.startObj);
-      cur.setDate(wb.startObj.getDate() + idx);
-      const dStr = `${cur.getFullYear()}-${String(cur.getMonth() + 1).padStart(2, "0")}-${String(cur.getDate()).padStart(2, "0")}`;
-      const dayKeys = periodKeys.filter(k => k.startsWith(dStr + "_"));
-      let dH = 0, dTot = 0;
-      dayKeys.forEach(k => {
-        const st = (appState.absensi[k] || {})[s.id];
-        if (st) {
-          dTot++;
-          if (st === "Hadir") dH++;
-        }
-      });
-      const dPct = dTot > 0 ? Math.round((dH / dTot) * 100) : 0;
-      chartItems.push({
-        label: `${hariNama[idx]} ${dStr.slice(8, 10)}`,
-        fullLabel: `${hariNama[idx]}, ${dStr}`,
-        pct: dPct,
-        detail: dTot > 0 ? `${dH}/${dTot} hadir` : "Tidak ada sesi"
-      });
-    }
-  } else {
-    document.getElementById("santriTrendTitle").textContent = santriPeriodMode === "bulanan"
-      ? `Grafik Bulanan (${refMonth})`
-      : "Grafik Tren Kehadiran Saya";
-    const byDate = {};
-    periodKeys.forEach(k => {
-      const st = (appState.absensi[k] || {})[s.id];
-      if (st) {
-        const tgl = k.split("_")[0];
-        if (!byDate[tgl]) byDate[tgl] = { h: 0, tot: 0 };
-        byDate[tgl].tot++;
-        if (st === "Hadir") byDate[tgl].h++;
-      }
-    });
-    chartItems = Object.keys(byDate).sort().map(tgl => {
-      const dPct = Math.round((byDate[tgl].h / byDate[tgl].tot) * 100);
-      return {
-        label: tgl.slice(5),
-        fullLabel: tgl,
-        pct: dPct,
-        detail: `${byDate[tgl].h}/${byDate[tgl].tot} hadir`
-      };
-    });
-  }
-
-  document.getElementById("santriTrendChart").innerHTML = renderVerticalBarChart(chartItems);
-
-  const distList = [
-    { label: "Hadir", count: h, opacity: "1" },
-    { label: "Izin", count: i, opacity: "0.72" },
-    { label: "Sakit", count: sk, opacity: "0.52" },
-    { label: "Alpa", count: a, opacity: "0.35" }
-  ];
-
-  document.getElementById("santriDistChart").innerHTML = tot === 0
-    ? `<div style="font-size:12px;color:var(--text-secondary);">Belum ada catatan pada periode ini.</div>`
-    : distList.map(d => {
-        const dPct = Math.round((d.count / tot) * 100);
-        return `
-          <div class="dist-row">
-            <div class="dist-meta">
-              <span>${d.label}</span>
-              <span>${d.count} sesi (${dPct}%)</span>
-            </div>
-            <div class="bar-track">
-              <div class="bar-fill" style="width:${dPct}%;opacity:${d.opacity};"></div>
-            </div>
-          </div>
-        `;
-      }).join("");
-
-  let filteredRows = santriStatusFilter === "ALL"
-    ? rows
-    : rows.filter(r => r.st === santriStatusFilter);
-
-  const q = getQuery("searchSantriAtt");
-  if (q) {
-    filteredRows = filteredRows.filter(r =>
-      (r.tgl || "").toLowerCase().includes(q) ||
-      (r.sesi || "").toLowerCase().includes(q) ||
-      (r.st || "").toLowerCase().includes(q)
-    );
-  }
-
-  const histEl = document.getElementById("santriAttHistory");
-  if (filteredRows.length === 0) {
-    histEl.innerHTML = `<div class="neu-card" style="text-align:center;color:var(--text-secondary);font-size:13px;">${rows.length === 0 ? "Belum ada catatan kehadiran pribadi Anda." : "Riwayat tidak ditemukan pada filter status ini."}</div>`;
-  } else {
-    histEl.innerHTML = filteredRows.map(r => `
-      <div class="neu-card" style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;">
-        <div>
-          <div style="font-size:13px;font-weight:700;">Pengajian ${r.sesi}</div>
-          <div style="font-size:11px;color:var(--text-secondary);">${r.tgl}</div>
-        </div>
-        <span class="badge" style="${r.st === "Hadir" ? "background:var(--accent);color:var(--accent-text);" : ""}">${r.st}</span>
-      </div>
-    `).join("");
-  }
+  return [...map.values()].filter(r => r.poin > 0).sort((a, b) => b.poin - a.poin || String(a.nama).localeCompare(String(b.nama)));
 }
 
-function renderMateri() {
-  const s = getCurrentSantri();
-  const santriKelas = s ? s.kelas : "Umum";
-  const cats = ["Semua", "Fiqih", "Tauhid", "Tasawuf", "Tajwid", "Akhlak"];
-  document.getElementById("materiFilter").innerHTML = cats.map(c => `
-    <button type="button" class="pill ${selectedKategori === c ? "active" : ""}" onclick="filterMateri('${c}')">${c}</button>
-  `).join("");
-
-  const relevantMateri = (appState.materi || []).filter(m => {
-    if (santriKelas === "Umum") return true;
-    return m.kitab === santriKelas || m.kitab === "Umum";
-  });
-
-  let filtered = selectedKategori === "Semua"
-    ? relevantMateri
-    : relevantMateri.filter(m => m.kategori === selectedKategori);
-
-  const q = getQuery("searchSantriMateri");
-  if (q) {
-    filtered = filtered.filter(m =>
-      (m.judul || "").toLowerCase().includes(q) ||
-      (m.kitab || "").toLowerCase().includes(q) ||
-      (m.isi || "").toLowerCase().includes(q)
-    );
-  }
-
-  const listEl = document.getElementById("materiList");
-  if (filtered.length === 0) {
-    listEl.innerHTML = `<div class="neu-card" style="text-align:center;color:var(--text-secondary);font-size:13px;">Tidak ada materi yang sesuai untuk kelas ${santriKelas}.</div>`;
-    return;
-  }
-
-  listEl.innerHTML = filtered.map(m => `
-    <div class="neu-card">
-      <span class="badge" style="margin-bottom:6px;">${m.kategori} • ${m.kitab}</span>
-      <h3 style="font-size:15px;font-weight:700;margin-bottom:6px;">${m.judul}</h3>
-      <p style="font-size:13px;color:var(--text-secondary);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px;">${m.isi}</p>
-      <button type="button" class="btn btn-sm" onclick="openReadMateri('${m.id}')">Baca Selengkapnya</button>
-    </div>
-  `).join("");
+function getInitials(n) {
+  const p = String(n || "S").trim().split(/\s+/);
+  return (p.length >= 2 ? p[0][0] + p[1][0] : String(n || "S").slice(0, 2)).toUpperCase();
 }
 
-function filterMateri(cat) {
-  selectedKategori = cat;
-  renderMateri();
-}
-
-function openReadMateri(id) {
-  const m = (appState.materi || []).find(x => x.id === id);
-  if (!m) return;
-  document.getElementById("readBadge").textContent = `${m.kategori} • ${m.kitab}`;
-  document.getElementById("readTitle").textContent = m.judul;
-  document.getElementById("readBody").textContent = m.isi;
-  document.getElementById("modalReadMateri").classList.add("open");
-}
-
-function closeModalRead() {
-  document.getElementById("modalReadMateri").classList.remove("open");
-}
-
-function getUniqueQuizQuestions() {
-  const seenIds = new Set();
-  const seenTexts = new Set();
-  const uniqueList = [];
-
-  (appState.kuisSoal || []).forEach(q => {
-    if (!q || !q.pertanyaan || !Array.isArray(q.opsi) || q.opsi.length < 4) return;
-    const normText = q.pertanyaan.trim().toLowerCase().replace(/\s+/g, " ");
-    if ((q.id && seenIds.has(q.id)) || seenTexts.has(normText)) return;
-    if (q.id) seenIds.add(q.id);
-    seenTexts.add(normText);
-    uniqueList.push(q);
-  });
-
-  return uniqueList;
-}
-
-function shuffleArray(arr) {
-  const copy = [...arr];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
-}
-
-function getExistingQuizRecord(santriId) {
-  if (!santriId) return null;
-  return (appState.skor || []).find(x => x.santriId === santriId) || null;
-}
-
-function renderQuizIntro() {
-  const titleEl = document.getElementById("quizTitleDisplay");
-  const metaEl = document.getElementById("quizMetaDisplay");
-  const ruleBadge = document.getElementById("quizRuleBadge");
-  const bannerEl = document.getElementById("quizLastScoreBanner");
-  const startBtn = document.getElementById("btnStartQuiz");
-
-  const penalti = getPenaltyPoints();
-  if (ruleBadge) {
-    ruleBadge.textContent = penalti > 0
-      ? `Bebas Diulang • Bisa Offline • Salah -${penalti} Poin`
-      : "Bebas Diulang • Bisa Offline • Tanpa Pengurangan";
-  }
-
-  if (titleEl && appState.kuisConfig) {
-    titleEl.textContent = appState.kuisConfig.judul || "Kuis Cerdas Balai Pengajian";
-  }
-
-  const uniqueSoal = getUniqueQuizQuestions();
-  const totalPoin = uniqueSoal.reduce((sum, q) => sum + Number(q.poin || 0), 0);
-  if (metaEl) {
-    metaEl.textContent = uniqueSoal.length === 0
-      ? "Belum ada soal tersimpan di perangkat. Hubungkan internet sekali untuk mengunduh soal dari Guru."
-      : (penalti > 0
-          ? `Jumlah Soal: ${uniqueSoal.length} Pertanyaan • Benar +Poin, Salah -${penalti} Poin, Kosong 0 • Maksimal ${totalPoin} Poin`
-          : `Jumlah Soal: ${uniqueSoal.length} Pertanyaan • Maksimal ${totalPoin} Poin`);
-  }
-
-  const s = getCurrentSantri();
-  const activeId = s ? s.id : loggedSantriId;
-  const existingRecord = getExistingQuizRecord(activeId);
-  const isPendingScore = activeId && Boolean(pendingQueue.scores[activeId]);
-
-  if (startBtn) startBtn.disabled = false;
-
-  if (existingRecord) {
-    const salahTxt = existingRecord.salah !== undefined ? `, Salah ${existingRecord.salah}` : "";
-    const dijawabInfo = existingRecord.dijawab !== undefined ? ` (${existingRecord.dijawab}/${existingRecord.total} dijawab)` : "";
-    const statusSyncText = isPendingScore
-      ? " [Tersimpan Offline — Menunggu Internet untuk Kirim ke Guru]"
-      : " [Tersinkron ke Guru]";
-
-    if (bannerEl) {
-      bannerEl.style.display = "block";
-      bannerEl.innerHTML = `
-        <strong style="display:block;margin-bottom:3px;color:var(--text-primary);">Nilai Terdata Sebelumnya: ${existingRecord.poin} Poin</strong>
-        <span>Benar ${existingRecord.benar}${salahTxt} dari ${existingRecord.total}${dijawabInfo} pada ${existingRecord.waktu}.${statusSyncText}</span>
-      `;
-    }
-    if (startBtn) startBtn.textContent = "Mulai Ulang Kuis";
-  } else {
-    if (bannerEl) bannerEl.style.display = "none";
-    if (startBtn) startBtn.textContent = "Mulai Kuis Sekarang";
-  }
-}
-
-function startQuiz() {
-  const s = getCurrentSantri();
-  if (!s) return verifyActiveSession();
-
-  const uniqueSoal = getUniqueQuizQuestions();
-  if (uniqueSoal.length === 0) {
-    return showToast("Soal belum tersedia. Sambungkan internet sekali untuk memuat soal dari Guru.");
-  }
-
-  const randomizedQuestions = shuffleArray(uniqueSoal).map(q => {
-    const correctIdx = Number(q.kunci);
-    const taggedOptions = q.opsi.map((text, idx) => ({
-      text,
-      isCorrect: idx === correctIdx
-    }));
-    const shuffledOptions = shuffleArray(taggedOptions);
-    const newCorrectIdx = shuffledOptions.findIndex(o => o.isCorrect);
-
-    return {
-      id: q.id,
-      pertanyaan: q.pertanyaan,
-      opsi: shuffledOptions.map(o => o.text),
-      kunci: newCorrectIdx,
-      poin: Number(q.poin || 20),
-      penjelasan: q.penjelasan || ""
-    };
-  });
-
-  activeQuizQuestions = randomizedQuestions;
-  quizIndex = 0;
-  quizAnswers = {};
-
-  document.getElementById("quizIntro").style.display = "none";
-  document.getElementById("quizResult").style.display = "none";
-  document.getElementById("quizArena").style.display = "block";
-
-  renderQuestion();
-}
-
-function renderQuestion() {
-  const total = activeQuizQuestions.length;
-  const q = activeQuizQuestions[quizIndex];
-  const huruf = ["A", "B", "C", "D"];
-  const answeredCount = Object.keys(quizAnswers).length;
-  const penalti = getPenaltyPoints();
-
-  document.getElementById("quizProgress").textContent = `Soal ${quizIndex + 1} dari ${total}`;
-  document.getElementById("quizAnsweredCount").textContent = `Terjawab: ${answeredCount} dari ${total} soal`;
-  document.getElementById("btnPrevQ").disabled = quizIndex === 0;
-  document.getElementById("btnNextQ").disabled = quizIndex === total - 1;
-
-  document.getElementById("quizQuestionBox").innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-      <span class="badge">Benar +${q.poin} Poin</span>
-      <span class="badge">${penalti > 0 ? "Salah -" + penalti + " Poin" : "Salah 0 Poin"}</span>
-    </div>
-    <div style="font-size:15px;font-weight:700;margin-bottom:14px;">${q.pertanyaan}</div>
-    <div>
-      ${q.opsi.map((op, idx) => `
-        <button type="button" class="quiz-opt ${quizAnswers[q.id] === idx ? "selected" : ""}" onclick="selectOption('${q.id}', ${idx})">
-          <strong>${huruf[idx]}.</strong> ${op}
-        </button>
-      `).join("")}
-    </div>
-  `;
-}
-
-function selectOption(qId, idx) {
-  if (quizAnswers[qId] === idx) {
-    delete quizAnswers[qId];
-  } else {
-    quizAnswers[qId] = idx;
-  }
-  renderQuestion();
-}
-
-function clearCurrentAnswer() {
-  const q = activeQuizQuestions[quizIndex];
-  if (q && quizAnswers[q.id] !== undefined) {
-    delete quizAnswers[q.id];
-    renderQuestion();
-    showToast("Jawaban dikosongkan (0 poin)");
-  }
-}
-
-function prevQuestion() {
-  if (quizIndex > 0) {
-    quizIndex--;
-    renderQuestion();
-  }
-}
-
-function nextQuestion() {
-  if (quizIndex < activeQuizQuestions.length - 1) {
-    quizIndex++;
-    renderQuestion();
-  }
-}
-
-function openConfirmFinishQuiz() {
-  const total = activeQuizQuestions.length;
-  const answeredCount = Object.keys(quizAnswers).length;
-  const penalti = getPenaltyPoints();
-  const msgEl = document.getElementById("confirmQuizMsg");
-
-  if (msgEl) {
-    if (answeredCount === 0) {
-      msgEl.textContent = `Anda belum menjawab satu soal pun dari ${total} soal. Jika tombol Selesai ditekan sekarang, nilai akan otomatis terdata 0 poin.`;
-    } else if (answeredCount < total) {
-      msgEl.textContent = `Anda menjawab ${answeredCount} dari ${total} soal (${total - answeredCount} soal kosong = 0 poin, jawaban salah dikurangi ${penalti} poin). Akhiri kuis sekarang?`;
-    } else {
-      msgEl.textContent = `Seluruh ${total} soal telah dijawab (jawaban salah dikurangi ${penalti} poin). Akhiri kuis dan data nilainya sekarang?`;
-    }
-  }
-
-  document.getElementById("modalConfirmQuiz").classList.add("open");
-}
-
-function closeConfirmFinishQuiz() {
-  document.getElementById("modalConfirmQuiz").classList.remove("open");
-}
-
-function confirmAndSubmitQuiz() {
-  closeConfirmFinishQuiz();
-  submitQuiz();
-}
-
-function renderQuizReview() {
-  const huruf = ["A", "B", "C", "D"];
-  const reviewEl = document.getElementById("quizReviewList");
-  const reviewTitleEl = document.getElementById("quizReviewTitle");
-  const penalti = getPenaltyPoints();
-  if (!reviewEl) return;
-
-  const answeredList = activeQuizQuestions
-    .map((q, origIdx) => ({ q, origIdx }))
-    .filter(item => quizAnswers[item.q.id] !== undefined);
-
-  if (answeredList.length === 0) {
-    if (reviewTitleEl) reviewTitleEl.style.display = "none";
-    reviewEl.innerHTML = `
-      <div class="neu-card" style="text-align:center;color:var(--text-secondary);font-size:13px;">
-        Tidak ada soal yang dijawab pada sesi ini. Kunci jawaban tetap dirahasiakan.
-      </div>
-    `;
-    return;
-  }
-
-  if (reviewTitleEl) {
-    reviewTitleEl.style.display = "block";
-    reviewTitleEl.textContent = `Pembahasan & Kunci Jawaban (${answeredList.length} Soal Dijawab)`;
-  }
-
-  reviewEl.innerHTML = answeredList.map(({ q, origIdx }) => {
-    const userAns = quizAnswers[q.id];
-    const correctIdx = Number(q.kunci);
-    const isCorrect = userAns === correctIdx;
-    const userText = `${huruf[userAns]}. ${q.opsi[userAns]}`;
-    const correctText = `${huruf[correctIdx]}. ${q.opsi[correctIdx]}`;
-    const deltaLabel = isCorrect
-      ? `Benar (+${q.poin} Poin)`
-      : (penalti > 0 ? `Salah (-${penalti} Poin)` : "Salah (0 Poin)");
-
-    return `
-      <div class="neu-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <span class="badge">Soal #${origIdx + 1}</span>
-          <span class="badge" style="${isCorrect ? "background:var(--accent);color:var(--accent-text);" : ""}">
-            ${deltaLabel}
-          </span>
-        </div>
-        <div style="font-size:14px;font-weight:700;margin-bottom:10px;">${q.pertanyaan}</div>
-        <div style="font-size:12px;margin-bottom:4px;color:var(--text-secondary);">
-          Jawaban Anda: <strong style="color:var(--text-primary);">${userText}</strong>
-        </div>
-        <div style="font-size:12px;margin-bottom:10px;color:var(--text-secondary);">
-          Jawaban Benar: <strong style="color:var(--text-primary);">${correctText}</strong>
-        </div>
-        <div class="neu-inset" style="padding:10px 12px;font-size:12px;color:var(--text-secondary);">
-          <strong style="color:var(--text-primary);display:block;margin-bottom:3px;">Penjelasan Jawaban:</strong>
-          <span style="white-space:pre-line;line-height:1.6;">${q.penjelasan || "Kunci jawaban yang benar adalah " + correctText + "."}</span>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-async function submitQuiz() {
-  const santriObj = getCurrentSantri();
-  const activeId = santriObj ? santriObj.id : loggedSantriId;
-  const nama = santriObj ? santriObj.nama : "Santri";
-  const penalti = getPenaltyPoints();
-
-  let poinBenar = 0;
-  let poinPengurangan = 0;
-  let benar = 0;
-  let salah = 0;
-  const total = activeQuizQuestions.length;
-  const dijawab = Object.keys(quizAnswers).length;
-  const kosong = total - dijawab;
-
-  activeQuizQuestions.forEach(q => {
-    const ans = quizAnswers[q.id];
-    if (ans !== undefined) {
-      if (ans === Number(q.kunci)) {
-        benar++;
-        poinBenar += Number(q.poin || 20);
-      } else {
-        salah++;
-        poinPengurangan += penalti;
-      }
-    }
-  });
-
-  const totalPoin = poinBenar - poinPengurangan;
-  const nowStr = new Date().toLocaleString("id-ID", { dateStyle: "short", timeStyle: "short" });
-
-  const newEntry = {
-    id: "sc" + Date.now(),
-    santriId: activeId,
-    nama,
-    poin: totalPoin,
-    benar,
-    salah,
-    dijawab,
-    total,
-    waktu: nowStr
+function renderPodiumHTML(rk) {
+  if (!rk || !rk.length) return "";
+  const slot = (it, n) => {
+    if (!it) return `<div class="podium-slot rank-${n}" style="opacity:.35"><div class="podium-avatar">-</div><div class="podium-name">Kosong</div><div class="podium-pts">0 Koin</div><div class="podium-pedestal">${n}</div></div>`;
+    const crown = n === 1 ? `<svg class="podium-crown" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>` : "";
+    return `<div class="podium-slot rank-${n}"><div class="podium-avatar">${crown}${esc(getInitials(it.nama))}</div><div class="podium-name">${esc(it.nama)}</div><div class="podium-pts">${it.poin} Koin</div><div class="podium-pedestal">${n}</div></div>`;
   };
-
-  if (!Array.isArray(appState.skor)) appState.skor = [];
-  const existingIdx = appState.skor.findIndex(x => x.santriId === activeId);
-  if (existingIdx > -1) {
-    appState.skor[existingIdx] = newEntry;
-  } else {
-    appState.skor.push(newEntry);
-  }
-  localStorage.setItem("balai_pengajian_state", JSON.stringify(appState));
-
-  // Masukkan ke antrean sinkronisasi offline -> online
-  pendingQueue.scores[activeId] = newEntry;
-  savePendingQueue();
-
-  document.getElementById("quizArena").style.display = "none";
-  document.getElementById("quizResult").style.display = "block";
-  document.getElementById("resScore").textContent = `${totalPoin} Poin`;
-  document.getElementById("resDetail").textContent = `${nama} menjawab ${dijawab} dari ${total} soal (${benar} benar, ${salah} salah, ${kosong} kosong).`;
-  document.getElementById("resBreakdown").innerHTML = `
-    Poin Benar: <strong>+${poinBenar}</strong> &nbsp;•&nbsp; Pengurangan Salah: <strong>-${poinPengurangan}</strong> &nbsp;•&nbsp; Skor Akhir: <strong>${totalPoin} Poin</strong>
-  `;
-
-  renderQuizReview();
-  renderQuizIntro();
-  renderKejuaraan();
-
-  const resBadge = document.getElementById("resSyncBadge");
-  if (navigator.onLine) {
-    await flushPendingSync(true);
-    if (!hasPendingSync()) {
-      if (resBadge) resBadge.textContent = "Tersimpan & Terkirim ke Guru";
-      showToast("Nilai otomatis terdata & terkirim ke Guru");
-    } else {
-      if (resBadge) resBadge.textContent = "Tersimpan Lokal (Antre Kirim)";
-      showToast("Nilai tersimpan lokal & otomatis terkirim saat jaringan stabil");
-    }
-  } else {
-    if (resBadge) resBadge.textContent = "Tersimpan Offline (Antre Kirim)";
-    showToast("Nilai tersimpan offline & otomatis dikirim saat internet aktif");
-  }
+  return `<div class="podium-stage">${slot(rk[1], 2)}${slot(rk[0], 1)}${slot(rk[2], 3)}</div>`;
 }
 
-function resetToQuizIntro() {
-  document.getElementById("quizResult").style.display = "none";
-  document.getElementById("quizIntro").style.display = "block";
-  renderQuizIntro();
-}
-
-function finishQuizView() {
-  resetToQuizIntro();
-  const navBtns = document.querySelectorAll(".nav-item");
-  switchTab("kejuaraan", navBtns[4]);
-}
-
-function renderLinks() {
-  const listEl = document.getElementById("linkList");
-  const q = getQuery("searchSantriPustaka");
-  const pustakaArr = Array.isArray(appState.pustaka) ? appState.pustaka : [];
-  const filtered = q
-    ? pustakaArr.filter(l =>
-        (l.judul || "").toLowerCase().includes(q) ||
-        (l.jenis || "").toLowerCase().includes(q) ||
-        (l.deskripsi || "").toLowerCase().includes(q)
-      )
-    : pustakaArr;
-
-  if (filtered.length === 0) {
-    listEl.innerHTML = `<div class="neu-card" style="text-align:center;color:var(--text-secondary);font-size:13px;">Tidak ada tautan pustaka yang cocok.</div>`;
-    return;
-  }
-  listEl.innerHTML = filtered.map(l => `
-    <div class="neu-card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
-      <div>
-        <span class="badge" style="margin-bottom:4px;">${l.jenis}</span>
-        <div style="font-weight:700;font-size:14px;">${l.judul}</div>
-        <div style="font-size:12px;color:var(--text-secondary);">${l.deskripsi}</div>
-      </div>
-      <button type="button" class="btn btn-primary btn-sm" style="flex-shrink:0;" onclick="openPustakaUrl('${l.url}')">Buka</button>
-    </div>
-  `).join("");
-}
-
-function openPustakaUrl(url) {
-  if (!navigator.onLine) {
-    return showToast("Pustaka online membutuhkan koneksi internet.");
-  }
-  window.location.href = url;
-}
-
-function openPesertaDetail(santriId) {
-  const s = (appState.santri || []).find(x => x.id === santriId);
-  const sc = (appState.skor || []).find(x => x.santriId === santriId);
-  if (!s && !sc) return;
-
-  const nama = s ? s.nama : sc.nama;
-  const kelas = s ? s.kelas : "Santri";
-
-  let h = 0, i = 0, sk = 0, a = 0;
-  Object.keys(appState.absensi || {}).forEach(k => {
-    const st = (appState.absensi[k] || {})[santriId];
-    if (st === "Hadir") h++;
-    else if (st === "Izin") i++;
-    else if (st === "Sakit") sk++;
-    else if (st === "Alpa") a++;
-  });
-  const tot = h + i + sk + a;
-  const pct = tot > 0 ? Math.round((h / tot) * 100) : 0;
-
-  document.getElementById("detPesertaKelas").textContent = `${kelas} • Kehadiran ${pct}%`;
-  document.getElementById("detPesertaNama").textContent = nama;
-
-  const salahInfo = sc && sc.salah !== undefined ? ` • Salah ${sc.salah}` : "";
-  document.getElementById("detPesertaSkorBox").innerHTML = sc
-    ? `<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">
-         <span>Benar <strong>${sc.benar}/${sc.total}</strong>${salahInfo}</span>
-         <span class="badge" style="background:var(--accent);color:var(--accent-text);">${sc.poin} Poin</span>
-       </div>`
-    : `<div style="font-size:12px;color:var(--text-secondary);">Belum ada data skor kuis.</div>`;
-
-  document.getElementById("detPesertaStats").innerHTML = [
-    { l: "Hadir", v: h },
-    { l: "Izin", v: i },
-    { l: "Sakit", v: sk },
-    { l: "Alpa", v: a }
-  ].map(x => `
-    <div class="stat-box" style="padding:8px 4px;">
-      <div class="stat-val" style="font-size:16px;">${x.v}</div>
-      <div class="stat-lbl">${x.l}</div>
-    </div>
-  `).join("");
-
-  document.getElementById("modalDetailPeserta").classList.add("open");
-}
-
-function closeModalPeserta() {
-  document.getElementById("modalDetailPeserta").classList.remove("open");
-}
-
-function renderKejuaraan() {
-  const sorted = [...(appState.skor || [])].sort((a, b) => b.poin - a.poin).map((sc, idx) => ({ ...sc, rank: idx + 1 }));
-  const podiumEl = document.getElementById("podiumBox");
-  const lbEl = document.getElementById("leaderboardList");
-  const activeId = (getCurrentSantri() || {}).id || loggedSantriId;
-  const q = getQuery("searchJuara");
-
-  if (sorted.length === 0) {
-    podiumEl.innerHTML = "";
-    lbEl.innerHTML = `<div style="font-size:13px;color:var(--text-secondary);text-align:center;">Belum ada peserta di papan kejuaraan.</div>`;
-    return;
-  }
-
-  const order = [1, 0, 2];
-  podiumEl.innerHTML = order.map(rankIdx => {
-    const item = sorted[rankIdx];
-    if (!item) return `<div></div>`;
-    const isFirst = rankIdx === 0;
-    return `
-      <div class="podium-card" style="cursor:pointer;${isFirst ? "border-color:var(--accent);padding-top:18px;padding-bottom:18px;" : ""}" onclick="openPesertaDetail('${item.santriId}')">
-        <span class="badge" style="${isFirst ? "background:var(--accent);color:var(--accent-text);" : ""}">Juara ${rankIdx + 1}</span>
-        <div style="font-size:13px;font-weight:700;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.nama}</div>
-        <div style="font-size:16px;font-weight:800;margin-top:2px;">${item.poin}</div>
-        <div style="font-size:10px;color:var(--text-secondary);">Poin</div>
-      </div>
-    `;
+function renderRowsHTML(rk, me) {
+  if (!rk || !rk.length) return `<div class="empty">Belum ada santri yang mengumpulkan koin.</div>`;
+  return rk.map((r, i) => {
+    const isMe = me && r.santriId === me;
+    return `<div class="lb-row ${i < 3 ? "top" : ""} ${isMe ? "is-me" : ""}">
+      <div style="display:flex;align-items:center;gap:10px;min-width:0"><span class="lb-rank">${i + 1}</span>
+        <div style="min-width:0"><div style="font-size:13px;font-weight:800">${esc(r.nama)}${isMe ? `<span class="badge me">Anda</span>` : ""}</div>
+        <div style="font-size:11px;color:var(--tx2)">${esc(r.kelas || "Umum")}</div></div></div>
+      <div style="text-align:right"><strong style="font-size:14px">${r.poin}</strong><span style="font-size:10px;color:var(--tx2);display:block">Koin</span></div></div>`;
   }).join("");
+}
 
-  const filteredList = q
-    ? sorted.filter(sc => (sc.nama || "").toLowerCase().includes(q))
-    : sorted;
+// ===================== BERANDA =====================
+function renderBeranda() {
+  const s = getSantriAktif();
+  if (!s) return;
+  const total = getKoinSantri(s.id), p = getPendingMap()[s.id], pend = p ? num(p.poin) : 0;
+  $("headerSantriName").textContent = s.nama;
+  $("headerSantriKelas").textContent = s.kelas || "Umum";
+  $("headerCoinCount").textContent = total;
+  $("berandaKelasBadge").textContent = `${s.kelas || "Umum"} • @${s.username || s.id}`;
+  $("berandaNamaTitle").textContent = `Assalamu'alaikum, ${s.nama}`;
+  $("berandaTotalKoin").textContent = `${total} Koin`;
+  $("berandaPendingInfo").textContent = pend > 0 ? `Termasuk +${pend} koin lokal menunggu sinyal online` : "Saldo terhubung dengan papan peringkat";
 
-  if (filteredList.length === 0) {
-    lbEl.innerHTML = `<div style="font-size:12px;color:var(--text-secondary);text-align:center;padding:12px 0;">Peserta tidak ditemukan.</div>`;
-  } else {
-    lbEl.innerHTML = filteredList.map(sc => {
-      const salahTag = sc.salah !== undefined ? ` • Salah ${sc.salah}` : "";
-      const isPending = Boolean(pendingQueue.scores[sc.santriId]);
-      return `
-        <div class="clickable-row" style="display:flex;justify-content:space-between;align-items:center;${sc.santriId === activeId ? "border-color:var(--accent);" : ""}" onclick="openPesertaDetail('${sc.santriId}')">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span class="badge" style="${sc.rank <= 3 ? "background:var(--accent);color:var(--accent-text);" : ""}">#${sc.rank}</span>
-            <div>
-              <div style="font-size:13px;font-weight:700;">${sc.nama} ${sc.santriId === activeId ? "(Saya)" : ""}</div>
-              <div style="font-size:11px;color:var(--text-secondary);">Benar ${sc.benar}/${sc.total}${salahTag}${isPending ? " • Antre Kirim" : ""}</div>
-            </div>
-          </div>
-          <div style="font-weight:800;font-size:14px;">${sc.poin} Poin</div>
-        </div>
-      `;
-    }).join("");
+  const ab = appState.absensi || {};
+  const c = { Hadir: 0, Izin: 0, Sakit: 0, Alpa: 0 };
+  Object.keys(ab).forEach(k => { const st = (ab[k] || {})[s.id]; if (st in c) c[st]++; });
+  const tot = c.Hadir + c.Izin + c.Sakit + c.Alpa, pct = tot ? Math.round(c.Hadir / tot * 100) : 0;
+  $("berandaAbsensiSummary").innerHTML = `<div class="row"><div><div style="font-size:14px;font-weight:800">Kehadiran Pengajian</div><div style="font-size:11px;color:var(--tx2)">Hadir ${c.Hadir} dari ${tot} sesi pengajian</div></div><div style="font-size:22px;font-weight:800">${pct}%</div></div><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>`;
+  $("berandaAbsensiGrid").innerHTML = Object.keys(c).map(k => `<div class="stat-box"><div class="stat-val">${c[k]}</div><div class="stat-lbl">${k}</div></div>`).join("");
+
+  const rk = buildCombinedLeaderboard(), my = rk.findIndex(r => r.santriId === s.id);
+  $("berandaMyRankBadge").textContent = my >= 0 ? `Peringkat #${my + 1}` : "Belum Peringkat";
+  $("berandaPodiumContainer").innerHTML = renderPodiumHTML(rk);
+  $("berandaTopLeaderboard").innerHTML = renderRowsHTML(rk.slice(0, 5), s.id);
+}
+
+// ===================== KUIS =====================
+function setQuizCategory(idx) {
+  selectedQuizCategory = quizCats[idx] || "ALL";
+  renderLobbyKuis();
+}
+
+const soalByCategory = () => {
+  const all = Array.isArray(appState.kuisSoal) ? appState.kuisSoal.filter(q => q && q.pertanyaan && Array.isArray(q.opsi) && q.opsi.length > 1) : [];
+  return selectedQuizCategory === "ALL" ? all : all.filter(q => (q.kategori || "Umum") === selectedQuizCategory);
+};
+
+function renderLobbyKuis() {
+  const s = getSantriAktif(), koin = s ? getKoinSantri(s.id) : 0;
+  $("kuisSaldoBadge").textContent = `Saldo: ${koin} Koin`;
+  $("lobbyKoinLama").textContent = `${koin} Koin`;
+  $("maxSoalInfo").textContent = MAX_SOAL;
+  const all = Array.isArray(appState.kuisSoal) ? appState.kuisSoal : [];
+  quizCats = ["ALL", ...new Set(all.map(q => q.kategori || "Umum"))];
+  if (!quizCats.includes(selectedQuizCategory)) selectedQuizCategory = "ALL";
+  $("quizCategoryPills").innerHTML = quizCats.map((c, i) => `<button type="button" class="pill ${c === selectedQuizCategory ? "active" : ""}" data-cat="${i}">${c === "ALL" ? "Semua Materi" : esc(c)}</button>`).join("");
+  $("lobbyJumlahSoal").textContent = `${soalByCategory().length} Soal`;
+  const lb = buildCombinedLeaderboard();
+  $("kuisTotalPesertaBadge").textContent = `${lb.length} Santri`;
+  $("kuisPodiumContainer").innerHTML = renderPodiumHTML(lb);
+  $("kuisFullLeaderboard").innerHTML = renderRowsHTML(lb, s ? s.id : "");
+}
+
+function mulaiKuis() {
+  const pool = [...soalByCategory()];
+  if (!pool.length) return showToast("Belum ada soal pada kategori ini");
+  for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+  activeQuestions = pool.slice(0, MAX_SOAL);
+  currentQIndex = 0; selectedOptionIdx = null; answerChecked = false;
+  sessionBenar = sessionSalah = sessionKoin = 0;
+  isQuizPlaying = true;
+  $("quizLobbyView").style.display = "none";
+  $("quizResultView").style.display = "none";
+  $("quizPlayView").style.display = "block";
+  renderPertanyaanAktif();
+}
+
+function renderPertanyaanAktif() {
+  const q = activeQuestions[currentQIndex], total = activeQuestions.length;
+  selectedOptionIdx = null; answerChecked = false;
+  $("playProgressBadge").textContent = `Soal ${currentQIndex + 1}/${total}`;
+  $("playSessionCoinBadge").textContent = `+${sessionKoin} Koin Sesi Ini`;
+  $("playProgressBar").style.width = `${Math.round(currentQIndex / total * 100)}%`;
+  $("playSoalKategori").textContent = `${q.kategori || "Umum"} • Bernilai +${num(q.poin) || 10} Koin`;
+  $("playSoalTeks").textContent = q.pertanyaan;
+  $("playFeedback").textContent = "";
+  $("playFeedback").style.color = "";
+  $("playOptionsList").innerHTML = q.opsi.map((o, i) => `<button type="button" class="quiz-option" data-opt="${i}"><span class="quiz-opt-letter">${"ABCDE"[i] || i + 1}</span><span>${esc(o)}</span></button>`).join("");
+  $("btnNextSoal").textContent = "Periksa Jawaban";
+}
+
+// Baca kunci jawaban dari berbagai format: angka (0-based/1-based), huruf A-E, atau teks opsi
+function getKunciIndex(q) {
+  const n = (q.opsi || []).length;
+  let v = q.jawaban;
+  if (v === undefined || v === null || v === "") v = q.kunci !== undefined ? q.kunci : (q.jawabanBenar !== undefined ? q.jawabanBenar : q.benar);
+  if (v === undefined || v === null) return -1;
+  if (typeof v === "number" || /^\s*\d+\s*$/.test(String(v))) {
+    const k = Number(v);
+    if (k >= 0 && k < n) return k;
+    if (k === n) return k - 1;
+    return -1;
   }
+  const t = String(v).trim();
+  if (/^[A-Ea-e][\.\)]?$/.test(t)) { const k = t.toUpperCase().charCodeAt(0) - 65; return k < n ? k : -1; }
+  return (q.opsi || []).findIndex(o => String(o).trim().toLowerCase() === t.toLowerCase());
 }
 
-function renderAll() {
-  populateRegKelasOptions();
-  renderSantriAbsensi();
-  renderMateri();
-  renderQuizIntro();
-  renderLinks();
-  renderKejuaraan();
-  refreshSyncBadge();
+function pilihJawaban(idx) {
+  if (answerChecked) return;
+  selectedOptionIdx = idx;
+  document.querySelectorAll(".quiz-option").forEach((b, i) => b.classList.toggle("selected", i === idx));
 }
 
-const todayIso = new Date().toISOString().slice(0, 10);
-document.getElementById("santriRefDate").value = todayIso;
-document.getElementById("santriRefMonth").value = todayIso.slice(0, 7);
+async function lanjutSoalBerikutnya() {
+  if (isBusy) return;
+  const q = activeQuestions[currentQIndex], total = activeQuestions.length;
+  if (!answerChecked) {
+    if (selectedOptionIdx === null) return showToast("Pilih salah satu jawaban terlebih dahulu!");
+    answerChecked = true;
+    const poin = num(q.poin) || 10, kunci = getKunciIndex(q), benar = kunci >= 0 && selectedOptionIdx === kunci;
+    if (kunci < 0) { /* kunci tidak valid: jangan hitung benar/salah */ }
+    else if (benar) { sessionBenar++; sessionKoin += poin; } else sessionSalah++;
+    document.querySelectorAll(".quiz-option").forEach((b, i) => {
+      b.disabled = true; b.classList.remove("selected");
+      if (kunci >= 0 && i === kunci) b.classList.add("correct"); else if (kunci >= 0 && i === selectedOptionIdx) b.classList.add("wrong");
+    });
+    const fb = $("playFeedback");
+    fb.textContent = kunci < 0 ? "Kunci jawaban soal ini belum valid (hubungi guru). Soal tidak dihitung." : benar ? `✓ Benar! +${poin} Koin` : `✗ Kurang tepat. Jawaban benar: ${"ABCDE"[kunci]}`;
+    fb.style.color = kunci < 0 ? "var(--tx2)" : benar ? "var(--ok)" : "var(--bad)";
+    $("playSessionCoinBadge").textContent = `+${sessionKoin} Koin Sesi Ini`;
+    $("playProgressBar").style.width = `${Math.round((currentQIndex + 1) / total * 100)}%`;
+    $("btnNextSoal").textContent = currentQIndex === total - 1 ? "Selesai & Simpan Koin" : "Soal Berikutnya";
+    return;
+  }
+  if (currentQIndex < total - 1) { currentQIndex++; renderPertanyaanAktif(); }
+  else { isBusy = true; try { await selesaikanKuis(false); } finally { isBusy = false; } }
+}
 
-populateRegKelasOptions();
-verifyActiveSession();
+async function keluarDanSimpanKuis() {
+  if (isBusy || !isQuizPlaying) return;
+  isBusy = true;
+  try {
+    const q = activeQuestions[currentQIndex];
+    if (!answerChecked && selectedOptionIdx !== null && q) {
+      const k = getKunciIndex(q);
+      if (k >= 0) { if (selectedOptionIdx === k) { sessionBenar++; sessionKoin += num(q.poin) || 10; } else sessionSalah++; }
+    }
+    selectedOptionIdx = null;
+    await selesaikanKuis(true);
+  } finally { isBusy = false; }
+}
+
+async function selesaikanKuis(early) {
+  const s = getSantriAktif();
+  isQuizPlaying = false;
+  if (!s) return;
+  $("quizPlayView").style.display = "none";
+  $("quizResultView").style.display = "block";
+  const h = await simpanDanAkumulasiKoin(s.id, s.nama, sessionKoin, sessionBenar, sessionSalah, sessionBenar + sessionSalah);
+  $("resHeaderBadge").textContent = early ? "Keluar & Poin Disimpan" : "Sesi Kuis Selesai";
+  $("resHeaderTitle").textContent = sessionKoin > 0 ? `Alhamdulillah, +${sessionKoin} Koin Tersimpan!` : "Permainan Selesai";
+  $("resKoinLama").textContent = `${h.koinSebelumnya} Koin`;
+  $("resKoinBaru").textContent = `+${h.koinBaru} Koin`;
+  $("resKoinTotal").textContent = `${h.totalKoin} Koin`;
+  $("resBenarCount").textContent = sessionBenar;
+  $("resSalahCount").textContent = sessionSalah;
+  $("resSyncStatusText").textContent = h.mode === "online" ? "Poin otomatis digabungkan dengan saldo sebelumnya di server." : "Poin tersimpan di HP & otomatis digabung ke server saat online.";
+  if (sessionKoin > 0) showToast(`+${sessionKoin} Koin berhasil disimpan!`);
+  renderAll();
+}
+
+function kembaliKeLobbyKuis() {
+  $("quizResultView").style.display = "none";
+  $("quizPlayView").style.display = "none";
+  $("quizLobbyView").style.display = "block";
+  renderLobbyKuis();
+}
+
+// ===================== MATERI & ABSENSI =====================
+function renderMateri() {
+  const list = Array.isArray(appState.materi) ? appState.materi : [];
+  $("materiListContainer").innerHTML = list.length ? list.map(m => `<div class="neu-card"><div class="row" style="margin-bottom:6px"><span class="badge">${esc(m.kelas || "Umum")}</span><span style="font-size:11px;color:var(--tx3)">${esc(m.tanggal)}</span></div><h3 style="font-size:15px;font-weight:800;margin-bottom:6px">${esc(m.judul || "Materi")}</h3><p style="font-size:13px;color:var(--tx2);white-space:pre-line">${esc(m.isi)}</p></div>`).join("")
+    : `<div class="neu-card empty">Belum ada materi pengajian yang ditambahkan guru.</div>`;
+}
+
+function renderRiwayat() {
+  const s = getSantriAktif();
+  if (!s) return;
+  const ab = appState.absensi || {}, logs = [];
+  Object.keys(ab).sort().reverse().forEach(k => { const st = (ab[k] || {})[s.id]; if (st) { const [tgl, sesi] = k.split("_"); logs.push({ tgl, sesi, st }); } });
+  $("riwayatLogsContainer").innerHTML = logs.length ? `<div class="neu-card">` + logs.map(r => `<div class="row" style="padding:10px 0;border-bottom:1px solid var(--border);font-size:13px"><div><strong>${esc(r.tgl)}</strong><span style="font-size:11px;color:var(--tx2);display:block">Sesi: ${esc(r.sesi || "-")}</span></div><span class="badge" ${r.st === "Hadir" ? 'style="background:var(--accent);color:var(--acc-tx)"' : ""}>${esc(r.st)}</span></div>`).join("") + `</div>`
+    : `<div class="neu-card empty">Belum ada riwayat kehadiran tercatat.</div>`;
+}
+
+function renderAll() { renderBeranda(); if (!isQuizPlaying) renderLobbyKuis(); renderMateri(); renderRiwayat(); }
+
+// ===================== EVENT =====================
+$("loginNamaInput").addEventListener("input", cekNamaSantriLive);
+$("loginNamaInput").addEventListener("keydown", e => { if (e.key === "Enter") $("loginPassword").focus(); });
+$("loginPassword").addEventListener("keydown", e => { if (e.key === "Enter") masukSantri(); });
+$("btnLogin").onclick = masukSantri;
+$("btnBukaSandi").onclick = bukaModalSandi;
+$("btnTutupSandi").onclick = tutupModalSandi;
+$("btnSimpanSandi").onclick = simpanSandiBaru;
+$("modalUbahSandi").addEventListener("click", e => { if (e.target === e.currentTarget) tutupModalSandi(); });
+$("btnKeluar").onclick = keluarAkun;
+$("btnSync").onclick = refreshManual;
+$("btnMulai").onclick = mulaiKuis;
+$("btnNextSoal").onclick = lanjutSoalBerikutnya;
+$("btnKeluarKuis").onclick = keluarDanSimpanKuis;
+$("btnKembaliLobby").onclick = kembaliKeLobbyKuis;
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-toggle],[data-goto],[data-tab],[data-cat],[data-opt]");
+  if (!t) return;
+  if (t.dataset.toggle) toggleInputPass(t.dataset.toggle, t);
+  else if (t.dataset.goto) gotoTab(t.dataset.goto);
+  else if (t.dataset.tab) gotoTab(t.dataset.tab);
+  else if (t.dataset.cat !== undefined) setQuizCategory(Number(t.dataset.cat));
+  else if (t.dataset.opt !== undefined) pilihJawaban(Number(t.dataset.opt));
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden" && isQuizPlaying && sessionKoin > 0) keluarDanSimpanKuis();
+});
+
+// ===================== INIT =====================
+cekNamaSantriLive();
+if (currentSantriId && getSantriAktif()) $("loginScreen").style.display = "none";
 initFirebase();
 renderAll();
 
-(function setupBustanulHadiIconAndPWA() {
-  const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-    <defs>
-      <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#e2a83e"/>
-        <stop offset="55%" stop-color="#4e8954"/>
-        <stop offset="100%" stop-color="#0d5c46"/>
-      </linearGradient>
-      <linearGradient id="g2" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stop-color="#e5aa3d"/>
-        <stop offset="100%" stop-color="#5d8242"/>
-      </linearGradient>
-    </defs>
-    <rect width="512" height="512" rx="112" fill="#ffffff"/>
-    <path d="M235 96 C125 115 72 225 102 325 C128 408 212 452 298 432 C222 422 162 362 152 282 C142 204 176 134 235 96 Z" fill="url(#g1)"/>
-    <path d="M168 355 C235 438 358 432 414 332 C432 298 438 262 434 230 C414 312 346 368 265 372 C225 374 192 366 168 355 Z" fill="#0d5c46"/>
-    <path d="M254 338 C258 292 246 254 218 228 C196 208 176 202 166 202 C174 232 194 256 226 268 C242 274 250 296 248 338 Z" fill="url(#g2)"/>
-    <path d="M262 324 C264 274 282 232 322 206 C346 190 368 186 378 186 C368 222 344 252 308 266 C286 274 272 296 268 324 Z" fill="url(#g1)"/>
-    <path d="M286 86 L296 124 L334 134 L296 144 L286 182 L276 144 L238 134 L276 124 Z" fill="url(#g2)"/>
-    <path d="M226 154 L231 170 L247 175 L231 180 L226 196 L221 180 L205 175 L221 170 Z" fill="#d99f38"/>
-    <path d="M188 184 L192 196 L204 200 L192 204 L188 216 L184 204 L172 200 L184 196 Z" fill="#d99f38"/>
-    <path d="M262 198 L266 210 L278 214 L266 218 L262 230 L258 218 L246 214 L258 210 Z" fill="#b4923f"/>
-    <path d="M332 162 L337 176 L351 181 L337 186 L332 200 L327 186 L313 181 L327 176 Z" fill="#b4923f"/>
-    <path d="M352 292 L358 310 L376 316 L358 322 L352 340 L346 322 L328 316 L346 310 Z" fill="#186048"/>
-  </svg>`;
-
-  const svgUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(logoSvg);
-  const favEl = document.getElementById("appFavicon");
-  if (favEl) favEl.href = svgUrl;
-
-  const img = new Image();
-  img.onload = function () {
-    const canvas = document.createElement("canvas");
-    canvas.width = 512;
-    canvas.height = 512;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0, 512, 512);
-    const pngDataUrl = canvas.toDataURL("image/png");
-
-    const appleEl = document.getElementById("appAppleIcon");
-    if (appleEl) appleEl.href = pngDataUrl;
-
-    const manifestObj = {
-      name: "BUSTANUL HADI - Portal Santri",
-      short_name: "BUSTANUL HADI",
-      start_url: window.location.href,
-      display: "standalone",
-      background_color: "#121212",
-      theme_color: "#171717",
-      icons: [
-        { src: pngDataUrl, sizes: "192x192", type: "image/png", purpose: "any maskable" },
-        { src: pngDataUrl, sizes: "512x512", type: "image/png", purpose: "any maskable" }
-      ]
-    };
-
-    const manifestBlob = new Blob([JSON.stringify(manifestObj)], { type: "application/manifest+json" });
-    const manifestEl = document.getElementById("appManifest");
-    if (manifestEl) manifestEl.href = URL.createObjectURL(manifestBlob);
-  };
-  img.src = svgUrl;
-})();
-
 (function syncAndroidSystemBars() {
-  function applyThemeColors() {
-    const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const barColor = isDark ? "#171717" : "#f7f7f7";
-    const metaTheme = document.querySelector('meta[name="theme-color"]');
-    if (metaTheme) metaTheme.setAttribute("content", barColor);
-
-    if (window.Android && typeof window.Android.setSystemBarColor === "function") {
-      window.Android.setSystemBarColor(barColor, isDark);
-    }
+  function apply() {
+    const dark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const color = dark ? "#171717" : "#f7f7f7";
+    const m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute("content", color);
+    if (window.Android && typeof window.Android.setSystemBarColor === "function") window.Android.setSystemBarColor(color, dark);
   }
-
-  applyThemeColors();
-  if (window.matchMedia) {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyThemeColors);
-  }
+  apply();
+  if (window.matchMedia) window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", apply);
 })();
 </script>
 </body>

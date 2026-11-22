@@ -53,10 +53,10 @@ input{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--bor
 input:focus{border-color:var(--accent)}
 label{display:block;font-size:11px;color:var(--tx2);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
 header{position:sticky;top:0;z-index:40;background-color:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;padding-top:calc(12px + env(safe-area-inset-top,0px));display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand{display:flex;align-items:center;gap:10px}
 .brand-icon{width:36px;height:36px;border-radius:11px;background:var(--elev);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 7px var(--sd),-2px -2px 5px var(--sl)}
-.brand h1{font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand span{font-size:11px;color:var(--tx2);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.header-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.brand h1{font-size:15px;font-weight:800}.brand span{font-size:11px;color:var(--tx2);display:block}
+.header-right{display:flex;align-items:center;gap:6px}
 .status-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:var(--elev);border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--tx);cursor:pointer}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--tx3)}.status-dot.online{background:var(--ok)}
 main{max-width:720px;margin:0 auto;padding:16px}
@@ -97,13 +97,9 @@ main{max-width:720px;margin:0 auto;padding:16px}
 .lb-row.is-me{border:2px solid var(--accent)}
 .lb-rank{width:28px;height:28px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
 .lb-row.top .lb-rank{background:var(--accent);color:var(--acc-tx);border-color:var(--accent)}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background-color:var(--surface);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 2px calc(10px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 18px color-mix(in srgb,var(--sd) 70%,transparent);transition:background-color .25s,border-color .25s}
-.nav-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;color:var(--tx3);font-size:10px;font-weight:700;cursor:pointer;padding:4px 0;transition:color .2s,transform .15s}
+.bottom-nav{position:fixed;bottom:-2px;left:0;right:0;z-index:40;background-color:var(--surface);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 2px calc(12px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 12px var(--sd)}
+.nav-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;color:var(--tx3);font-size:10px;font-weight:700;cursor:pointer;padding:4px 0}
 .nav-item.active{color:var(--accent)}
-.nav-item .icon{transition:transform .2s}
-.nav-item.active .icon{transform:translateY(-2px) scale(1.12)}
-.nav-item.active::before{content:"";position:absolute;top:-7px;left:50%;width:22px;height:3px;margin-left:-11px;border-radius:0 0 4px 4px;background:var(--accent)}
-.nav-item:active{transform:scale(.93)}
 .nav-badge{position:absolute;top:1px;right:calc(50% - 17px);min-width:15px;height:15px;padding:0 4px;border-radius:999px;background:var(--accent);color:var(--acc-tx);font-size:9px;font-weight:800;display:none;align-items:center;justify-content:center}
 .nav-badge.show{display:inline-flex}
 .ann-banner{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;cursor:pointer}
@@ -121,6 +117,16 @@ main{max-width:720px;margin:0 auto;padding:16px}
 .empty{text-align:center;color:var(--tx2);font-size:13px;padding:12px 0}
 .row{display:flex;justify-content:space-between;align-items:center}
 
+/* ===== NAVBAR IKUT TEMA HP (gelap/terang) ===== */
+html{background-color:var(--bg)}
+header,.bottom-nav{background-color:var(--surface);transition:background-color .25s,border-color .25s}
+.bottom-nav{bottom:0;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 18px color-mix(in srgb,var(--sd) 70%,transparent)}
+.nav-item{transition:color .2s,transform .15s}
+.nav-item .icon{transition:transform .2s}
+.nav-item.active .icon{transform:translateY(-2px) scale(1.12)}
+.nav-item.active::before{content:"";position:absolute;top:-7px;left:50%;width:22px;height:3px;margin-left:-11px;border-radius:0 0 4px 4px;background:var(--accent)}
+.nav-item:active{transform:scale(.93)}
+
 /* ===== LEADERBOARD (tenang & rapi) ===== */
 :root{--gold:#d4a017;--silv:#9aa3af;--bron:#b9733f}
 .lb-me{border-radius:16px;padding:12px 14px;margin-bottom:14px;background:var(--bg);border:1px solid var(--border);box-shadow:inset 3px 3px 7px var(--sd),inset -2px -2px 6px var(--sl)}
@@ -131,8 +137,8 @@ main{max-width:720px;margin:0 auto;padding:16px}
 .lb-me-coin{text-align:right}.lb-me-coin b{font-size:19px;font-weight:900;display:block;line-height:1.1}.lb-me-coin span{font-size:10px;color:var(--tx2);font-weight:700}
 .lb-me-gap{font-size:11.5px;color:var(--tx2);margin-top:10px}.lb-me-gap b{color:var(--tx)}
 .lb-me-bar{height:6px;border-radius:999px;background:var(--surface);border:1px solid var(--border);margin-top:6px;overflow:hidden}.lb-me-bar i{display:block;height:100%;border-radius:999px;background:var(--accent)}
-.lb-stage{display:grid;grid-template-columns:1fr 1.1fr 1fr;align-items:flex-end;gap:8px;padding:32px 8px 0;margin-bottom:14px;border-radius:16px;background:var(--bg);border:1px solid var(--border);box-shadow:inset 3px 3px 8px var(--sd),inset -2px -2px 7px var(--sl);overflow:visible}
-.lb-slot{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;--c:var(--silv);position:relative;z-index:1}
+.lb-stage{display:grid;grid-template-columns:1fr 1.1fr 1fr;align-items:flex-end;gap:8px;padding:16px 8px 0;margin-bottom:14px;border-radius:16px;background:var(--bg);border:1px solid var(--border);box-shadow:inset 3px 3px 8px var(--sd),inset -2px -2px 7px var(--sl);overflow:hidden}
+.lb-slot{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;--c:var(--silv)}
 .lb-slot.r1{--c:var(--gold)}.lb-slot.r3{--c:var(--bron)}
 .lb-av{width:46px;height:46px;border-radius:50%;background:var(--elev);border:2.5px solid var(--c);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;margin-bottom:6px}
 .lb-slot.r1 .lb-av{width:54px;height:54px;font-size:17px}
@@ -142,7 +148,7 @@ main{max-width:720px;margin:0 auto;padding:16px}
 .lb-slot.r1 .lb-ped{height:68px}.lb-slot.r2 .lb-ped{height:52px}.lb-slot.r3 .lb-ped{height:40px}
 .lb-filter{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 6px;margin-bottom:8px;scrollbar-width:none}.lb-filter::-webkit-scrollbar{display:none}
 .lb-list{display:flex;flex-direction:column;gap:8px}
-.lb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--elev);border:1px solid var(--border);box-shadow:2px 2px 6px var(--sd),-1px -1px 4px var(--sl);position:relative;overflow:visible}
+.lb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--elev);border:1px solid var(--border);box-shadow:2px 2px 6px var(--sd),-1px -1px 4px var(--sl)}
 .lb-item.me{border:2px solid var(--accent)}
 .lb-rk{flex-shrink:0;width:26px;text-align:center;font-size:14px;font-weight:900;color:var(--tx2)}
 .lb-item.top1 .lb-rk{color:var(--gold)}.lb-item.top2 .lb-rk{color:var(--silv)}.lb-item.top3 .lb-rk{color:var(--bron)}
@@ -154,103 +160,33 @@ main{max-width:720px;margin:0 auto;padding:16px}
 .lb-tr{height:4px;border-radius:999px;background:var(--bg);margin-top:6px;overflow:hidden}.lb-tr i{display:block;height:100%;border-radius:999px;background:var(--accent);opacity:.75}
 .lb-sc{flex-shrink:0;text-align:right}.lb-sc b{font-size:15px;font-weight:900;display:block;line-height:1.1}.lb-sc span{font-size:9.5px;color:var(--tx2);font-weight:700}
 
-/* ===== BORDER GRADIEN BERGERAK ===== */
-@keyframes borderFlow{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-@keyframes borderSpin{
-  from{transform:rotate(0deg)}
-  to{transform:rotate(360deg)}
-}
-@keyframes floatGem{
-  0%,100%{transform:translateY(0px)}
-  50%{transform:translateY(-2.5px)}
-}
-@keyframes floatCrown{
-  0%,100%{transform:translateY(0px) scale(1)}
-  50%{transform:translateY(-3px) scale(1.04)}
-}
-
-.lb-stage{
-  border:2px solid transparent;
-  background:
-    linear-gradient(var(--bg),var(--bg)) padding-box,
-    linear-gradient(125deg,var(--gold),var(--silv),var(--bron),var(--gold)) 0% 50% / 260% 260% border-box;
-  animation:borderFlow 7s ease infinite;
-}
-.lb-av{
-  border:2.5px solid transparent;
-  background:
-    linear-gradient(var(--elev),var(--elev)) padding-box,
-    linear-gradient(135deg,var(--c),#fff,var(--c)) 0% 50% / 220% 220% border-box;
-  animation:borderFlow 5s ease infinite;
-}
-.lb-ped{
-  border:1px solid transparent;
-  border-top:3px solid var(--c);
-  background:
-    linear-gradient(180deg,color-mix(in srgb,var(--c) 18%,var(--elev)),var(--elev)) padding-box,
-    linear-gradient(180deg,var(--c),var(--border),var(--c)) 50% 0% / 100% 220% border-box;
-  border-bottom:none;
-  animation:borderFlow 6s ease infinite;
-}
-.lb-me{
-  position:relative;
-  border:2px solid transparent;
-  background:
-    linear-gradient(var(--bg),var(--bg)) padding-box,
-    linear-gradient(120deg,var(--gold),var(--accent),var(--silv),var(--gold)) 0% 50% / 260% 260% border-box;
-  animation:borderFlow 6.5s ease infinite;
-}
-.lb-item{
-  --bc:var(--border);
-  border:2px solid transparent;
-  background:
-    linear-gradient(var(--elev),var(--elev)) padding-box,
-    linear-gradient(130deg,color-mix(in srgb,var(--tx3) 65%,var(--border)),var(--border),color-mix(in srgb,var(--accent) 45%,var(--border))) 0% 50% / 240% 240% border-box;
-  animation:borderFlow 8s linear infinite;
-}
-.lb-item.top1{--bc:var(--gold)}
-.lb-item.top2{--bc:var(--silv)}
-.lb-item.top3{--bc:var(--bron)}
-.lb-item.top1,.lb-item.top2,.lb-item.top3{
-  background:
-    linear-gradient(var(--elev),var(--elev)) padding-box,
-    linear-gradient(125deg,var(--bc),color-mix(in srgb,var(--bc) 25%,#fff),var(--bc)) 0% 50% / 240% 240% border-box;
-  animation:borderFlow 5.5s ease infinite;
-}
-.lb-item.me{
-  border:2px solid transparent;
-  background:
-    linear-gradient(var(--elev),var(--elev)) padding-box,
-    linear-gradient(125deg,var(--accent),var(--gold),var(--accent)) 0% 50% / 240% 240% border-box;
-  animation:borderFlow 5s ease infinite;
-}
-.neu-card{
-  position:relative;
-  border:1.5px solid transparent;
-  background:
-    linear-gradient(var(--surface),var(--surface)) padding-box,
-    linear-gradient(135deg,color-mix(in srgb,var(--accent) 26%,var(--border)),var(--border),color-mix(in srgb,var(--gold) 32%,var(--border))) 0% 50% / 250% 250% border-box;
-  animation:borderFlow 10s ease infinite;
-}
+/* ===== BORDER GRADIEN (tanpa cahaya) ===== */
+.lb-stage{border:2px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(135deg,var(--gold),color-mix(in srgb,var(--gold) 12%,var(--border)) 35%,var(--silv) 62%,var(--bron)) border-box}
+.lb-slot{position:relative;z-index:1}
+.lb-av{border:2.5px solid transparent;background:linear-gradient(var(--elev),var(--elev)) padding-box,linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 25%,var(--border))) border-box}
+.lb-ped{border:1px solid transparent;border-top:3px solid var(--c);background:linear-gradient(180deg,color-mix(in srgb,var(--c) 18%,var(--elev)),var(--elev)) padding-box,linear-gradient(180deg,var(--c),var(--border)) border-box;border-bottom:none}
+.lb-me{border:2px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(135deg,var(--gold),var(--border) 50%,var(--accent)) border-box}
+.lb-item{--bc:var(--border);border:2px solid transparent;background:linear-gradient(var(--elev),var(--elev)) padding-box,linear-gradient(135deg,color-mix(in srgb,var(--tx3) 55%,var(--border)),var(--border) 70%) border-box}
+.lb-item.top1{--bc:var(--gold)}.lb-item.top2{--bc:var(--silv)}.lb-item.top3{--bc:var(--bron)}
+.lb-item.top1,.lb-item.top2,.lb-item.top3{background:linear-gradient(var(--elev),var(--elev)) padding-box,linear-gradient(135deg,var(--bc),color-mix(in srgb,var(--bc) 18%,var(--border)) 80%) border-box}
+.lb-item.me{border:2px solid transparent;background:linear-gradient(var(--elev),var(--elev)) padding-box,linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 25%,var(--border))) border-box}
 
 /* ===== ORNAMEN: BUNGA, PERMATA, MAHKOTA ===== */
+.lb-stage{overflow:visible;padding-top:32px}
 .lb-orn{position:absolute;width:34px;height:34px;color:var(--gold);pointer-events:none;z-index:2}
 .lb-orn.c1{top:2px;left:2px}.lb-orn.c2{top:2px;right:2px;transform:rotate(90deg)}.lb-orn.c3{bottom:2px;right:2px;transform:rotate(180deg)}
-.lb-orn .orn-spin{transform-origin:9px 9px;animation:borderSpin 12s linear infinite}
+.lb-me{position:relative}
 .lb-me .lb-orn{width:26px;height:26px;opacity:.9}
 .lb-me .lb-orn.c1{top:1px;left:1px}.lb-me .lb-orn.c3{bottom:1px;right:1px}
 .lb-me-top,.lb-me-gap,.lb-me-bar{position:relative;z-index:1}
-.lb-gem-top{position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:0 8px;background:var(--surface);color:var(--gold);line-height:0;z-index:3;border-radius:999px}
-.lb-gem-top svg{width:22px;height:20px;animation:floatGem 2.6s ease-in-out infinite}
-.lb-avw{position:relative;margin-bottom:14px}.lb-avw .lb-av{margin-bottom:0}
-.lb-crown{position:absolute;top:-21px;left:50%;width:30px;height:23px;margin-left:-15px;color:var(--gold);animation:floatCrown 2.4s ease-in-out infinite}
-.lb-gem{position:absolute;top:-9px;right:18px;padding:0 5px;background:var(--surface);color:var(--bc);line-height:0;border-radius:999px}
-.lb-gem svg{width:15px;height:14px;animation:floatGem 2.8s ease-in-out infinite}
-.lb-gem-crown svg{width:22px;height:17px;animation:floatCrown 2.4s ease-in-out infinite}
+.lb-gem-top{position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:0 8px;background:var(--surface);color:var(--gold);line-height:0;z-index:3}
+.lb-gem-top svg{width:22px;height:20px}
+.lb-avw{position:relative;margin-bottom:6px}.lb-avw .lb-av{margin-bottom:0}
+.lb-crown{position:absolute;top:-21px;left:50%;width:30px;height:23px;margin-left:-15px;color:var(--gold)}
+.lb-item{position:relative}
+.lb-gem{position:absolute;top:-9px;right:18px;padding:0 5px;background:var(--surface);color:var(--bc);line-height:0}
+.lb-gem svg{width:15px;height:14px}
+.lb-gem-crown svg{width:22px;height:17px}
 
 /* ===== AVATAR, FOTO & BINGKAI ===== */
 .pf{position:relative;display:inline-block;width:var(--s);height:var(--s);flex-shrink:0;vertical-align:middle;font-size:calc(var(--s)*.34)}
@@ -258,94 +194,15 @@ main{max-width:720px;margin:0 auto;padding:16px}
 .pf-img img{width:100%;height:100%;object-fit:cover;display:block}
 .pf.no-fr .pf-img{border:2px solid var(--c,var(--border))}
 .pf-fr{position:absolute;left:-18%;top:-18%;width:136%;height:136%;pointer-events:none;overflow:visible}
-.pf.has-fr .pf-fr{animation:floatGem 3.4s ease-in-out infinite}
+.lb-avw{position:relative;margin-bottom:14px}
 .lb-avs{flex-shrink:0;display:inline-flex;margin:0 4px 0 2px}
+.lb-item{overflow:visible}
 .lb-item.top1 .pf{--c:var(--gold)}.lb-item.top2 .pf{--c:var(--silv)}.lb-item.top3 .pf{--c:var(--bron)}
 .hdr-av{background:none;border:none;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;width:42px;height:42px;flex-shrink:0;color:inherit}
 .fr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 6px;margin-top:8px}
 .fr-tile{background:var(--elev);border:1.5px solid var(--border);border-radius:12px;padding:12px 2px 7px;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;font-size:9.5px;font-weight:700;color:var(--tx2);text-align:center;line-height:1.2}
 .fr-tile.sel{border-color:var(--accent);background:var(--bg);color:var(--tx)}
 .zoom-range{padding:0;height:28px;box-shadow:none;border:none;background:transparent;accent-color:var(--accent)}
-
-/* ===== PENGATURAN KHUSUS KANAN (GERIGI / PROFIL) ===== */
-.gear-btn{
-  width:34px;height:34px;border-radius:999px;
-  background:var(--elev);color:var(--tx);
-  border:1.5px solid transparent;
-  background:
-    linear-gradient(var(--elev),var(--elev)) padding-box,
-    linear-gradient(135deg,var(--gold),var(--border),var(--accent)) 0% 50% / 220% 220% border-box;
-  animation:borderFlow 6s ease infinite;
-  display:inline-flex;align-items:center;justify-content:center;
-  cursor:pointer;flex-shrink:0;
-  box-shadow:3px 3px 7px var(--sd),-2px -2px 5px var(--sl);
-  transition:transform .2s;
-}
-.gear-btn:active{transform:scale(.93)}
-.gear-btn svg{transition:transform .35s ease}
-.gear-btn:hover svg{transform:rotate(65deg)}
-
-.settings-drawer-backdrop{
-  position:fixed;inset:0;z-index:85;
-  background:rgba(0,0,0,.58);
-  display:none;justify-content:flex-end;
-}
-.settings-drawer-backdrop.open{display:flex;animation:fade .18s}
-.settings-drawer{
-  width:min(360px,90vw);height:100%;
-  background:var(--surface);
-  border-left:2px solid transparent;
-  background:
-    linear-gradient(var(--surface),var(--surface)) padding-box,
-    linear-gradient(180deg,var(--gold),var(--border),var(--accent),var(--gold)) 50% 0% / 100% 240% border-box;
-  animation:borderFlow 8s ease infinite;
-  padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(24px + env(safe-area-inset-bottom,0px));
-  overflow-y:auto;
-  display:flex;flex-direction:column;gap:12px;
-  box-shadow:-10px 0 28px rgba(0,0,0,.35);
-}
-.settings-head{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  padding-bottom:12px;border-bottom:1px solid var(--border);
-}
-.settings-profile-card{
-  display:flex;align-items:center;gap:12px;
-  padding:12px;border-radius:14px;
-  background:var(--bg);border:1px solid var(--border);
-}
-.settings-menu-list{display:flex;flex-direction:column;gap:8px}
-.settings-menu-btn{
-  width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
-  padding:12px 13px;border-radius:13px;
-  background:var(--elev);color:var(--tx);
-  border:1px solid var(--border);
-  font-size:13px;font-weight:700;cursor:pointer;text-align:left;
-  box-shadow:2px 2px 6px var(--sd),-1px -1px 4px var(--sl);
-  transition:transform .12s,border-color .15s;
-}
-.settings-menu-btn:active{transform:scale(.98)}
-.settings-menu-btn .left{display:flex;align-items:center;gap:10px;min-width:0}
-.settings-menu-btn .sub{font-size:11px;color:var(--tx2);font-weight:600;display:block}
-.settings-menu-btn.danger{color:var(--bad)}
-.settings-panel{
-  display:none;
-  padding:14px;border-radius:14px;
-  background:var(--bg);border:1px solid var(--border);
-  margin-top:2px;
-}
-.settings-panel.open{display:block;animation:fade .18s}
-.settings-panel-top{
-  display:flex;align-items:center;justify-content:space-between;gap:8px;
-  margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);
-}
-.settings-panel-title{font-size:14px;font-weight:800}
-
-@media(prefers-reduced-motion:reduce){
-  .lb-stage,.lb-av,.lb-ped,.lb-me,.lb-item,.neu-card,.gear-btn,.settings-drawer,
-  .lb-orn .orn-spin,.lb-gem-top svg,.lb-crown,.lb-gem,.pf.has-fr .pf-fr{
-    animation:none !important;
-  }
-}
 </style>
 </head>
 <body>
@@ -363,153 +220,45 @@ main{max-width:720px;margin:0 auto;padding:16px}
   <div class="pass-wrap" style="margin-bottom:12px"><input type="password" id="loginPassword" placeholder="Masukkan sandi (awal: 1234)"><button type="button" class="pass-toggle" data-toggle="loginPassword">Lihat</button></div>
   <div id="loginKoinPreview" class="neu-inset row" style="padding:11px 12px;margin-bottom:14px"></div>
   <button type="button" class="btn btn-primary btn-block" id="btnLogin">Masuk Portal Santri</button>
-  <div style="font-size:11px;color:var(--tx3);text-align:center;margin-top:10px">Sandi awal: <strong>1234</strong> (ubah di menu Pengaturan setelah masuk)</div>
+  <div style="font-size:11px;color:var(--tx3);text-align:center;margin-top:10px">Sandi awal: <strong>1234</strong> (ubah di menu Beranda setelah masuk)</div>
   <button type="button" class="btn btn-sm btn-block btn-install" style="display:none;margin-top:12px">Pasang di layar utama</button>
 </div></div></div>
 
-<!-- DRAWER PENGATURAN KHUSUS (SEBELAH KANAN - GERIGI / PROFIL) -->
-<div id="settingsDrawerBackdrop" class="settings-drawer-backdrop" aria-hidden="true">
-  <aside class="settings-drawer" role="dialog" aria-label="Pengaturan Profil & Akun">
-    <div class="settings-head">
-      <div>
-        <div style="font-size:15px;font-weight:800">Pengaturan</div>
-        <div style="font-size:11px;color:var(--tx2)">Profil, Tampilan & Akun Santri</div>
-      </div>
-      <button type="button" class="btn btn-sm" id="btnCloseSettings">Tutup</button>
-    </div>
+<!-- UBAH SANDI -->
+<div id="modalUbahSandi" class="modal-backdrop"><div class="modal-box">
+  <div class="row" style="margin-bottom:12px"><h3 style="font-size:16px;font-weight:800">Ubah Sandi Akun</h3><button type="button" class="btn btn-sm" id="btnTutupSandi">Tutup</button></div>
+  <p style="font-size:12px;color:var(--tx2);margin-bottom:12px">Ganti sandi pribadi agar koin dan progres kuis tetap aman.</p>
+  <label>Sandi Lama</label><div class="pass-wrap" style="margin-bottom:10px"><input type="password" id="oldPassInput" placeholder="Sandi saat ini"><button type="button" class="pass-toggle" data-toggle="oldPassInput">Lihat</button></div>
+  <label>Sandi Baru</label><div class="pass-wrap" style="margin-bottom:10px"><input type="password" id="newPassInput" placeholder="Minimal 4 karakter"><button type="button" class="pass-toggle" data-toggle="newPassInput">Lihat</button></div>
+  <label>Konfirmasi Sandi Baru</label><div class="pass-wrap" style="margin-bottom:14px"><input type="password" id="confirmPassInput" placeholder="Ulangi sandi baru"><button type="button" class="pass-toggle" data-toggle="confirmPassInput">Lihat</button></div>
+  <button type="button" class="btn btn-primary btn-block" id="btnSimpanSandi">Simpan Sandi Baru</button>
+</div></div>
 
-    <div class="settings-profile-card">
-      <div id="drawerAvatarWrap"></div>
-      <div style="min-width:0;flex:1">
-        <div id="drawerDisplayName" style="font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Santri</div>
-        <div id="drawerRealNameNote" style="font-size:11px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Nama asli: -</div>
-      </div>
-    </div>
-
-    <!-- MENU UTAMA PENGATURAN -->
-    <div id="settingsMainMenu" class="settings-menu-list">
-      <button type="button" class="settings-menu-btn" data-setpanel="sandi">
-        <span class="left">
-          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <span><span>Ubah Sandi</span><span class="sub">Ganti sandi akun santri</span></span>
-        </span>
-        <span>&rsaquo;</span>
-      </button>
-
-      <button type="button" class="settings-menu-btn" data-setpanel="foto">
-        <span class="left">
-          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          <span><span>Ubah / Hapus Foto Profil</span><span class="sub">Atur foto atau hapus foto profil</span></span>
-        </span>
-        <span>&rsaquo;</span>
-      </button>
-
-      <button type="button" class="settings-menu-btn" data-setpanel="bingkai">
-        <span class="left">
-          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>
-          <span><span>Ubah Bingkai</span><span class="sub" id="drawerFrameSub">Bingkai saat ini</span></span>
-        </span>
-        <span>&rsaquo;</span>
-      </button>
-
-      <button type="button" class="settings-menu-btn" data-setpanel="panggilan">
-        <span class="left">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          <span><span>Edit Nama Panggilan</span><span class="sub">Nama asli di guru tetap</span></span>
-        </span>
-        <span>&rsaquo;</span>
-      </button>
-
-      <button type="button" class="settings-menu-btn danger" id="btnDrawerKeluar">
-        <span class="left">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          <span><span>Keluar</span><span class="sub">Keluar dari akun santri</span></span>
-        </span>
-        <span>&rsaquo;</span>
-      </button>
-    </div>
-
-    <!-- SUB-PANEL 1: UBAH SANDI -->
-    <div id="panel-sandi" class="settings-panel">
-      <div class="settings-panel-top">
-        <span class="settings-panel-title">Ubah Sandi</span>
-        <button type="button" class="btn btn-sm" data-backmenu="1">&lsaquo; Kembali</button>
-      </div>
-      <label>Sandi Lama</label>
-      <div class="pass-wrap" style="margin-bottom:10px"><input type="password" id="oldPassInput" placeholder="Sandi saat ini"><button type="button" class="pass-toggle" data-toggle="oldPassInput">Lihat</button></div>
-      <label>Sandi Baru</label>
-      <div class="pass-wrap" style="margin-bottom:10px"><input type="password" id="newPassInput" placeholder="Minimal 4 karakter"><button type="button" class="pass-toggle" data-toggle="newPassInput">Lihat</button></div>
-      <label>Konfirmasi Sandi Baru</label>
-      <div class="pass-wrap" style="margin-bottom:12px"><input type="password" id="confirmPassInput" placeholder="Ulangi sandi baru"><button type="button" class="pass-toggle" data-toggle="confirmPassInput">Lihat</button></div>
-      <button type="button" class="btn btn-primary btn-block" id="btnSimpanSandi">Simpan Sandi Baru</button>
-    </div>
-
-    <!-- SUB-PANEL 2: UBAH / HAPUS FOTO PROFIL -->
-    <div id="panel-foto" class="settings-panel">
-      <div class="settings-panel-top">
-        <span class="settings-panel-title">Ubah / Hapus Foto Profil</span>
-        <button type="button" class="btn btn-sm" data-backmenu="1">&lsaquo; Kembali</button>
-      </div>
-      <div style="text-align:center;padding:12px 0 8px"><div id="profFotoPreview" style="display:inline-block"></div></div>
-      <div style="display:flex;gap:8px;margin-bottom:10px">
-        <button type="button" class="btn btn-primary" style="flex:1" id="btnPilihFoto">Ubah Foto</button>
-        <button type="button" class="btn" id="btnHapusFoto">Hapus Foto</button>
-      </div>
-      <input type="file" id="profFile" accept="image/*" hidden>
-      <div id="profEditor" style="display:none;text-align:center;margin-bottom:10px">
-        <p style="font-size:11px;color:var(--tx2);margin-bottom:8px">Geser foto untuk mengatur posisi, slider untuk memperbesar.</p>
-        <canvas id="profCanvas" width="240" height="240" style="width:220px;max-width:100%;border-radius:16px;touch-action:none;background:var(--surface);border:1px solid var(--border)"></canvas>
-        <input type="range" id="profZoom" class="zoom-range" min="1" max="4" step="0.01" value="1" style="margin-top:8px" aria-label="Perbesar foto">
-      </div>
-      <button type="button" class="btn btn-primary btn-block" id="btnSimpanFoto">Simpan Foto Profil</button>
-    </div>
-
-    <!-- SUB-PANEL 3: UBAH BINGKAI -->
-    <div id="panel-bingkai" class="settings-panel">
-      <div class="settings-panel-top">
-        <span class="settings-panel-title">Ubah Bingkai</span>
-        <button type="button" class="btn btn-sm" data-backmenu="1">&lsaquo; Kembali</button>
-      </div>
-      <div style="text-align:center;padding:16px 0 6px">
-        <div id="profFramePreview" style="display:inline-block"></div>
-        <div id="profFrameName" style="font-size:12px;font-weight:800;margin-top:10px"></div>
-      </div>
-      <div class="fr-grid" id="profFrameGrid"></div>
-      <button type="button" class="btn btn-primary btn-block" id="btnSimpanBingkai" style="margin-top:14px">Simpan Bingkai</button>
-    </div>
-
-    <!-- SUB-PANEL 4: EDIT NAMA PANGGILAN -->
-    <div id="panel-panggilan" class="settings-panel">
-      <div class="settings-panel-top">
-        <span class="settings-panel-title">Edit Nama Panggilan</span>
-        <button type="button" class="btn btn-sm" data-backmenu="1">&lsaquo; Kembali</button>
-      </div>
-      <p style="font-size:11.5px;color:var(--tx2);margin-bottom:10px">Nama panggilan tampil di aplikasi santri & klasemen. Di data guru, nama asli tetap muncul dan tidak berubah.</p>
-      <label for="nicknameInput">Nama Panggilan</label>
-      <input type="text" id="nicknameInput" maxlength="30" placeholder="Kosongkan untuk pakai nama asli" style="margin-bottom:8px">
-      <div id="nicknameRealInfo" style="font-size:11px;color:var(--tx3);margin-bottom:12px"></div>
-      <div style="display:flex;gap:8px">
-        <button type="button" class="btn" id="btnResetNickname">Pakai Nama Asli</button>
-        <button type="button" class="btn btn-primary" style="flex:1" id="btnSimpanNickname">Simpan Panggilan</button>
-      </div>
-    </div>
-  </aside>
-</div>
+<!-- PROFIL: FOTO & BINGKAI -->
+<div id="modalProfil" class="modal-backdrop"><div class="modal-box" style="max-height:92vh;overflow-y:auto">
+  <div class="row" style="margin-bottom:6px"><h3 style="font-size:16px;font-weight:800">Foto & Bingkai Profil</h3><button type="button" class="btn btn-sm" id="btnTutupProfil">Tutup</button></div>
+  <div style="text-align:center;padding:30px 0 4px"><div id="profPreview" style="display:inline-block"></div><div id="profFrameName" style="font-size:12px;font-weight:800;margin-top:10px"></div></div>
+  <div style="display:flex;gap:8px;margin:10px 0">
+    <button type="button" class="btn btn-primary" style="flex:1" id="btnPilihFoto">Pilih Foto</button>
+    <button type="button" class="btn" id="btnHapusFoto">Hapus Foto</button>
+  </div>
+  <input type="file" id="profFile" accept="image/*" hidden>
+  <div id="profEditor" style="display:none;text-align:center;margin-bottom:10px">
+    <p style="font-size:11px;color:var(--tx2);margin-bottom:8px">Geser foto untuk mengatur posisi, gunakan slider untuk memperbesar. Ukuran foto bebas, otomatis dikecilkan.</p>
+    <canvas id="profCanvas" width="240" height="240" style="width:240px;max-width:100%;border-radius:16px;touch-action:none;background:var(--bg);border:1px solid var(--border)"></canvas>
+    <input type="range" id="profZoom" class="zoom-range" min="1" max="4" step="0.01" value="1" style="margin-top:8px" aria-label="Perbesar foto">
+  </div>
+  <label>Pilih Bingkai</label>
+  <div class="fr-grid" id="profFrameGrid"></div>
+  <button type="button" class="btn btn-primary btn-block" id="btnSimpanProfil" style="margin-top:14px">Simpan Profil</button>
+</div></div>
 
 <header>
-  <div class="brand">
-    <button type="button" class="hdr-av" id="headerAvatar" data-profopen="1" aria-label="Profil & Pengaturan"><span class="brand-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span></button>
-    <div style="min-width:0">
-      <h1 id="headerSantriName">Santri</h1>
-      <span id="headerSantriKelas">BUSTANUL HADI</span>
-    </div>
-  </div>
+  <div class="brand"><button type="button" class="hdr-av" id="headerAvatar" data-profopen="1" aria-label="Profil"><span class="brand-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span></button>
+    <div><h1 id="headerSantriName">Santri</h1><span id="headerSantriKelas">BUSTANUL HADI</span></div></div>
   <div class="header-right">
     <div class="coin-pill" data-goto="kuis"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8"/><path d="M9.5 10.5c0-1 1.1-1.5 2.5-1.5s2.5.5 2.5 1.5-1.1 1.5-2.5 1.5-2.5.5-2.5 1.5 1.1 1.5 2.5 1.5 2.5-.5 2.5-1.5"/></svg><span id="headerCoinCount">0</span></div>
     <button type="button" class="status-pill" id="btnSync"><span id="syncDot" class="status-dot"></span><span id="syncLabel">Lokal</span></button>
-    <button type="button" class="gear-btn" id="btnOpenSettings" data-profopen="1" aria-label="Pengaturan" title="Pengaturan">
-      <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    </button>
   </div>
 </header>
 
@@ -517,12 +266,13 @@ main{max-width:720px;margin:0 auto;padding:16px}
   <section id="sec-beranda" class="section active">
     <div class="neu-card">
       <div class="row" style="justify-content:flex-start;gap:16px;margin-bottom:12px;padding:6px 4px 0">
-        <button type="button" class="hdr-av" id="berandaAvatar" data-profopen="1" style="width:84px;height:84px" aria-label="Buka pengaturan profil"></button>
-        <div style="min-width:0;flex:1">
-          <span class="badge" id="berandaKelasBadge">Kelas</span>
-          <h2 style="font-size:18px;font-weight:800;margin-top:4px" id="berandaNamaTitle"></h2>
-          <div style="font-size:11px;color:var(--tx2);margin-top:2px" id="berandaNamaAsliSub"></div>
-        </div>
+        <button type="button" class="hdr-av" id="berandaAvatar" data-profopen="1" style="width:84px;height:84px" aria-label="Ubah foto dan bingkai"></button>
+        <div style="min-width:0"><div style="font-size:12px;color:var(--tx2);font-weight:600;margin-bottom:8px">Foto & bingkai profilmu</div><button type="button" class="btn btn-sm" data-profopen="1">Ubah Foto & Bingkai</button></div>
+      </div>
+      
+<div class="row" style="align-items:flex-start;gap:8px;margin-bottom:10px">
+        <div><span class="badge" id="berandaKelasBadge">Kelas</span><h2 style="font-size:18px;font-weight:800;margin-top:4px" id="berandaNamaTitle"></h2></div>
+        <div style="display:flex;gap:6px"><button type="button" class="btn btn-sm" id="btnBukaSandi">Ubah Sandi</button><button type="button" class="btn btn-sm" id="btnKeluar">Keluar</button></div>
       </div>
       <div class="neu-inset row" style="padding:12px">
         <div><div style="font-size:11px;color:var(--tx2);font-weight:700">TOTAL KOIN TERKUMPUL</div><div style="font-size:24px;font-weight:800" id="berandaTotalKoin">0 Koin</div><div style="font-size:11px;color:var(--tx3)" id="berandaPendingInfo"></div></div>
@@ -770,22 +520,8 @@ function toggleInputPass(id, btn) {
   btn.textContent = show ? "Sembunyi" : "Lihat";
 }
 
-// ===================== SANDI & NAMA ASLI / PANGGILAN =====================
+// ===================== SANDI =====================
 const getSantriAktif = () => (appState.santri || []).find(s => s.id === currentSantriId) || null;
-const getRealName = (id, fallbackNama) => {
-  const s = (appState.santri || []).find(x => x.id === id);
-  return String((s && s.nama) || fallbackNama || "Santri").trim();
-};
-const getNickname = id => {
-  const p = profilMap[id] || {};
-  return String(p.nickname || "").trim();
-};
-// Nama tampilan untuk santri & klasemen: pakai nama panggilan jika ada, namun nama asli di guru tetap utuh
-const getDisplayName = (id, fallbackNama) => {
-  const real = getRealName(id, fallbackNama);
-  const nick = getNickname(id);
-  return nick || real;
-};
 
 function getSandiSantri(s) {
   if (!s) return "1234";
@@ -807,10 +543,12 @@ function syncPasswordsFromServer(santriList) {
   if (changed) writeJSON(KEYS.pass, local);
 }
 
-function resetSandiForm() {
-  ["oldPassInput", "newPassInput", "confirmPassInput"].forEach(i => { if ($(i)) { $(i).value = ""; $(i).type = "password"; } });
-  document.querySelectorAll("#panel-sandi .pass-toggle").forEach(b => b.textContent = "Lihat");
+function bukaModalSandi() {
+  ["oldPassInput", "newPassInput", "confirmPassInput"].forEach(i => { $(i).value = ""; $(i).type = "password"; });
+  document.querySelectorAll("#modalUbahSandi .pass-toggle").forEach(b => b.textContent = "Lihat");
+  $("modalUbahSandi").classList.add("open");
 }
+const tutupModalSandi = () => $("modalUbahSandi").classList.remove("open");
 
 async function simpanSandiBaru() {
   const s = getSantriAktif();
@@ -845,8 +583,7 @@ async function simpanSandiBaru() {
       msg = "Sandi berhasil diubah & disinkronkan!";
     } catch (e) { msg = "Sandi tersimpan di HP (belum tersinkron)"; }
   }
-  resetSandiForm();
-  openSettingsMenu();
+  tutupModalSandi();
   showToast(msg);
 }
 
@@ -860,21 +597,19 @@ function getKoinSantri(id) {
 }
 
 function tambahPending(id, nama, koin, benar, salah, total, waktu) {
-  const realNama = getRealName(id, nama);
   const map = getPendingMap();
   const p = map[id] || { poin: 0, benar: 0, salah: 0, total: 0 };
-  map[id] = { nama: realNama, poin: num(p.poin) + koin, benar: num(p.benar) + benar, salah: num(p.salah) + salah, total: num(p.total) + total, waktu };
+  map[id] = { nama, poin: num(p.poin) + koin, benar: num(p.benar) + benar, salah: num(p.salah) + salah, total: num(p.total) + total, waktu };
   writeJSON(KEYS.pending, map);
 }
 
 async function simpanDanAkumulasiKoin(id, nama, koin, benar, salah, total) {
-  const realNama = getRealName(id, nama);
   const waktu = new Date().toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
   const sebelum = getKoinSantri(id);
   koin = num(koin);
   if (!koin && !benar && !salah) return { koinSebelumnya: sebelum, koinBaru: 0, totalKoin: sebelum, mode: navigator.onLine && docRef ? "online" : "offline" };
 
-  const offline = () => { tambahPending(id, realNama, koin, benar, salah, total, waktu); return { koinSebelumnya: sebelum, koinBaru: koin, totalKoin: sebelum + koin, mode: "offline" }; };
+  const offline = () => { tambahPending(id, nama, koin, benar, salah, total, waktu); return { koinSebelumnya: sebelum, koinBaru: koin, totalKoin: sebelum + koin, mode: "offline" }; };
   if (!navigator.onLine || !docRef) return offline();
 
   try {
@@ -891,7 +626,7 @@ async function simpanDanAkumulasiKoin(id, nama, koin, benar, salah, total) {
       const rec = {
         ...old,
         santriId: id,
-        nama: realNama,
+        nama,
         poin: finalTotal,
         koin: finalTotal,
         koinTerakhir: koin,
@@ -935,14 +670,14 @@ async function sinkronkanPendingKoin() {
 
       ids.forEach(id => {
         const p = snapshotMap[id], i = skor.findIndex(x => String(x.santriId || x.id) === id);
-        const realNama = getRealName(id, p.nama);
+        const so = (appState.santri || []).find(s => s.id === id);
         const old = i >= 0 ? skor[i] : {};
         const oldPoin = num(old.poin !== undefined ? old.poin : old.koin);
         const newTotal = oldPoin + num(p.poin);
         const rec = {
           ...old,
           santriId: id,
-          nama: realNama,
+          nama: so ? so.nama : (p.nama || old.nama || id),
           poin: newTotal,
           koin: newTotal,
           benar: num(old.benar) + num(p.benar),
@@ -1045,11 +780,10 @@ function masukSantri() {
   $("loginScreen").style.display = "none";
   gotoTab("beranda");
   renderAll();
-  showToast("Selamat datang, " + getDisplayName(s.id, s.nama) + "!");
+  showToast("Selamat datang, " + s.nama + "!");
 }
 
 async function keluarAkun() {
-  closeSettingsDrawer();
   if (isQuizPlaying) { await keluarDanSimpanKuis(); kembaliKeLobbyKuis(); }
   currentSantriId = "";
   localStorage.removeItem(KEYS.aktif);
@@ -1148,8 +882,7 @@ function buildCombinedLeaderboard() {
   const map = new Map();
   (appState.skor || []).forEach(sc => {
     const so = list.find(x => x.id === sc.santriId);
-    const disp = getDisplayName(sc.santriId, (so && so.nama) || sc.nama);
-    map.set(sc.santriId, { santriId: sc.santriId, nama: disp, kelas: so ? so.kelas || "Umum" : "Umum", poin: num(sc.poin) });
+    map.set(sc.santriId, { santriId: sc.santriId, nama: (so && so.nama) || sc.nama, kelas: so ? so.kelas || "Umum" : "Umum", poin: num(sc.poin) });
   });
   const pend = getPendingMap();
   Object.keys(pend).forEach(id => {
@@ -1157,8 +890,7 @@ function buildCombinedLeaderboard() {
     if (map.has(id)) map.get(id).poin += add;
     else {
       const so = list.find(x => x.id === id);
-      const disp = getDisplayName(id, so ? so.nama : pend[id].nama || id);
-      map.set(id, { santriId: id, nama: disp, kelas: so ? so.kelas || "Umum" : "Umum", poin: add });
+      map.set(id, { santriId: id, nama: so ? so.nama : pend[id].nama || id, kelas: so ? so.kelas || "Umum" : "Umum", poin: add });
     }
   });
   return [...map.values()].filter(r => r.poin > 0).sort((a, b) => b.poin - a.poin || String(a.nama).localeCompare(String(b.nama)));
@@ -1167,7 +899,7 @@ function buildCombinedLeaderboard() {
 const LB_LEVELS = [[0, "Pemula"], [50, "Rajin"], [150, "Cerdas"], [300, "Mahir"], [600, "Juara"]];
 let lbKelas = "ALL";
 const lbLevel = p => { let l = LB_LEVELS[0][1]; LB_LEVELS.forEach(([m, n]) => { if (p >= m) l = n; }); return l; };
-const ORN = n => `<svg class="lb-orn c${n}" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5 38V18C5 10 10 5 18 5h20"/><path d="M11 38V22c0-5.5 5.5-11 11-11h16" opacity=".4"/><g class="orn-spin" fill="currentColor" stroke="none"><circle cx="9" cy="5.5" r="2.4"/><circle cx="9" cy="12.5" r="2.4"/><circle cx="5.5" cy="9" r="2.4"/><circle cx="12.5" cy="9" r="2.4"/></g><path fill="currentColor" stroke="none" d="M21 5c3.2 0 5.4 2.1 6.4 5.2-3.2 0-5.4-2.1-6.4-5.2zM5 21c0 3.2 2.1 5.4 5.2 6.4 0-3.2-2.1-5.4-5.2-6.4z"/><circle cx="9" cy="9" r="1.7" fill="var(--bg)" stroke="none"/></svg>`;
+const ORN = n => `<svg class="lb-orn c${n}" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5 38V18C5 10 10 5 18 5h20"/><path d="M11 38V22c0-5.5 5.5-11 11-11h16" opacity=".4"/><g fill="currentColor" stroke="none"><circle cx="9" cy="5.5" r="2.4"/><circle cx="9" cy="12.5" r="2.4"/><circle cx="5.5" cy="9" r="2.4"/><circle cx="12.5" cy="9" r="2.4"/><path d="M21 5c3.2 0 5.4 2.1 6.4 5.2-3.2 0-5.4-2.1-6.4-5.2zM5 21c0 3.2 2.1 5.4 5.2 6.4 0-3.2-2.1-5.4-5.2-6.4z"/></g><circle cx="9" cy="9" r="1.7" fill="var(--bg)" stroke="none"/></svg>`;
 const GEM = `<svg viewBox="0 0 24 22" aria-hidden="true"><path d="M6 2h12l5 6-11 13L1 8l5-6z" fill="currentColor"/><path d="M1 8h22M6 2l3 6 3-6 3 6 3-6M9 8l3 13 3-13" fill="none" stroke="var(--surface)" stroke-width="1" stroke-linejoin="round" opacity=".55"/></svg>`;
 const CROWN_SVG = `<svg class="lb-crown" viewBox="0 0 28 22" aria-hidden="true"><path d="M2 8l5.5 5L14 3l6.5 10L26 8l-2 12H4L2 8z" fill="currentColor"/><g fill="currentColor"><circle cx="2" cy="7" r="1.9"/><circle cx="14" cy="2.6" r="1.9"/><circle cx="26" cy="7" r="1.9"/></g><g fill="var(--bg)"><circle cx="14" cy="15.5" r="1.5"/><circle cx="8.5" cy="16" r="1.1"/><circle cx="19.5" cy="16" r="1.1"/></g></svg>`;
 
@@ -1191,14 +923,13 @@ function renderPodiumHTML(rk) {
 function renderMyRankHTML(rk, me) {
   const s = (appState.santri || []).find(x => x.id === me);
   if (!s) return "";
-  const disp = getDisplayName(s.id, s.nama);
   const idx = rk.findIndex(r => r.santriId === me);
-  if (idx < 0) return `<div class="lb-me">${ORN(1)}${ORN(3)}<div class="lb-me-top"><div class="lb-me-rank"><small>PERINGKAT</small><b>-</b></div><div class="lb-me-info"><div class="n">${esc(disp)}</div><div class="t">Belum masuk klasemen</div></div><div class="lb-me-coin"><b>0</b><span>KOIN</span></div></div><div class="lb-me-gap">Mainkan kuis untuk mengumpulkan koin pertamamu.</div></div>`;
+  if (idx < 0) return `<div class="lb-me">${ORN(1)}${ORN(3)}<div class="lb-me-top"><div class="lb-me-rank"><small>PERINGKAT</small><b>-</b></div><div class="lb-me-info"><div class="n">${esc(s.nama)}</div><div class="t">Belum masuk klasemen</div></div><div class="lb-me-coin"><b>0</b><span>KOIN</span></div></div><div class="lb-me-gap">Mainkan kuis untuk mengumpulkan koin pertamamu.</div></div>`;
   const r = rk[idx], prev = rk[idx - 1];
   const pct = prev ? Math.max(4, Math.min(100, Math.round(r.poin / prev.poin * 100))) : 100;
   const msg = prev ? `Kurang <b>${prev.poin - r.poin} koin</b> lagi untuk menyalip <b>${esc(prev.nama)}</b>` : `Kamu berada di puncak klasemen. Pertahankan!`;
   return `<div class="lb-me">${ORN(1)}${ORN(3)}<div class="lb-me-top"><div class="lb-me-rank"><small>PERINGKAT</small><b>#${idx + 1}</b></div>
-    <div class="lb-me-info"><div class="n">${esc(disp)}</div><div class="t">${esc(lbLevel(r.poin))} • ${esc(r.kelas || "Umum")}</div></div>
+    <div class="lb-me-info"><div class="n">${esc(s.nama)}</div><div class="t">${esc(lbLevel(r.poin))} • ${esc(r.kelas || "Umum")}</div></div>
     <div class="lb-me-coin"><b>${r.poin}</b><span>KOIN</span></div></div>
     <div class="lb-me-gap">${msg}</div><div class="lb-me-bar"><i style="width:${pct}%"></i></div></div>`;
 }
@@ -1227,7 +958,7 @@ function renderKelasFilterHTML(all) {
 
 function animateCounts() {}
 
-// ===================== PROFIL: FOTO, BINGKAI, PANGGILAN & PENGATURAN =====================
+// ===================== PROFIL: FOTO & BINGKAI =====================
 const PROFIL_KEY = "bustanul_profil_map";
 const GOLD3 = ["#fff3b8", "#e6b422", "#8a5a00"];
 const FRAMES = [
@@ -1304,12 +1035,9 @@ function avatarCore(foto, nama, fid, px) {
   const inner = foto ? `<img src="${foto}" alt="" decoding="async">` : esc(getInitials(nama));
   return `<span class="pf ${fr ? "has-fr" : "no-fr"}" style="--s:${px}px"><span class="pf-img">${inner}</span>${fr}</span>`;
 }
-const avatarHTML = (id, nama, px) => {
-  const p = profilMap[id] || {};
-  return avatarCore(p.foto, getDisplayName(id, nama), p.frame, px);
-};
+const avatarHTML = (id, nama, px) => { const p = profilMap[id] || {}; return avatarCore(p.foto, nama, p.frame, px); };
 
-// ---- sinkron profil (nickname disimpan lokal di HP agar nama asli di guru tidak berubah) ----
+// ---- sinkron ----
 async function sinkronProfil() {
   if (!navigator.onLine || !docRef) return;
   const ids = Object.keys(profilMap).filter(i => profilMap[i] && profilMap[i].dirty);
@@ -1330,16 +1058,9 @@ function initProfilListener() {
     unsubProfil = fs.collection("balai_pengajian").orderBy(firebase.firestore.FieldPath.documentId()).startAt("profil_").endAt("profil_").onSnapshot(snap => {
       snap.docChanges().forEach(ch => {
         const d = ch.doc.data() || {}, id = String(d.santriId || ch.doc.id.replace("profil_", ""));
-        const prevNick = (profilMap[id] && profilMap[id].nickname) || "";
-        if (ch.type === "removed") {
-          if (!(profilMap[id] && profilMap[id].dirty)) {
-            if (prevNick) profilMap[id] = { frame: "none", foto: "", t: Date.now(), nickname: prevNick };
-            else delete profilMap[id];
-          }
-          return;
-        }
+        if (ch.type === "removed") { if (!(profilMap[id] && profilMap[id].dirty)) delete profilMap[id]; return; }
         if (profilMap[id] && profilMap[id].dirty && num(profilMap[id].t) >= num(d.updatedAt)) return;
-        profilMap[id] = { frame: d.frame || "none", foto: d.foto || "", t: num(d.updatedAt), nickname: prevNick };
+        profilMap[id] = { frame: d.frame || "none", foto: d.foto || "", t: num(d.updatedAt) };
       });
       writeJSON(PROFIL_KEY, profilMap);
       if (currentSantriId) isQuizPlaying ? renderBeranda() : renderAll();
@@ -1384,75 +1105,27 @@ function exportFoto() {
   return d;
 }
 
-function refreshFotoPanelUI() {
+function refreshProfUI() {
   const s = getSantriAktif(); if (!s) return;
-  const disp = getDisplayName(s.id, s.nama);
-  $("profFotoPreview").innerHTML = avatarCore(PR.foto, disp, PR.frame, 92);
-  $("btnHapusFoto").style.display = PR.foto ? "" : "none";
-}
-
-function refreshBingkaiPanelUI() {
-  const s = getSantriAktif(); if (!s) return;
-  const disp = getDisplayName(s.id, s.nama);
-  $("profFramePreview").innerHTML = avatarCore(PR.foto, disp, PR.frame, 96);
+  $("profPreview").innerHTML = avatarCore(PR.foto, s.nama, PR.frame, 104);
   const f = FRAMES.find(x => x.id === PR.frame);
   $("profFrameName").textContent = f ? f.nama : "";
-  $("profFrameGrid").innerHTML = FRAMES.map(fr => `<button type="button" class="fr-tile ${fr.id === PR.frame ? "sel" : ""}" data-fr="${fr.id}">${avatarCore(PR.foto, disp, fr.id, 44)}<span>${esc(fr.nama)}</span></button>`).join("");
+  $("profFrameGrid").innerHTML = FRAMES.map(fr => `<button type="button" class="fr-tile ${fr.id === PR.frame ? "sel" : ""}" data-fr="${fr.id}">${avatarCore(PR.foto, s.nama, fr.id, 46)}<span>${esc(fr.nama)}</span></button>`).join("");
 }
 
-function refreshDrawerSummary() {
-  const s = getSantriAktif(); if (!s) return;
-  const p = profilMap[s.id] || {};
-  const disp = getDisplayName(s.id, s.nama);
-  const nick = getNickname(s.id);
-  const f = FRAMES.find(x => x.id === (p.frame || "none"));
-  $("drawerAvatarWrap").innerHTML = avatarHTML(s.id, s.nama, 52);
-  $("drawerDisplayName").textContent = disp;
-  $("drawerRealNameNote").textContent = nick ? `Nama asli (guru): ${s.nama}` : `Kelas: ${s.kelas || "Umum"}`;
-  $("drawerFrameSub").textContent = `Bingkai: ${(f && f.nama) || "Tanpa Bingkai"}`;
-}
-
-function openSettingsMenu() {
+function bukaProfil() {
   const s = getSantriAktif(); if (!s) return;
   const p = profilMap[s.id] || {};
   PR = { img: null, foto: p.foto || "", frame: p.frame || "none", zoom: 1, ox: 0, oy: 0 };
   $("profEditor").style.display = "none";
   $("profZoom").value = 1;
   $("profFile").value = "";
-  document.querySelectorAll(".settings-panel").forEach(el => el.classList.remove("open"));
-  $("settingsMainMenu").style.display = "flex";
-  refreshDrawerSummary();
+  $("btnHapusFoto").style.display = PR.foto ? "" : "none";
+  refreshProfUI();
+  $("modalProfil").classList.add("open");
 }
-
-function openSettingsDrawer(initialPanel) {
-  const s = getSantriAktif(); if (!s) return;
-  openSettingsMenu();
-  $("settingsDrawerBackdrop").classList.add("open");
-  $("settingsDrawerBackdrop").setAttribute("aria-hidden", "false");
-  if (initialPanel) openSettingsSubPanel(initialPanel);
-}
-
-function closeSettingsDrawer() {
-  $("settingsDrawerBackdrop").classList.remove("open");
-  $("settingsDrawerBackdrop").setAttribute("aria-hidden", "true");
-}
-
-function openSettingsSubPanel(panelKey) {
-  const s = getSantriAktif(); if (!s) return;
-  $("settingsMainMenu").style.display = "none";
-  document.querySelectorAll(".settings-panel").forEach(el => el.classList.remove("open"));
-  const target = $("panel-" + panelKey);
-  if (target) target.classList.add("open");
-  if (panelKey === "sandi") resetSandiForm();
-  else if (panelKey === "foto") refreshFotoPanelUI();
-  else if (panelKey === "bingkai") refreshBingkaiPanelUI();
-  else if (panelKey === "panggilan") {
-    $("nicknameInput").value = getNickname(s.id);
-    $("nicknameRealInfo").textContent = `Nama asli di data guru: "${s.nama}"`;
-  }
-}
-
-const pilihBingkai = id => { PR.frame = id; refreshBingkaiPanelUI(); };
+const tutupProfil = () => $("modalProfil").classList.remove("open");
+const pilihBingkai = id => { PR.frame = id; refreshProfUI(); };
 
 function pilihFile(file) {
   if (!file) return;
@@ -1460,72 +1133,36 @@ function pilihFile(file) {
   img.onload = () => {
     PR.img = img; PR.zoom = 1; PR.ox = PR.oy = 0; $("profZoom").value = 1;
     $("profEditor").style.display = "block";
-    drawCrop(); PR.foto = exportFoto(); refreshFotoPanelUI();
+    drawCrop(); PR.foto = exportFoto(); $("btnHapusFoto").style.display = ""; refreshProfUI();
     setTimeout(() => URL.revokeObjectURL(url), 4000);
   };
   img.onerror = () => { URL.revokeObjectURL(url); showToast("Foto tidak bisa dibuka. Coba foto lain (JPG/PNG)."); };
   img.src = url;
 }
 
-async function simpanFotoProfil() {
+async function simpanProfil() {
   const s = getSantriAktif(); if (!s) return;
   if (PR.img) PR.foto = exportFoto();
-  const prev = profilMap[s.id] || {};
-  profilMap[s.id] = { ...prev, frame: prev.frame || "none", foto: PR.foto || "", t: Date.now(), dirty: true };
+  profilMap[s.id] = { frame: PR.frame, foto: PR.foto || "", t: Date.now(), dirty: true };
   writeJSON(PROFIL_KEY, profilMap);
-  openSettingsMenu();
-  renderAll();
-  showToast(PR.foto ? "Foto profil disimpan!" : "Foto profil dihapus!");
+  tutupProfil(); renderAll();
+  showToast(navigator.onLine && docRef ? "Profil disimpan!" : "Profil disimpan di HP, akan tersinkron saat online");
   sinkronProfil();
 }
 
-async function simpanBingkaiProfil() {
-  const s = getSantriAktif(); if (!s) return;
-  const prev = profilMap[s.id] || {};
-  profilMap[s.id] = { ...prev, frame: PR.frame || "none", foto: prev.foto || "", t: Date.now(), dirty: true };
-  writeJSON(PROFIL_KEY, profilMap);
-  openSettingsMenu();
-  renderAll();
-  showToast("Bingkai profil disimpan!");
-  sinkronProfil();
-}
-
-function simpanNamaPanggilan(resetOnly) {
-  const s = getSantriAktif(); if (!s) return;
-  const val = resetOnly ? "" : String($("nicknameInput").value || "").trim().slice(0, 30);
-  const prev = profilMap[s.id] || {};
-  profilMap[s.id] = { ...prev, frame: prev.frame || "none", foto: prev.foto || "", nickname: val };
-  writeJSON(PROFIL_KEY, profilMap);
-  openSettingsMenu();
-  renderAll();
-  showToast(val ? `Nama panggilan disimpan: ${val}` : "Kembali memakai nama asli");
-}
-
-(function wireSettingsAndProfil() {
-  $("btnCloseSettings").onclick = closeSettingsDrawer;
-  $("settingsDrawerBackdrop").addEventListener("click", e => { if (e.target === e.currentTarget) closeSettingsDrawer(); });
-  $("btnDrawerKeluar").onclick = keluarAkun;
-
+(function wireProfil() {
+  $("btnTutupProfil").onclick = tutupProfil;
+  $("btnSimpanProfil").onclick = simpanProfil;
   $("btnPilihFoto").onclick = () => $("profFile").click();
   $("profFile").addEventListener("change", e => pilihFile(e.target.files && e.target.files[0]));
-  $("btnHapusFoto").onclick = () => {
-    PR.img = null; PR.foto = "";
-    $("profEditor").style.display = "none";
-    refreshFotoPanelUI();
-  };
-  $("btnSimpanFoto").onclick = simpanFotoProfil;
-  $("btnSimpanBingkai").onclick = simpanBingkaiProfil;
-
-  $("btnSimpanNickname").onclick = () => simpanNamaPanggilan(false);
-  $("btnResetNickname").onclick = () => simpanNamaPanggilan(true);
-  $("nicknameInput").addEventListener("keydown", e => { if (e.key === "Enter") simpanNamaPanggilan(false); });
-
+  $("btnHapusFoto").onclick = () => { PR.img = null; PR.foto = ""; $("profEditor").style.display = "none"; $("btnHapusFoto").style.display = "none"; refreshProfUI(); };
+  $("modalProfil").addEventListener("click", e => { if (e.target === e.currentTarget) tutupProfil(); });
   $("profZoom").addEventListener("input", e => { PR.zoom = Number(e.target.value); drawCrop(); });
-  $("profZoom").addEventListener("change", () => { if (PR.img) { PR.foto = exportFoto(); refreshFotoPanelUI(); } });
+  $("profZoom").addEventListener("change", () => { if (PR.img) { PR.foto = exportFoto(); refreshProfUI(); } });
   const cv = $("profCanvas"); let drag = null;
   cv.addEventListener("pointerdown", e => { drag = { x: e.clientX, y: e.clientY, ox: PR.ox, oy: PR.oy }; cv.setPointerCapture(e.pointerId); });
   cv.addEventListener("pointermove", e => { if (!drag || !PR.img) return; const k = CROP / cv.getBoundingClientRect().width; PR.ox = drag.ox + (e.clientX - drag.x) * k; PR.oy = drag.oy + (e.clientY - drag.y) * k; drawCrop(); });
-  const end = () => { if (drag && PR.img) { PR.foto = exportFoto(); refreshFotoPanelUI(); } drag = null; };
+  const end = () => { if (drag && PR.img) { PR.foto = exportFoto(); refreshProfUI(); } drag = null; };
   cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
   cv.addEventListener("wheel", e => { if (!PR.img) return; e.preventDefault(); PR.zoom = clamp(PR.zoom + (e.deltaY < 0 ? .08 : -.08), 1, 4); $("profZoom").value = PR.zoom; drawCrop(); }, { passive: false });
 })();
@@ -1534,20 +1171,16 @@ function simpanNamaPanggilan(resetOnly) {
 function renderBeranda() {
   const s = getSantriAktif();
   if (!s) return;
-  const disp = getDisplayName(s.id, s.nama);
-  const nick = getNickname(s.id);
   const total = getKoinSantri(s.id), p = getPendingMap()[s.id], pend = p ? num(p.poin) : 0;
-  $("headerSantriName").textContent = disp;
+  $("headerSantriName").textContent = s.nama;
   $("headerAvatar").innerHTML = avatarHTML(s.id, s.nama, 34);
   $("berandaAvatar").innerHTML = avatarHTML(s.id, s.nama, 64);
   $("headerSantriKelas").textContent = s.kelas || "Umum";
   $("headerCoinCount").textContent = total;
   $("berandaKelasBadge").textContent = `${s.kelas || "Umum"} • @${s.username || s.id}`;
-  $("berandaNamaTitle").textContent = `Assalamu'alaikum, ${disp}`;
-  $("berandaNamaAsliSub").textContent = nick ? `Nama asli (guru): ${s.nama}` : "Ketuk foto atau gerigi kanan atas untuk pengaturan";
+  $("berandaNamaTitle").textContent = `Assalamu'alaikum, ${s.nama}`;
   $("berandaTotalKoin").textContent = `${total} Koin`;
   $("berandaPendingInfo").textContent = pend > 0 ? `Termasuk +${pend} koin lokal menunggu sinyal online` : "Saldo tersinkron dengan portal guru & klasemen";
-  if ($("settingsDrawerBackdrop").classList.contains("open")) refreshDrawerSummary();
 
   const ab = appState.absensi || {};
   const c = { Hadir: 0, Izin: 0, Sakit: 0, Alpa: 0 };
@@ -1758,14 +1391,18 @@ $("loginNamaInput").addEventListener("input", cekNamaSantriLive);
 $("loginNamaInput").addEventListener("keydown", e => { if (e.key === "Enter") $("loginPassword").focus(); });
 $("loginPassword").addEventListener("keydown", e => { if (e.key === "Enter") masukSantri(); });
 $("btnLogin").onclick = masukSantri;
+$("btnBukaSandi").onclick = bukaModalSandi;
+$("btnTutupSandi").onclick = tutupModalSandi;
 $("btnSimpanSandi").onclick = simpanSandiBaru;
+$("modalUbahSandi").addEventListener("click", e => { if (e.target === e.currentTarget) tutupModalSandi(); });
+$("btnKeluar").onclick = keluarAkun;
 $("btnSync").onclick = refreshManual;
 $("btnMulai").onclick = mulaiKuis;
 $("btnNextSoal").onclick = lanjutSoalBerikutnya;
 $("btnKeluarKuis").onclick = keluarDanSimpanKuis;
 $("btnKembaliLobby").onclick = kembaliKeLobbyKuis;
 document.addEventListener("click", e => {
-  const t = e.target.closest("[data-toggle],[data-goto],[data-tab],[data-cat],[data-mcat],[data-opt],[data-lbk],[data-fr],[data-profopen],[data-setpanel],[data-backmenu]");
+  const t = e.target.closest("[data-toggle],[data-goto],[data-tab],[data-cat],[data-mcat],[data-opt],[data-lbk],[data-fr],[data-profopen]");
   if (!t) return;
   if (t.dataset.toggle) toggleInputPass(t.dataset.toggle, t);
   else if (t.dataset.goto) gotoTab(t.dataset.goto);
@@ -1775,9 +1412,1477 @@ document.addEventListener("click", e => {
   else if (t.dataset.opt !== undefined) pilihJawaban(Number(t.dataset.opt));
   else if (t.dataset.lbk !== undefined) { lbKelas = t.dataset.lbk; renderLobbyKuis(); }
   else if (t.dataset.fr !== undefined) pilihBingkai(t.dataset.fr);
-  else if (t.dataset.setpanel !== undefined) openSettingsSubPanel(t.dataset.setpanel);
-  else if (t.dataset.backmenu !== undefined) openSettingsMenu();
-  else if (t.dataset.profopen !== undefined) openSettingsDrawer();
+  else if (t.dataset.profopen !== undefined) bukaProfil();
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden" && isQuizPlaying && sessionKoin > 0) keluarDanSimpanKuis();
+  else if (document.visibilityState === "visible" && navigator.onLine) { initFirebase(); sinkronkanPendingKoin(); }
+});
+
+// ===================== PWA / PASANG APLIKASI =====================
+let deferredInstall = null;
+const isStandalone = () => (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+function updateInstallButtons() {
+  const show = !isStandalone() && !window.Android;
+  document.querySelectorAll(".btn-install").forEach(b => { b.style.display = show ? "" : "none"; });
+}
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredInstall = e; updateInstallButtons(); });
+window.addEventListener("appinstalled", () => { deferredInstall = null; showToast("Aplikasi berhasil dipasang!"); updateInstallButtons(); });
+document.querySelectorAll(".btn-install").forEach(b => b.addEventListener("click", async () => {
+  if (deferredInstall) { deferredInstall.prompt(); await deferredInstall.userChoice; deferredInstall = null; return; }
+  showToast(isIOS ? "Ketuk ikon Bagikan, lalu 'Tambah ke Layar Utama'" : "Buka menu browser, lalu pilih 'Instal aplikasi' / 'Tambahkan ke layar utama'");
+}));
+updateInstallButtons();
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+
+// ===================== INIT =====================
+cekNamaSantriLive();
+if (currentSantriId && getSantriAktif()) $("loginScreen").style.display = "none";
+initFirebase();
+renderAll();
+
+// ===================== SINKRON TEMA & SYSTEM BARS HP =====================
+function applyThemeMode(forceDarkOverride) {
+  const mediaDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const dark = typeof forceDarkOverride === "boolean" ? forceDarkOverride : mediaDark;
+  document.documentElement.classList.toggle("force-dark", dark);
+  const surfaceColor = dark ? "#171717" : "#f7f7f7";
+  document.documentElement.style.colorScheme = dark ? "dark" : "light";
+  document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", surfaceColor));
+  if (window.Android) {
+    if (typeof window.Android.setSystemBarColor === "function") window.Android.setSystemBarColor(surfaceColor, dark);
+    if (typeof window.Android.setStatusBarColor === "function") window.Android.setStatusBarColor(surfaceColor, !dark);
+    if (typeof window.Android.setNavigationBarColor === "function") window.Android.setNavigationBarColor(surfaceColor, !dark);
+  }
+}
+window.onAndroidThemeChanged = isDark => applyThemeMode(Boolean(isDark));
+applyThemeMode();
+window.addEventListener("load", () => applyThemeMode());
+window.addEventListener("pageshow", () => applyThemeMode());
+if (window.matchMedia) {
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => applyThemeMode());
+}
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>BUSTANUL HADI - Portal & Game Kuis Santri</title>
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#171717">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAADvElEQVR42u3ZTU4iQRiAYQ+BoIg/3IANh2DhIVxwCRIuYeIp1FMYbwHHYF2Tz4TJRJmBOGDXz7N4Nx3o7irqaZrmrNfrJanVzkyCAJAAkACQAJAAkACQAJAAkACQAJAAkACQigdwfn6epFYDQABIAEgASABIAEgASABIAEgASABIAEgASOUD6Pf7SWo1AASABIAEgASABIAEgASABIAEgASABIAEgFQ+gMFgkKRWA0AASABIAEgASABIAEgASABIAEgASABIlQC4uLhIUqsVBWCxWKTn5+fOenh4yH6O4hy7nKP4jAA4UTHBm82m8x4fH9NsNstmXuJc4pxymJv4jACoHMC2t7e3Tq94cew4h5zmBICGAHTxrZDT1R4AAL60Wq0+rsyTyeRo4459xT5j37mPH4DGAfzZMX40xz5KGjMAABwNQWmLHwAAdt4Sfed2KN5Twi0PAAAcHUGpix8AAP4bQcmLHwAA9v5vsG+MuT3XBwCAH1sgtY8PAAB+/2n2eWw5/7lVNYDLy8tUSrUAiHG0NLacAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA8gEMh8NUSjUtkpbGlnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQCUArq6uUim9vLxUsUhiHC2NLecAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKB8AKPRKJVSTYukpbHlHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlA/g+vo6lVJNi6SlseUcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHTYcrn8mOCcen9/7wxAHDu3+YjPCIDGmk6n6enpKa3X65MDiGPEseKY5h6A7JrP53u/Fb4DIPYZ+zbHRwZwc3OTdPy23wq7FvPr6+uX18e2Xa/dXu3N6WkC4AcgfL41OgRAvMfCB6BKBPsAWPwAVI3gXwAsfgCqLhb63wDs2i4AqiuelR+yTQBUWTzOPGSbAABAAAAgACrq/v7+oG0CQAJAAkA6BYDb29sktRoAAkACQAJAAkACQAJAAkACQAJAAkACQAJAKh/A3d1dkloNAAEgASABIAEgASABIAEgASABIAEgASABIJUPYDweJ6nVABAAEgASABIAEgASABIAEgASABIAEgBSHf0CRkUssH4ex2YAAAAASUVORK5CYII=">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAADvElEQVR42u3ZTU4iQRiAYQ+BoIg/3IANh2DhIVxwCRIuYeIp1FMYbwHHYF2Tz4TJRJmBOGDXz7N4Nx3o7irqaZrmrNfrJanVzkyCAJAAkACQAJAAkACQAJAAkACQAJAAkACQigdwfn6epFYDQABIAEgASABIAEgASABIAEgASABIAEgASOUD6Pf7SWo1AASABIAEgASABIAEgASABIAEgASABIAEgFQ+gMFgkKRWA0AASABIAEgASABIAEgASABIAEgASABIlQC4uLhIUqsVBWCxWKTn5+fOenh4yH6O4hy7nKP4jAA4UTHBm82m8x4fH9NsNstmXuJc4pxymJv4jACoHMC2t7e3Tq94cew4h5zmBICGAHTxrZDT1R4AAL60Wq0+rsyTyeRo4459xT5j37mPH4DGAfzZMX40xz5KGjMAABwNQWmLHwAAdt4Sfed2KN5Twi0PAAAcHUGpix8AAP4bQcmLHwAA9v5vsG+MuT3XBwCAH1sgtY8PAAB+/2n2eWw5/7lVNYDLy8tUSrUAiHG0NLacAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA8gEMh8NUSjUtkpbGlnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQCUArq6uUim9vLxUsUhiHC2NLecAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKB8AKPRKJVSTYukpbHlHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlA/g+vo6lVJNi6SlseUcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHTYcrn8mOCcen9/7wxAHDu3+YjPCIDGmk6n6enpKa3X65MDiGPEseKY5h6A7JrP53u/Fb4DIPYZ+zbHRwZwc3OTdPy23wq7FvPr6+uX18e2Xa/dXu3N6WkC4AcgfL41OgRAvMfCB6BKBPsAWPwAVI3gXwAsfgCqLhb63wDs2i4AqiuelR+yTQBUWTzOPGSbAABAAAAgACrq/v7+oG0CQAJAAkA6BYDb29sktRoAAkACQAJAAkACQAJAAkACQAJAAkACQAJAKh/A3d1dkloNAAEgASABIAEgASABIAEgASABIAEgASABIJUPYDweJ6nVABAAEgASABIAEgASABIAEgASABIAEgBSHf0CRkUssH4ex2YAAAAASUVORK5CYII=">
+<script>
+(function () {
+  try {
+    var base = location.href.split("#")[0].split("?")[0];
+    var I192 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAADvElEQVR42u3ZTU4iQRiAYQ+BoIg/3IANh2DhIVxwCRIuYeIp1FMYbwHHYF2Tz4TJRJmBOGDXz7N4Nx3o7irqaZrmrNfrJanVzkyCAJAAkACQAJAAkACQAJAAkACQAJAAkACQigdwfn6epFYDQABIAEgASABIAEgASABIAEgASABIAEgASOUD6Pf7SWo1AASABIAEgASABIAEgASABIAEgASABIAEgFQ+gMFgkKRWA0AASABIAEgASABIAEgASABIAEgASABIlQC4uLhIUqsVBWCxWKTn5+fOenh4yH6O4hy7nKP4jAA4UTHBm82m8x4fH9NsNstmXuJc4pxymJv4jACoHMC2t7e3Tq94cew4h5zmBICGAHTxrZDT1R4AAL60Wq0+rsyTyeRo4459xT5j37mPH4DGAfzZMX40xz5KGjMAABwNQWmLHwAAdt4Sfed2KN5Twi0PAAAcHUGpix8AAP4bQcmLHwAA9v5vsG+MuT3XBwCAH1sgtY8PAAB+/2n2eWw5/7lVNYDLy8tUSrUAiHG0NLacAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA8gEMh8NUSjUtkpbGlnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQCUArq6uUim9vLxUsUhiHC2NLecAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKB8AKPRKJVSTYukpbHlHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlA/g+vo6lVJNi6SlseUcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHTYcrn8mOCcen9/7wxAHDu3+YjPCIDGmk6n6enpKa3X65MDiGPEseKY5h6A7JrP53u/Fb4DIPYZ+zbHRwZwc3OTdPy23wq7FvPr6+uX18e2Xa/dXu3N6WkC4AcgfL41OgRAvMfCB6BKBPsAWPwAVI3gXwAsfgCqLhb63wDs2i4AqiuelR+yTQBUWTzOPGSbAABAAAAgACrq/v7+oG0CQAJAAkA6BYDb29sktRoAAkACQAJAAkACQAJAAkACQAJAAkACQAJAKh/A3d1dkloNAAEgASABIAEgASABIAEgASABIAEgASABIJUPYDweJ6nVABAAEgASABIAEgASABIAEgASABIAEgBSHf0CRkUssH4ex2YAAAAASUVORK5CYII=", I512 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAANCklEQVR42u3czU3jXBSAYYrgN0CADthQBAuKYEETSDQRiSqAKhBdQBmsLzrZDNIoYibYvvf6PItnOV/yxWeOX3vi7Ozu7hYAIJcdHwIACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAIAAAgDwBsLe3VwCAXAQAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAACAAAIBEAbC/v18AgFwEAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACQNwAODg4KAJCLAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAABAAAkCgADg8PCwCQiwAAAAEAAAgAunJ/f1+enp4Y0PX1tdnqVBw7Mzys2DFmSwDQoPgL+vn5ycDe39/Xi+/y8tKcNS6OURyrOGZmd3ixY8yZAEAApPT6+lpub2/NW2PimMSxMaMCAAEgABj9rsBqtXJXoPLVfhwDV/sCAAEgAASAuwKu9hEACAABwPTiitQXB8f5Ql98tmZMACAAEADN3xXwjelhnmxxtS8AEAAIAHcFXO0jABAACACPE3p8DwGAAEAAdLZI3RX482M9ZkIAIAAQAO4KuNpHACAAEAAeJ/T4HgIAAYAA8CNDfqwHAYAAQADMXc93BOK9O4YCAAGAACBRBDj5CwAEAAKAZBHg5C8AEAAIAAb8XkAP3wmI9+jf+wUAAgABQKIIcPIXAAgABADJIsDJXwAgABAATPB7Aa3Nnuf7BQACAAFAskVs7swdAgCLmGTL2MyZOQQAAoAK4jf1a81bvLZjIAAQAAgAEv1GgGf9BQACAAFAsghw8hcACAAEAA2Z4vHAeA2ftQBAACAASPQbAZ71RwAIAAQAySLAyR8BIAAQAHQQAUPPlpM/AkAAIABItqjNFQJAACAASLaszRQCQAAgAOjQarXaep7iz/oMEQACAAFAot8I8Kw/AiBBABwdHRXmQQCwaWmbJWrNEu0SAAIAS9ssIQAEAAIAS9ssIQAEAAIAAQACQAAgABAAmCUEAAIAAYBZQgAgABAAmCUEAAIAAYAAQAAgABAACAAEAAIAAYAAQAAgABAACAAEAAIAAYAAQABgaSMAEAAIACxtBAACAAGApY0AQAAgAAQACAAEAAJAAGBpCwAEAAJAAGBpmyUEAAJAAGBpmyUEgABAAGBpmyUEgABAACAAQAAIAAQAAgCzZNcKAAQAAgCzhABAACAAMEsIAAQAAgCzhABAACAAEAAIAAQAAgABgABAACAAEAAIAAQAAgABgADA0kYAIAAQAFjaCAAEAAIASxsBgABAAAgASwoBgABAAAgAEAAIAASAAMDSNksIAASAAMDSNksIAAGAAMDSNksIgEQBsFgsCvNgabNpaZslas0S7RIAAgBL2ywhAAQAAgBL2ywhAAQAAgABAAJAACAAEACYJQQAAgABgFlCACAAEACYJQQAAgABgABAACAAEAAIAAQAAgABgABAACAAEAAIAAQAAgABgABAAGBpIwAQAAgALG0EAAIAAYCljQBAACAABAAIAAQAAkAAYGkLAAQAAkAAYGmbJQQAAkAAYGmbJQSAAEAAYGmbJQSAAEAAIABAAAgABAACALNk1woABAACALOEAEAAIAAwSwgABAACALOEAEAAIAAQAAgABAACAAGAAEAAIAAQAAgABAACAAGAAMDSRgAgABAAWNoIAAQAAgBLGwGAAEAACABLCgGAAEAACAAQAAgABIAAwNI2SwgABIAAwNI2SwiAvAFwfHxcmIfn52dLir/EXJglas0S7RIAAgBL2ywhAAQAAgBL2ywhAAQAAgABAAJAACAAEACYJQQAAgABgFlCACAAEACYJQQAAgABgABAACAAEAAIAAQAAgABgABAACAAEAAIAAQAAgABgABAAGBpIwAQAAgALG0EAAIAAYCljQBAACAABAAIAAQAAkAAYGkLAAQAAkAAYGmbJQQAAkAAYGmbJQSAAEAAYGmbJQSAAEAAIABAAAgABAACALNk1woABAACALOEAEAAIAAwSwgABAACALOEAEAAIAAQAAgABAACAAGAAEAAIAAQAAgABAACAAGAAMDSRgAgABAAWNoIAAQAAgBLGwGAAEAACABLCgGAAEAACAAQAAgABIAAwNI2SwgABIAAwNI2SwgAAYAAwNI2SwiARAFwcnJSmAdLm01L2yxRa5ZolwAQAFjaZgkBIAAQAFjaZgkBIAAQAAgAEAACAAGAAMAsIQAQAAgAzBICAAGAAMAsIQAQAAgABAACAAGAAEAAIAAQAAgABAACAAGAAEAAIAAQAAgABAACAEsbAYAAQABgaSMAEAAIACxtBAACAAEgAEAAIAAQAAIAS1sAIAAQAAIAS9ssIQAQAAIAS9ssIQAEAAIAS9ssIQAEAAIAAQACQAAgABAAmCW7VgAgABAAmCUEAAIAAYBZQgAgABAAmCUEAAIAAYAAQAAgABAACAAEAAIAAYAAQAAgABAACAAEAJY2AgABgADA0kYAIAAQAFjaCAAEAAJAAFhSCAAEAAJAAIAAQAAgAAQAlrZZQgAgAAQAlrZZQgAIAAQAlrZZQgAkCoDT09PCPFjabFraZolas0S7BIAAwNI2SwgAAYAAwNI2SwgAAYAAQACAABAACAAEAGYJAYAAQABglhAACAAEAGYJAYAAQAAgABAACAAEAAIAAYAAQAAgABAACAAEAAIAAYAAQAAgABAAWNoIAAQAAgBLGwGAAEAAYGkjABAACAABAAIAAYAAEABY2gIAAYAAEABY2mYJAYAAEABY2mYJASAAEABY2mYJASAAEAAIABAAAgABgADALNm1AgABgADALCEAEAAIAMwSAgABgADALCEAEAAIAAQAAgABgABAACAAEAAIAAQAAgABgABAACAAsLQRAAgABACWNgIAAYAA4JuHh4f1X1Dq+/j4EAADic/STLUhdoxdKwCAH9zc3DRxIu01AOI9xGdolkAAQJeurq7WV0617gr0FADxGcVnFZ+Z2QEBAO4KzDwAXO2DAAB3BZIEgKt9qBwAy+WyAPXEle/Ly8toJ9r4b//vexr7/cT/s2MPdQkAaMRYdwVaCIDvV/uONQgAYIK7AjUDwNU+CACg0l2BqQPA1T4IAGBA256UpwyAbV4LEADADx4fH5sNgHhvjhEIAGAkd3d3zQVAvCfHBgQA0FAEjB0ATv4gAICJI+Bfvhw4VgDEazv5gwAAKj0l8FMEjBEA8Zq+5Q8CAGg4AoYOACd/EABAQxHw9vY2egDEazj5gwAAOvitgKECwDP+IACAjiJgiABw8gcBACz7+sGg3waAH/gBAQB0+FsBvwkAj/mBAAA6jYBtA8DJHwQA0Pl3Aqb4M4AAAAQAIAAAAQAIAEAAAAIAEACAAAAEACAAgCEeBZzizwACABAAgAAABAAgAAABAAgAQAAAAgAQAIAAAAQAIAAAAQAIAEAAAAIAEACAAAAABAAAIAAAQAAAALkC4OzsrAAAuQgAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAACBvAJyfnxcAIBcBAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAgAAAAAQAACAAAQAAAAAIAABAAAIAAAAAEAAAIAAAgUQBcXFwUACAXAQAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAAEAAAgAAAAAQAACAAAAABAAAIAABAAAAAAgAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAAIAAAAAEAAAgAAEAAAAACAAAQAACAAAAABAAApPUF6DcvNxiGpeQAAAAASUVORK5CYII=";
+    var m = {
+      name: "BUSTANUL HADI - Portal Santri", short_name: "Bustanul Hadi", lang: "id",
+      start_url: base, scope: base.replace(/[^\/]*$/, ""), id: base,
+      display: "standalone", orientation: "portrait",
+      background_color: "#121212", theme_color: "#171717",
+      icons: [
+        { src: I192, sizes: "192x192", type: "image/png", purpose: "any" },
+        { src: I512, sizes: "512x512", type: "image/png", purpose: "any" },
+        { src: I512, sizes: "512x512", type: "image/png", purpose: "maskable" }
+      ]
+    };
+    var l = document.createElement("link");
+    l.rel = "manifest";
+    l.href = URL.createObjectURL(new Blob([JSON.stringify(m)], { type: "application/manifest+json" }));
+    document.head.appendChild(l);
+  } catch (e) {}
+})();
+</script>
+<meta name="apple-mobile-web-app-title" content="Bustanul Hadi">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+:root{--bg:#f0f0f0;--surface:#f7f7f7;--elev:#fff;--border:#dcdcdc;--tx:#141414;--tx2:#525252;--tx3:#737373;--accent:#141414;--acc-tx:#fff;--sd:#d1d1d1;--sl:#fff;--ok:#15803d;--bad:#b91c1c}
+@media(prefers-color-scheme:dark){:root{--bg:#121212;--surface:#171717;--elev:#1e1e1e;--border:#2a2a2a;--tx:#f5f5f5;--tx2:#a3a3a3;--tx3:#737373;--accent:#fff;--acc-tx:#121212;--sd:#0a0a0a;--sl:#222;--ok:#22c55e;--bad:#f87171}}
+html.force-dark{--bg:#121212;--surface:#171717;--elev:#1e1e1e;--border:#2a2a2a;--tx:#f5f5f5;--tx2:#a3a3a3;--tx3:#737373;--accent:#fff;--acc-tx:#121212;--sd:#0a0a0a;--sl:#222;--ok:#22c55e;--bad:#f87171}
+html,body{background-color:var(--bg);color:var(--tx);color-scheme:light dark;overscroll-behavior:none}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5;min-height:100vh;padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+.neu-card{background:var(--surface);border-radius:16px;border:1px solid var(--border);box-shadow:6px 6px 14px var(--sd),-4px -4px 10px var(--sl);padding:16px;margin-bottom:14px}
+.neu-inset{background:var(--bg);border-radius:12px;border:1px solid var(--border);box-shadow:inset 4px 4px 8px var(--sd),inset -3px -3px 7px var(--sl)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--elev);color:var(--tx);border:1px solid var(--border);border-radius:12px;padding:10px 15px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:4px 4px 8px var(--sd),-2px -2px 6px var(--sl);transition:transform .12s}
+.btn:active{transform:scale(.97)}.btn:disabled{opacity:.5}
+.btn-primary{background:var(--accent);color:var(--acc-tx);border-color:var(--accent)}
+.btn-sm{padding:6px 10px;font-size:11px;border-radius:10px}.btn-block{width:100%}
+input{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--border);border-radius:12px;padding:11px 13px;font-size:16px;font-family:inherit;box-shadow:inset 3px 3px 7px var(--sd),inset -2px -2px 5px var(--sl);outline:none}
+input:focus{border-color:var(--accent)}
+label{display:block;font-size:11px;color:var(--tx2);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+header{position:sticky;top:0;z-index:40;background-color:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;padding-top:calc(12px + env(safe-area-inset-top,0px));display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:36px;height:36px;border-radius:11px;background:var(--elev);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 7px var(--sd),-2px -2px 5px var(--sl)}
+.brand h1{font-size:15px;font-weight:800}.brand span{font-size:11px;color:var(--tx2);display:block}
+.header-right{display:flex;align-items:center;gap:6px}
+.status-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:var(--elev);border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--tx);cursor:pointer}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--tx3)}.status-dot.online{background:var(--ok)}
+main{max-width:720px;margin:0 auto;padding:16px}
+.section{display:none}.section.active{display:block;animation:fade .2s}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.section-title{font-size:17px;font-weight:800;margin-bottom:14px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center;box-shadow:4px 4px 10px var(--sd),-3px -3px 7px var(--sl)}
+.stat-val{font-size:18px;font-weight:800}.stat-lbl{font-size:11px;color:var(--tx2);margin-top:2px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:7px;font-size:11px;font-weight:700;background:var(--elev);border:1px solid var(--border);color:var(--tx2)}
+.badge.me{background:var(--accent);color:var(--acc-tx);margin-left:4px}
+.badge.urgent{background:var(--accent);color:var(--acc-tx);border-color:var(--accent)}
+.bar-track{width:100%;height:8px;background:var(--bg);border-radius:999px;overflow:hidden;border:1px solid var(--border);margin-top:6px}
+.bar-fill{height:100%;background:var(--accent);border-radius:999px;transition:width .3s}
+.pill-group{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px}
+.pill{padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--tx2);font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer}
+.pill.active{background:var(--accent);color:var(--acc-tx);border-color:var(--accent)}
+.quiz-option{width:100%;text-align:left;padding:13px 14px;border-radius:13px;background:var(--elev);border:1px solid var(--border);color:var(--tx);font-size:14px;font-weight:600;margin-bottom:9px;cursor:pointer;display:flex;align-items:center;gap:10px;box-shadow:3px 3px 8px var(--sd),-2px -2px 5px var(--sl);transition:transform .1s}
+.quiz-option:active{transform:scale(.985)}
+.quiz-option.selected{background:var(--accent);color:var(--acc-tx);border-color:var(--accent)}
+.quiz-option.correct{background:var(--ok);color:#fff;border-color:var(--ok)}
+.quiz-option.wrong{background:var(--bad);color:#fff;border-color:var(--bad)}
+.quiz-option:disabled{cursor:default}.quiz-option:disabled:not(.correct):not(.wrong){opacity:.55}
+.quiz-opt-letter{width:24px;height:24px;border-radius:7px;border:1px solid currentColor;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.explain{font-size:12px;font-weight:700;margin:2px 0 6px;min-height:18px}
+.explain-note{font-size:12px;color:var(--tx2);background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px 10px;margin-top:6px;display:none}
+.podium-stage{display:grid;grid-template-columns:1fr 1.15fr 1fr;align-items:flex-end;gap:8px;padding:18px 8px 10px;margin-bottom:14px;border-radius:16px;background:var(--bg);border:1px solid var(--border);box-shadow:inset 4px 4px 9px var(--sd),inset -3px -3px 8px var(--sl)}
+.podium-slot{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0}
+.podium-avatar{width:44px;height:44px;border-radius:50%;background:var(--elev);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;margin-bottom:6px;position:relative;box-shadow:3px 3px 8px var(--sd),-2px -2px 6px var(--sl)}
+.rank-1 .podium-avatar{width:54px;height:54px;font-size:18px;background:var(--accent);color:var(--acc-tx);border-color:var(--accent);margin-top:14px}
+.podium-crown{position:absolute;top:-15px;left:50%;transform:translateX(-50%);width:20px;height:20px;color:var(--tx)}
+.podium-name{font-size:12px;font-weight:800;max-width:92px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.podium-pts{font-size:10px;font-weight:700;color:var(--tx2);margin-bottom:6px}
+.podium-pedestal{width:100%;border-radius:11px 11px 6px 6px;background:var(--elev);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;box-shadow:3px 3px 7px var(--sd),-2px -2px 5px var(--sl)}
+.rank-1 .podium-pedestal{height:76px;background:var(--accent);color:var(--acc-tx);border-color:var(--accent);font-size:20px}
+.rank-2 .podium-pedestal{height:56px}.rank-3 .podium-pedestal{height:44px}
+.lb-row{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:13px;background:var(--elev);border:1px solid var(--border);margin-bottom:8px;box-shadow:3px 3px 7px var(--sd),-2px -2px 5px var(--sl)}
+.lb-row.is-me{border:2px solid var(--accent)}
+.lb-rank{width:28px;height:28px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.lb-row.top .lb-rank{background:var(--accent);color:var(--acc-tx);border-color:var(--accent)}
+.bottom-nav{position:fixed;bottom:-2px;left:0;right:0;z-index:40;background-color:var(--surface);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 2px calc(12px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 12px var(--sd)}
+.nav-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;color:var(--tx3);font-size:10px;font-weight:700;cursor:pointer;padding:4px 0}
+.nav-item.active{color:var(--accent)}
+.nav-badge{position:absolute;top:1px;right:calc(50% - 17px);min-width:15px;height:15px;padding:0 4px;border-radius:999px;background:var(--accent);color:var(--acc-tx);font-size:9px;font-weight:800;display:none;align-items:center;justify-content:center}
+.nav-badge.show{display:inline-flex}
+.ann-banner{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;cursor:pointer}
+.ann-card-pinned{border:1.5px solid var(--accent)}
+.login-screen{position:fixed;inset:0;z-index:70;background-color:var(--bg);display:flex;align-items:center;justify-content:center;padding:18px;overflow-y:auto}
+.login-box{width:100%;max-width:420px}
+.modal-backdrop{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px}
+.modal-backdrop.open{display:flex}
+.modal-box{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px}
+.toast{position:fixed;top:calc(66px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:95;background:var(--accent);color:var(--acc-tx);padding:8px 16px;border-radius:999px;font-size:12px;font-weight:700;display:none;max-width:92%;text-align:center}
+.icon{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.coin-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:var(--accent);color:var(--acc-tx);font-size:11px;font-weight:800;cursor:pointer}
+.pass-wrap{position:relative}
+.pass-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--tx2);font-size:11px;font-weight:700;cursor:pointer;padding:6px}
+.empty{text-align:center;color:var(--tx2);font-size:13px;padding:12px 0}
+.row{display:flex;justify-content:space-between;align-items:center}
+
+/* ===== NAVBAR IKUT TEMA HP (gelap/terang) ===== */
+html{background-color:var(--bg)}
+header,.bottom-nav{background-color:var(--surface);transition:background-color .25s,border-color .25s}
+.bottom-nav{bottom:0;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 18px color-mix(in srgb,var(--sd) 70%,transparent)}
+.nav-item{transition:color .2s,transform .15s}
+.nav-item .icon{transition:transform .2s}
+.nav-item.active .icon{transform:translateY(-2px) scale(1.12)}
+.nav-item.active::before{content:"";position:absolute;top:-7px;left:50%;width:22px;height:3px;margin-left:-11px;border-radius:0 0 4px 4px;background:var(--accent)}
+.nav-item:active{transform:scale(.93)}
+
+/* ===== LEADERBOARD (tenang & rapi) ===== */
+:root{--gold:#d4a017;--silv:#9aa3af;--bron:#b9733f}
+.lb-me{border-radius:16px;padding:12px 14px;margin-bottom:14px;background:var(--bg);border:1px solid var(--border);box-shadow:inset 3px 3px 7px var(--sd),inset -2px -2px 6px var(--sl)}
+.lb-me-top{display:flex;align-items:center;gap:12px}
+.lb-me-rank{min-width:50px;height:50px;border-radius:14px;background:var(--accent);color:var(--acc-tx);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.lb-me-rank small{font-size:8.5px;font-weight:700;letter-spacing:.5px;opacity:.75}.lb-me-rank b{font-size:18px;font-weight:900;line-height:1.05}
+.lb-me-info{flex:1;min-width:0}.lb-me-info .n{font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lb-me-info .t{font-size:11px;color:var(--tx2);font-weight:600;margin-top:1px}
+.lb-me-coin{text-align:right}.lb-me-coin b{font-size:19px;font-weight:900;display:block;line-height:1.1}.lb-me-coin span{font-size:10px;color:var(--tx2);font-weight:700}
+.lb-me-gap{font-size:11.5px;color:var(--tx2);margin-top:10px}.lb-me-gap b{color:var(--tx)}
+.lb-me-bar{height:6px;border-radius:999px;background:var(--surface);border:1px solid var(--border);margin-top:6px;overflow:hidden}.lb-me-bar i{display:block;height:100%;border-radius:999px;background:var(--accent)}
+.lb-stage{display:grid;grid-template-columns:1fr 1.1fr 1fr;align-items:flex-end;gap:8px;padding:16px 8px 0;margin-bottom:14px;border-radius:16px;background:var(--bg);border:1px solid var(--border);box-shadow:inset 3px 3px 8px var(--sd),inset -2px -2px 7px var(--sl);overflow:hidden}
+.lb-slot{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;--c:var(--silv)}
+.lb-slot.r1{--c:var(--gold)}.lb-slot.r3{--c:var(--bron)}
+.lb-av{width:46px;height:46px;border-radius:50%;background:var(--elev);border:2.5px solid var(--c);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;margin-bottom:6px}
+.lb-slot.r1 .lb-av{width:54px;height:54px;font-size:17px}
+.lb-p-name{font-size:12px;font-weight:800;max-width:92px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-p-pts{font-size:11px;font-weight:700;color:var(--tx2);margin:1px 0 7px}
+.lb-ped{width:100%;display:flex;align-items:flex-start;justify-content:center;padding-top:7px;font-weight:900;font-size:17px;color:var(--c);background:color-mix(in srgb,var(--c) 14%,var(--elev));border:1px solid var(--border);border-top:3px solid var(--c);border-bottom:none;border-radius:10px 10px 0 0}
+.lb-slot.r1 .lb-ped{height:68px}.lb-slot.r2 .lb-ped{height:52px}.lb-slot.r3 .lb-ped{height:40px}
+.lb-filter{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 6px;margin-bottom:8px;scrollbar-width:none}.lb-filter::-webkit-scrollbar{display:none}
+.lb-list{display:flex;flex-direction:column;gap:8px}
+.lb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--elev);border:1px solid var(--border);box-shadow:2px 2px 6px var(--sd),-1px -1px 4px var(--sl)}
+.lb-item.me{border:2px solid var(--accent)}
+.lb-rk{flex-shrink:0;width:26px;text-align:center;font-size:14px;font-weight:900;color:var(--tx2)}
+.lb-item.top1 .lb-rk{color:var(--gold)}.lb-item.top2 .lb-rk{color:var(--silv)}.lb-item.top3 .lb-rk{color:var(--bron)}
+.lb-ava{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.lb-item.top1 .lb-ava{border:2px solid var(--gold)}.lb-item.top2 .lb-ava{border:2px solid var(--silv)}.lb-item.top3 .lb-ava{border:2px solid var(--bron)}
+.lb-mid{flex:1;min-width:0}
+.lb-nm{font-size:13.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:5px}
+.lb-meta{font-size:10.5px;color:var(--tx2);font-weight:600;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-tr{height:4px;border-radius:999px;background:var(--bg);margin-top:6px;overflow:hidden}.lb-tr i{display:block;height:100%;border-radius:999px;background:var(--accent);opacity:.75}
+.lb-sc{flex-shrink:0;text-align:right}.lb-sc b{font-size:15px;font-weight:900;display:block;line-height:1.1}.lb-sc span{font-size:9.5px;color:var(--tx2);font-weight:700}
+
+/* ===== BORDER GRADIEN (tanpa cahaya) ===== */
+.lb-stage{border:2px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(135deg,var(--gold),color-mix(in srgb,var(--gold) 12%,var(--border)) 35%,var(--silv) 62%,var(--bron)) border-box}
+.lb-slot{position:relative;z-index:1}
+.lb-av{border:2.5px solid transparent;background:linear-gradient(var(--elev),var(--elev)) padding-box,linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 25%,var(--border))) border-box}
+.lb-ped{border:1px solid transparent;border-top:3px solid var(--c);background:linear-gradient(180deg,color-mix(in srgb,var(--c) 18%,var(--elev)),var(--elev)) padding-box,linear-gradient(180deg,var(--c),var(--border)) border-box;border-bottom:none}
+.lb-me{border:2px solid transparent;background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(135deg,var(--gold),var(--border) 50%,var(--accent)) border-box}
+.lb-item{--bc:var(--border);border:2px solid transparent;background:linear-gradient(var(--elev),var(--elev)) padding-box,linear-gradient(135deg,color-mix(in srgb,var(--tx3) 55%,var(--border)),var(--border) 70%) border-box}
+.lb-item.top1{--bc:var(--gold)}.lb-item.top2{--bc:var(--silv)}.lb-item.top3{--bc:var(--bron)}
+.lb-item.top1,.lb-item.top2,.lb-item.top3{background:linear-gradient(var(--elev),var(--elev)) padding-box,linear-gradient(135deg,var(--bc),color-mix(in srgb,var(--bc) 18%,var(--border)) 80%) border-box}
+.lb-item.me{border:2px solid transparent;background:linear-gradient(var(--elev),var(--elev)) padding-box,linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 25%,var(--border))) border-box}
+
+/* ===== ORNAMEN: BUNGA, PERMATA, MAHKOTA ===== */
+.lb-stage{overflow:visible;padding-top:32px}
+.lb-orn{position:absolute;width:34px;height:34px;color:var(--gold);pointer-events:none;z-index:2}
+.lb-orn.c1{top:2px;left:2px}.lb-orn.c2{top:2px;right:2px;transform:rotate(90deg)}.lb-orn.c3{bottom:2px;right:2px;transform:rotate(180deg)}
+.lb-me{position:relative}
+.lb-me .lb-orn{width:26px;height:26px;opacity:.9}
+.lb-me .lb-orn.c1{top:1px;left:1px}.lb-me .lb-orn.c3{bottom:1px;right:1px}
+.lb-me-top,.lb-me-gap,.lb-me-bar{position:relative;z-index:1}
+.lb-gem-top{position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:0 8px;background:var(--surface);color:var(--gold);line-height:0;z-index:3}
+.lb-gem-top svg{width:22px;height:20px}
+.lb-avw{position:relative;margin-bottom:6px}.lb-avw .lb-av{margin-bottom:0}
+.lb-crown{position:absolute;top:-21px;left:50%;width:30px;height:23px;margin-left:-15px;color:var(--gold)}
+.lb-item{position:relative}
+.lb-gem{position:absolute;top:-9px;right:18px;padding:0 5px;background:var(--surface);color:var(--bc);line-height:0}
+.lb-gem svg{width:15px;height:14px}
+.lb-gem-crown svg{width:22px;height:17px}
+
+/* ===== AVATAR, FOTO & BINGKAI ===== */
+.pf{position:relative;display:inline-block;width:var(--s);height:var(--s);flex-shrink:0;vertical-align:middle;font-size:calc(var(--s)*.34)}
+.pf-img{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--tx)}
+.pf-img img{width:100%;height:100%;object-fit:cover;display:block}
+.pf.no-fr .pf-img{border:2px solid var(--c,var(--border))}
+.pf-fr{position:absolute;left:-18%;top:-18%;width:136%;height:136%;pointer-events:none;overflow:visible}
+.lb-avw{position:relative;margin-bottom:14px}
+.lb-avs{flex-shrink:0;display:inline-flex;margin:0 4px 0 2px}
+.lb-item{overflow:visible}
+.lb-item.top1 .pf{--c:var(--gold)}.lb-item.top2 .pf{--c:var(--silv)}.lb-item.top3 .pf{--c:var(--bron)}
+.hdr-av{background:none;border:none;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;width:42px;height:42px;flex-shrink:0;color:inherit}
+.fr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 6px;margin-top:8px}
+.fr-tile{background:var(--elev);border:1.5px solid var(--border);border-radius:12px;padding:12px 2px 7px;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;font-size:9.5px;font-weight:700;color:var(--tx2);text-align:center;line-height:1.2}
+.fr-tile.sel{border-color:var(--accent);background:var(--bg);color:var(--tx)}
+.zoom-range{padding:0;height:28px;box-shadow:none;border:none;background:transparent;accent-color:var(--accent)}
+</style>
+</head>
+<body>
+<div id="toast" class="toast"></div>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="login-screen"><div class="login-box"><div class="neu-card" style="padding:22px">
+  <div class="row" style="justify-content:flex-start;gap:12px;margin-bottom:16px">
+    <div class="brand-icon" style="width:44px;height:44px"><svg class="icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+    <div><h1 style="font-size:18px;font-weight:800">BUSTANUL HADI</h1><span style="font-size:12px;color:var(--tx2)">Portal Santri & Game Kuis</span></div>
+  </div>
+  <label for="loginNamaInput">Nama Santri</label>
+  <input type="text" id="loginNamaInput" placeholder="Ketik nama Anda (contoh: Aswir)" autocomplete="off" autocapitalize="words" style="margin-bottom:10px">
+  <label for="loginPassword">Sandi Santri</label>
+  <div class="pass-wrap" style="margin-bottom:12px"><input type="password" id="loginPassword" placeholder="Masukkan sandi (awal: 1234)"><button type="button" class="pass-toggle" data-toggle="loginPassword">Lihat</button></div>
+  <div id="loginKoinPreview" class="neu-inset row" style="padding:11px 12px;margin-bottom:14px"></div>
+  <button type="button" class="btn btn-primary btn-block" id="btnLogin">Masuk Portal Santri</button>
+  <div style="font-size:11px;color:var(--tx3);text-align:center;margin-top:10px">Sandi awal: <strong>1234</strong> (ubah di menu Beranda setelah masuk)</div>
+  <button type="button" class="btn btn-sm btn-block btn-install" style="display:none;margin-top:12px">Pasang di layar utama</button>
+</div></div></div>
+
+<!-- UBAH SANDI -->
+<div id="modalUbahSandi" class="modal-backdrop"><div class="modal-box">
+  <div class="row" style="margin-bottom:12px"><h3 style="font-size:16px;font-weight:800">Ubah Sandi Akun</h3><button type="button" class="btn btn-sm" id="btnTutupSandi">Tutup</button></div>
+  <p style="font-size:12px;color:var(--tx2);margin-bottom:12px">Ganti sandi pribadi agar koin dan progres kuis tetap aman.</p>
+  <label>Sandi Lama</label><div class="pass-wrap" style="margin-bottom:10px"><input type="password" id="oldPassInput" placeholder="Sandi saat ini"><button type="button" class="pass-toggle" data-toggle="oldPassInput">Lihat</button></div>
+  <label>Sandi Baru</label><div class="pass-wrap" style="margin-bottom:10px"><input type="password" id="newPassInput" placeholder="Minimal 4 karakter"><button type="button" class="pass-toggle" data-toggle="newPassInput">Lihat</button></div>
+  <label>Konfirmasi Sandi Baru</label><div class="pass-wrap" style="margin-bottom:14px"><input type="password" id="confirmPassInput" placeholder="Ulangi sandi baru"><button type="button" class="pass-toggle" data-toggle="confirmPassInput">Lihat</button></div>
+  <button type="button" class="btn btn-primary btn-block" id="btnSimpanSandi">Simpan Sandi Baru</button>
+</div></div>
+
+<!-- PROFIL: FOTO & BINGKAI -->
+<div id="modalProfil" class="modal-backdrop"><div class="modal-box" style="max-height:92vh;overflow-y:auto">
+  <div class="row" style="margin-bottom:6px"><h3 style="font-size:16px;font-weight:800">Foto & Bingkai Profil</h3><button type="button" class="btn btn-sm" id="btnTutupProfil">Tutup</button></div>
+  <div style="text-align:center;padding:30px 0 4px"><div id="profPreview" style="display:inline-block"></div><div id="profFrameName" style="font-size:12px;font-weight:800;margin-top:10px"></div></div>
+  <div style="display:flex;gap:8px;margin:10px 0">
+    <button type="button" class="btn btn-primary" style="flex:1" id="btnPilihFoto">Pilih Foto</button>
+    <button type="button" class="btn" id="btnHapusFoto">Hapus Foto</button>
+  </div>
+  <input type="file" id="profFile" accept="image/*" hidden>
+  <div id="profEditor" style="display:none;text-align:center;margin-bottom:10px">
+    <p style="font-size:11px;color:var(--tx2);margin-bottom:8px">Geser foto untuk mengatur posisi, gunakan slider untuk memperbesar. Ukuran foto bebas, otomatis dikecilkan.</p>
+    <canvas id="profCanvas" width="240" height="240" style="width:240px;max-width:100%;border-radius:16px;touch-action:none;background:var(--bg);border:1px solid var(--border)"></canvas>
+    <input type="range" id="profZoom" class="zoom-range" min="1" max="4" step="0.01" value="1" style="margin-top:8px" aria-label="Perbesar foto">
+  </div>
+  <label>Pilih Bingkai</label>
+  <div class="fr-grid" id="profFrameGrid"></div>
+  <button type="button" class="btn btn-primary btn-block" id="btnSimpanProfil" style="margin-top:14px">Simpan Profil</button>
+</div></div>
+
+<header>
+  <div class="brand"><button type="button" class="hdr-av" id="headerAvatar" data-profopen="1" aria-label="Profil"><span class="brand-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span></button>
+    <div><h1 id="headerSantriName">Santri</h1><span id="headerSantriKelas">BUSTANUL HADI</span></div></div>
+  <div class="header-right">
+    <div class="coin-pill" data-goto="kuis"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8"/><path d="M9.5 10.5c0-1 1.1-1.5 2.5-1.5s2.5.5 2.5 1.5-1.1 1.5-2.5 1.5-2.5.5-2.5 1.5 1.1 1.5 2.5 1.5 2.5-.5 2.5-1.5"/></svg><span id="headerCoinCount">0</span></div>
+    <button type="button" class="status-pill" id="btnSync"><span id="syncDot" class="status-dot"></span><span id="syncLabel">Lokal</span></button>
+  </div>
+</header>
+
+<main>
+  <section id="sec-beranda" class="section active">
+    <div class="neu-card">
+      <div class="row" style="justify-content:flex-start;gap:16px;margin-bottom:12px;padding:6px 4px 0">
+        <button type="button" class="hdr-av" id="berandaAvatar" data-profopen="1" style="width:84px;height:84px" aria-label="Ubah foto dan bingkai"></button>
+        <div style="min-width:0"><div style="font-size:12px;color:var(--tx2);font-weight:600;margin-bottom:8px">Foto & bingkai profilmu</div><button type="button" class="btn btn-sm" data-profopen="1">Ubah Foto & Bingkai</button></div>
+      </div>
+      
+<div class="row" style="align-items:flex-start;gap:8px;margin-bottom:10px">
+        <div><span class="badge" id="berandaKelasBadge">Kelas</span><h2 style="font-size:18px;font-weight:800;margin-top:4px" id="berandaNamaTitle"></h2></div>
+        <div style="display:flex;gap:6px"><button type="button" class="btn btn-sm" id="btnBukaSandi">Ubah Sandi</button><button type="button" class="btn btn-sm" id="btnKeluar">Keluar</button></div>
+      </div>
+      <div class="neu-inset row" style="padding:12px">
+        <div><div style="font-size:11px;color:var(--tx2);font-weight:700">TOTAL KOIN TERKUMPUL</div><div style="font-size:24px;font-weight:800" id="berandaTotalKoin">0 Koin</div><div style="font-size:11px;color:var(--tx3)" id="berandaPendingInfo"></div></div>
+        <button type="button" class="btn btn-primary" data-goto="kuis">Main Kuis</button>
+      </div>
+    </div>
+
+    <div id="berandaPengumumanCard" class="neu-card ann-card-pinned" data-goto="pengumuman" style="display:none"></div>
+
+    <button type="button" class="btn btn-sm btn-block btn-install" style="display:none;margin-bottom:14px">Pasang aplikasi di layar utama</button>
+    <div class="neu-card" id="berandaAbsensiSummary"></div>
+    <div class="grid-4" style="margin-bottom:14px" id="berandaAbsensiGrid"></div>
+    <div class="neu-card">
+      <div class="row" style="margin-bottom:12px"><h3 style="font-size:15px;font-weight:800">Podium Juara Koin</h3><span class="badge" id="berandaMyRankBadge">Peringkat #-</span></div>
+      <div id="berandaMyRank"></div><div id="berandaPodiumContainer"></div><div id="berandaTopLeaderboard"></div>
+    </div>
+  </section>
+
+  <section id="sec-pengumuman" class="section">
+    <div class="row" style="margin-bottom:12px">
+      <h2 class="section-title" style="margin:0">Pengumuman Pengajian</h2>
+      <span class="badge" id="pengumumanCountBadge">0 Info</span>
+    </div>
+    <div id="pengumumanListContainer"></div>
+  </section>
+
+  <section id="sec-kuis" class="section">
+    <div class="row" style="margin-bottom:14px"><h2 class="section-title" style="margin:0">Game Kuis Santri</h2><span class="badge" id="kuisSaldoBadge">Saldo: 0 Koin</span></div>
+
+    <div id="quizLobbyView">
+      <div class="neu-card">
+        <h3 style="font-size:15px;margin-bottom:6px">Kumpulkan Koin Sebanyak-Banyaknya!</h3>
+        <p style="font-size:12px;color:var(--tx2);margin-bottom:12px">Setiap jawaban benar menambah koin. Jika keluar di tengah permainan, koin yang sudah didapat tetap tersimpan dan dijumlahkan ke saldo sebelumnya. Satu sesi berisi maksimal <strong id="maxSoalInfo">10</strong> soal acak.</p>
+        <div class="grid-2" style="margin-bottom:12px">
+          <div class="neu-inset" style="padding:10px"><div style="font-size:11px;color:var(--tx2)">Koin Sebelumnya</div><div style="font-size:18px;font-weight:800" id="lobbyKoinLama">0 Koin</div></div>
+          <div class="neu-inset" style="padding:10px"><div style="font-size:11px;color:var(--tx2)">Bank Soal</div><div style="font-size:18px;font-weight:800" id="lobbyJumlahSoal">0 Soal</div></div>
+        </div>
+        <label>Filter Materi / Kitab Soal</label>
+        <div class="pill-group" id="quizCategoryPills"></div>
+        <button type="button" class="btn btn-primary btn-block" id="btnMulai">Mulai Main & Kumpulkan Koin</button>
+      </div>
+      <div class="neu-card">
+        <div class="row" style="margin-bottom:12px"><h3 style="font-size:15px;font-weight:800">Leaderboard Klasemen Koin</h3><span class="badge" id="kuisTotalPesertaBadge">0 Santri</span></div>
+        <div id="kuisMyRank"></div><div id="kuisKelasPills"></div><div id="kuisPodiumContainer"></div><div id="kuisFullLeaderboard"></div>
+      </div>
+    </div>
+
+    <div id="quizPlayView" style="display:none">
+      <div class="neu-card">
+        <div class="row" style="margin-bottom:8px"><span class="badge" id="playProgressBadge">Soal 1/10</span><span class="badge" id="playSessionCoinBadge">+0 Koin Sesi Ini</span></div>
+        <div class="bar-track" style="margin-bottom:14px"><div class="bar-fill" id="playProgressBar" style="width:0"></div></div>
+        <div style="font-size:11px;color:var(--tx2);margin-bottom:4px" id="playSoalKategori"></div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:14px" id="playSoalTeks"></div>
+        <div id="playOptionsList"></div>
+        <div class="explain" id="playFeedback"></div>
+        <div class="explain-note" id="playExplainNote"></div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button type="button" class="btn" style="flex:1" id="btnKeluarKuis">Keluar & Simpan</button>
+          <button type="button" class="btn btn-primary" style="flex:1.4" id="btnNextSoal">Periksa Jawaban</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="quizResultView" style="display:none">
+      <div class="neu-card" style="text-align:center;padding:22px 16px">
+        <span class="badge" style="margin-bottom:8px" id="resHeaderBadge">Sesi Kuis Selesai</span>
+        <h3 style="font-size:18px;font-weight:800;margin-bottom:4px" id="resHeaderTitle"></h3>
+        <p style="font-size:12px;color:var(--tx2);margin-bottom:16px" id="resSyncStatusText"></p>
+        <div class="neu-inset" style="padding:14px;margin-bottom:14px;text-align:left">
+          <div class="row" style="padding:5px 0;font-size:13px"><span style="color:var(--tx2)">Koin Sebelumnya</span><strong id="resKoinLama"></strong></div>
+          <div class="row" style="padding:5px 0;font-size:13px"><span style="color:var(--tx2)">Koin Sesi Ini</span><strong id="resKoinBaru"></strong></div>
+          <div style="border-top:1px solid var(--border);margin:6px 0"></div>
+          <div class="row" style="padding:5px 0;font-size:15px"><strong>Total Koin Sekarang</strong><strong id="resKoinTotal"></strong></div>
+        </div>
+        <div class="grid-2" style="margin-bottom:14px">
+          <div class="stat-box"><div class="stat-val" id="resBenarCount">0</div><div class="stat-lbl">Jawaban Benar</div></div>
+          <div class="stat-box"><div class="stat-val" id="resSalahCount">0</div><div class="stat-lbl">Jawaban Salah</div></div>
+        </div>
+        <button type="button" class="btn btn-primary btn-block" id="btnKembaliLobby">Kembali & Lihat Leaderboard</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-materi" class="section">
+    <div class="row" style="margin-bottom:10px"><h2 class="section-title" style="margin:0">Materi & Kitab Pengajian</h2><span class="badge" id="materiCountBadge">0 Materi</span></div>
+    <div class="pill-group" id="materiFilterPills"></div>
+    <div id="materiListContainer"></div>
+  </section>
+  <section id="sec-riwayat" class="section"><h2 class="section-title">Riwayat Kehadiran Saya</h2><div id="riwayatLogsContainer"></div></section>
+</main>
+
+<nav class="bottom-nav">
+  <button type="button" class="nav-item active" data-tab="beranda"><svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Beranda</span></button>
+  <button type="button" class="nav-item" data-tab="pengumuman"><span id="navBadgePengumuman" class="nav-badge">0</span><svg class="icon" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Info</span></button>
+  <button type="button" class="nav-item" data-tab="kuis"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg><span>Kuis</span></button>
+  <button type="button" class="nav-item" data-tab="materi"><svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>Materi</span></button>
+  <button type="button" class="nav-item" data-tab="riwayat"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Absensi</span></button>
+</nav>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyA_NoIO1F_E5fDmVwex6ad3bT5h2OGmZPE",
+  authDomain: "game-2d1e0.firebaseapp.com",
+  projectId: "game-2d1e0",
+  storageBucket: "game-2d1e0.firebasestorage.app",
+  messagingSenderId: "501200973294",
+  appId: "1:501200973294:web:a423438c589d9ffb57b2ff",
+  measurementId: "G-KYHHP0XW7Z"
+};
+
+const MAX_SOAL = 10;
+const KEYS = {
+  state: "balai_pengajian_state",
+  aktif: "bustanul_santri_aktif_id",
+  pass: "bustanul_santri_passwords",
+  pending: "bustanul_pending_koin",
+  seenAnn: "bustanul_seen_pengumuman"
+};
+const $ = id => document.getElementById(id);
+const esc = v => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const num = v => Number(v) || 0;
+const readJSON = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } };
+const writeJSON = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+
+const namaDefault = [["s1","Aswir"],["s2","Ilham"],["s3","Fikri"],["s4","Radian"],["s5","Ardian"],["s6","Arsya"],["s7","Muhammad"],["s8","Afdal"],["s9","Riski"],["s10","Rifki"],["s11","Agi"],["s12","Ilyas"],["s13","Lia"],["s14","Nabila"],["s15","Dila"],["s16","Indah"],["s17","Viani"],["s18","Pida"],["s19","Fatin"],["s20","Azkia"],["s21","Amira"],["s22","Nur"],["s23","Syakira"],["s24","Amelia"],["s25","Eliza"],["s26","Nia"],["s27","Salsa"],["s28","Aurel"],["s29","Asyura"],["s30","Bela"],["s31","Syifa"],["s32","Laudia"],["s33","Pia"],["sgj7h51","Intan"],["skobtzy","Adiba"],["spq6hoz","Lisa"],["s3n7ier","Nufus"],["s8myfxi","Ula"],["s8b0lzr","Liza"],["sxqzifh","Putri"],["sctopcm","Pira"]];
+const fallbackState = {
+  kelasList: ["Umum", "Matan Taqrib", "Matan Al Jurumiah", "Al Quran"],
+  santri: namaDefault.map(([id, nama]) => ({ id, nama, username: nama.toLowerCase(), kelas: "Umum" })),
+  absensi: {},
+  materi: [],
+  pengumuman: [],
+  kuisSoal: [
+    { id: "q_default_1", kategori: "Umum", pertanyaan: "Berapa jumlah rukun Islam?", opsi: ["3 Perkara", "4 Perkara", "5 Perkara", "6 Perkara"], jawaban: 2, poin: 10 },
+    { id: "q_default_2", kategori: "Umum", pertanyaan: "Berapa jumlah rukun Iman?", opsi: ["5 Perkara", "6 Perkara", "7 Perkara", "8 Perkara"], jawaban: 1, poin: 10 }
+  ],
+  skor: []
+};
+
+let appState = normalizeState(readJSON(KEYS.state, null) || fallbackState);
+let currentSantriId = localStorage.getItem(KEYS.aktif) || "";
+let docRef = null, unsubSnap = null, isSyncingPending = false, lastFirebaseError = "", toastTimer = null;
+
+let isQuizPlaying = false, isBusy = false, answerChecked = false;
+let selectedQuizCategory = "ALL", quizCats = ["ALL"];
+let selectedMateriFilter = "ALL", materiCats = ["ALL"];
+let activeQuestions = [], currentQIndex = 0, selectedOptionIdx = null;
+let sessionBenar = 0, sessionSalah = 0, sessionKoin = 0;
+
+function normalizeState(raw) {
+  const src = raw && typeof raw === "object" ? raw : {};
+  const santriRaw = Array.isArray(src.santri) ? src.santri : (Array.isArray(src.daftarSantri) ? src.daftarSantri : fallbackState.santri);
+  const santri = santriRaw.filter(Boolean).map((s, idx) => ({
+    ...s,
+    id: String(s.id || s.santriId || `s_${idx + 1}`),
+    nama: String(s.nama || s.name || "Santri").trim(),
+    username: String(s.username || (s.nama || `santri${idx + 1}`).trim().toLowerCase().replace(/\s+/g, "")),
+    kelas: String(s.kelas || s.tingkat || "Umum").trim() || "Umum",
+    password: s.password !== undefined ? String(s.password) : (s.pin !== undefined ? String(s.pin) : undefined),
+    koin: num(s.koin !== undefined ? s.koin : s.poin)
+  }));
+
+  const soalRaw = Array.isArray(src.kuisSoal) ? src.kuisSoal : (Array.isArray(src.soal) ? src.soal : (Array.isArray(src.bankSoal) ? src.bankSoal : []));
+  const kuisSoal = (soalRaw.length ? soalRaw : fallbackState.kuisSoal).filter(Boolean).map((q, idx) => {
+    const opsi = Array.isArray(q.opsi) ? q.opsi : (Array.isArray(q.pilihan) ? q.pilihan : [q.a, q.b, q.c, q.d, q.e].filter(x => x !== undefined && x !== null && String(x).trim() !== ""));
+    return {
+      ...q,
+      id: String(q.id || `q_${idx + 1}`),
+      kategori: String(q.kategori || q.mapel || q.kitab || q.kelas || "Umum").trim() || "Umum",
+      pertanyaan: String(q.pertanyaan || q.soal || q.teks || "").trim(),
+      opsi,
+      jawaban: q.jawaban !== undefined ? q.jawaban : (q.kunci !== undefined ? q.kunci : (q.jawabanBenar !== undefined ? q.jawabanBenar : q.benar)),
+      poin: num(q.poin !== undefined ? q.poin : (q.koin !== undefined ? q.koin : 10)) || 10,
+      pembahasan: String(q.pembahasan || q.penjelasan || q.keterangan || "").trim()
+    };
+  }).filter(q => q.pertanyaan && Array.isArray(q.opsi) && q.opsi.length > 1);
+
+  const skorRaw = Array.isArray(src.skor) ? src.skor : (Array.isArray(src.leaderboard) ? src.leaderboard : []);
+  const skorMap = new Map();
+  skorRaw.filter(Boolean).forEach(sc => {
+    const sid = String(sc.santriId || sc.id || "");
+    if (!sid) return;
+    skorMap.set(sid, {
+      ...sc,
+      santriId: sid,
+      nama: String(sc.nama || "").trim(),
+      poin: num(sc.poin !== undefined ? sc.poin : (sc.koin !== undefined ? sc.koin : sc.skor)),
+      benar: num(sc.benar),
+      salah: num(sc.salah),
+      total: num(sc.total)
+    });
+  });
+  santri.forEach(s => {
+    if (s.koin > 0) {
+      const ex = skorMap.get(s.id);
+      if (!ex) skorMap.set(s.id, { santriId: s.id, nama: s.nama, poin: s.koin, benar: 0, salah: 0, total: 0 });
+      else if (s.koin > ex.poin) ex.poin = s.koin;
+    }
+  });
+
+  const materiRaw = Array.isArray(src.materi) ? src.materi : (Array.isArray(src.daftarMateri) ? src.daftarMateri : []);
+  const materi = materiRaw.filter(Boolean).map((m, idx) => ({
+    ...m,
+    id: String(m.id || `m_${idx + 1}`),
+    kelas: String(m.kelas || m.kategori || m.kitab || "Umum").trim() || "Umum",
+    judul: String(m.judul || m.title || "Materi").trim(),
+    isi: String(m.isi || m.konten || m.deskripsi || "").trim(),
+    tanggal: String(m.tanggal || m.date || "").trim()
+  }));
+
+  const annRaw = Array.isArray(src.pengumuman) ? src.pengumuman : (Array.isArray(src.daftarPengumuman) ? src.daftarPengumuman : (Array.isArray(src.announcements) ? src.announcements : (Array.isArray(src.info) ? src.info : [])));
+  const pengumuman = annRaw.filter(Boolean).map((p, idx) => ({
+    ...p,
+    id: String(p.id || `ann_${idx + 1}_${(p.judul || p.title || "").slice(0, 12)}`),
+    judul: String(p.judul || p.title || "Pengumuman Balai Pengajian").trim(),
+    isi: String(p.isi || p.pesan || p.konten || p.deskripsi || p.text || "").trim(),
+    kategori: String(p.kategori || p.prioritas || p.tipe || p.kelas || "Umum").trim() || "Umum",
+    tanggal: String(p.tanggal || p.waktu || p.date || "").trim(),
+    penting: Boolean(p.penting || p.pinned || String(p.prioritas || p.kategori || "").toLowerCase() === "penting")
+  })).filter(p => p.judul || p.isi);
+
+  const kelasList = Array.isArray(src.kelasList) && src.kelasList.length ? src.kelasList : fallbackState.kelasList;
+  const absensi = src.absensi && typeof src.absensi === "object" ? src.absensi : {};
+
+  return { ...fallbackState, ...src, kelasList, santri, kuisSoal, skor: [...skorMap.values()], materi, pengumuman, absensi };
+}
+
+function showToast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.style.display = "none"; }, 2400);
+}
+
+function updateSyncUI(online, label) {
+  $("syncDot").classList.toggle("online", !!online);
+  $("syncLabel").textContent = label || (online ? "Online" : "Lokal");
+}
+
+function toggleInputPass(id, btn) {
+  const inp = $(id), show = inp.type === "password";
+  inp.type = show ? "text" : "password";
+  btn.textContent = show ? "Sembunyi" : "Lihat";
+}
+
+// ===================== SANDI =====================
+const getSantriAktif = () => (appState.santri || []).find(s => s.id === currentSantriId) || null;
+
+function getSandiSantri(s) {
+  if (!s) return "1234";
+  if (s.password && String(s.password).trim()) return String(s.password).trim();
+  const local = readJSON(KEYS.pass, {});
+  if (local[s.id]) return String(local[s.id]);
+  return "1234";
+}
+
+function syncPasswordsFromServer(santriList) {
+  const local = readJSON(KEYS.pass, {});
+  let changed = false;
+  (santriList || []).forEach(s => {
+    if (s && s.id && s.password && String(s.password).trim() && local[s.id] !== String(s.password).trim()) {
+      local[s.id] = String(s.password).trim();
+      changed = true;
+    }
+  });
+  if (changed) writeJSON(KEYS.pass, local);
+}
+
+function bukaModalSandi() {
+  ["oldPassInput", "newPassInput", "confirmPassInput"].forEach(i => { $(i).value = ""; $(i).type = "password"; });
+  document.querySelectorAll("#modalUbahSandi .pass-toggle").forEach(b => b.textContent = "Lihat");
+  $("modalUbahSandi").classList.add("open");
+}
+const tutupModalSandi = () => $("modalUbahSandi").classList.remove("open");
+
+async function simpanSandiBaru() {
+  const s = getSantriAktif();
+  if (!s) return;
+  const lama = $("oldPassInput").value.trim(), baru = $("newPassInput").value.trim(), konf = $("confirmPassInput").value.trim();
+  if (lama !== getSandiSantri(s)) return showToast("Sandi lama tidak sesuai!");
+  if (baru.length < 4) return showToast("Sandi baru minimal 4 karakter!");
+  if (baru === lama) return showToast("Sandi baru harus berbeda dari sandi lama!");
+  if (baru !== konf) return showToast("Konfirmasi sandi baru tidak cocok!");
+
+  const local = readJSON(KEYS.pass, {});
+  local[s.id] = baru;
+  writeJSON(KEYS.pass, local);
+  const idx = (appState.santri || []).findIndex(x => x.id === s.id);
+  if (idx >= 0) { appState.santri[idx].password = baru; writeJSON(KEYS.state, appState); }
+
+  let msg = "Sandi berhasil diubah (tersimpan lokal)!";
+  if (navigator.onLine && docRef) {
+    try {
+      await firebase.firestore().runTransaction(async tx => {
+        const snap = await tx.get(docRef);
+        if (!snap.exists) return;
+        const data = snap.data() || {};
+        const keyField = Array.isArray(data.santri) ? "santri" : (Array.isArray(data.daftarSantri) ? "daftarSantri" : "santri");
+        const list = Array.isArray(data[keyField]) ? [...data[keyField]] : [];
+        const i = list.findIndex(x => String(x.id || x.santriId) === s.id);
+        if (i >= 0) {
+          list[i] = { ...list[i], password: baru };
+          tx.set(docRef, { [keyField]: list, updatedAt: Date.now() }, { merge: true });
+        }
+      });
+      msg = "Sandi berhasil diubah & disinkronkan!";
+    } catch (e) { msg = "Sandi tersimpan di HP (belum tersinkron)"; }
+  }
+  tutupModalSandi();
+  showToast(msg);
+}
+
+// ===================== KOIN =====================
+const getPendingMap = () => readJSON(KEYS.pending, {});
+
+function getKoinSantri(id) {
+  const c = (appState.skor || []).find(x => x.santriId === id);
+  const p = getPendingMap()[id];
+  return (c ? num(c.poin) : 0) + (p ? num(p.poin) : 0);
+}
+
+function tambahPending(id, nama, koin, benar, salah, total, waktu) {
+  const map = getPendingMap();
+  const p = map[id] || { poin: 0, benar: 0, salah: 0, total: 0 };
+  map[id] = { nama, poin: num(p.poin) + koin, benar: num(p.benar) + benar, salah: num(p.salah) + salah, total: num(p.total) + total, waktu };
+  writeJSON(KEYS.pending, map);
+}
+
+async function simpanDanAkumulasiKoin(id, nama, koin, benar, salah, total) {
+  const waktu = new Date().toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  const sebelum = getKoinSantri(id);
+  koin = num(koin);
+  if (!koin && !benar && !salah) return { koinSebelumnya: sebelum, koinBaru: 0, totalKoin: sebelum, mode: navigator.onLine && docRef ? "online" : "offline" };
+
+  const offline = () => { tambahPending(id, nama, koin, benar, salah, total, waktu); return { koinSebelumnya: sebelum, koinBaru: koin, totalKoin: sebelum + koin, mode: "offline" }; };
+  if (!navigator.onLine || !docRef) return offline();
+
+  try {
+    let finalTotal = sebelum + koin;
+    const pend = getPendingMap()[id] || { poin: 0, benar: 0, salah: 0, total: 0 };
+    await firebase.firestore().runTransaction(async tx => {
+      const snap = await tx.get(docRef);
+      const data = snap.exists ? snap.data() : {};
+      const skor = Array.isArray(data.skor) ? [...data.skor] : [];
+      const i = skor.findIndex(x => String(x.santriId || x.id) === id);
+      const old = i >= 0 ? skor[i] : {};
+      const oldPoin = num(old.poin !== undefined ? old.poin : old.koin);
+      finalTotal = oldPoin + koin + num(pend.poin);
+      const rec = {
+        ...old,
+        santriId: id,
+        nama,
+        poin: finalTotal,
+        koin: finalTotal,
+        koinTerakhir: koin,
+        benar: num(old.benar) + benar + num(pend.benar),
+        salah: num(old.salah) + salah + num(pend.salah),
+        total: num(old.total) + total + num(pend.total),
+        waktu
+      };
+      if (i >= 0) skor[i] = rec; else skor.push(rec);
+
+      const patch = { skor, updatedAt: Date.now() };
+      if (Array.isArray(data.santri)) {
+        const sList = [...data.santri];
+        const si = sList.findIndex(x => String(x.id || x.santriId) === id);
+        if (si >= 0 && ("koin" in sList[si] || "poin" in sList[si])) {
+          sList[si] = { ...sList[si], koin: finalTotal, poin: finalTotal };
+          patch.santri = sList;
+        }
+      }
+      tx.set(docRef, patch, { merge: true });
+    });
+    const map = getPendingMap();
+    if (map[id]) { delete map[id]; writeJSON(KEYS.pending, map); }
+    return { koinSebelumnya: sebelum, koinBaru: koin, totalKoin: finalTotal, mode: "online" };
+  } catch (e) { return offline(); }
+}
+
+async function sinkronkanPendingKoin() {
+  if (!navigator.onLine || !docRef || isSyncingPending) return;
+  const snapshotMap = getPendingMap();
+  const ids = Object.keys(snapshotMap).filter(id => num((snapshotMap[id] || {}).poin) > 0 || num((snapshotMap[id] || {}).total) > 0);
+  if (!ids.length) return;
+  isSyncingPending = true;
+  try {
+    await firebase.firestore().runTransaction(async tx => {
+      const snap = await tx.get(docRef);
+      const data = snap.exists ? snap.data() : {};
+      const skor = Array.isArray(data.skor) ? [...data.skor] : [];
+      const sList = Array.isArray(data.santri) ? [...data.santri] : null;
+      let sListChanged = false;
+
+      ids.forEach(id => {
+        const p = snapshotMap[id], i = skor.findIndex(x => String(x.santriId || x.id) === id);
+        const so = (appState.santri || []).find(s => s.id === id);
+        const old = i >= 0 ? skor[i] : {};
+        const oldPoin = num(old.poin !== undefined ? old.poin : old.koin);
+        const newTotal = oldPoin + num(p.poin);
+        const rec = {
+          ...old,
+          santriId: id,
+          nama: so ? so.nama : (p.nama || old.nama || id),
+          poin: newTotal,
+          koin: newTotal,
+          benar: num(old.benar) + num(p.benar),
+          salah: num(old.salah) + num(p.salah),
+          total: num(old.total) + num(p.total),
+          waktu: p.waktu || old.waktu || new Date().toLocaleString("id-ID")
+        };
+        if (i >= 0) skor[i] = rec; else skor.push(rec);
+
+        if (sList) {
+          const si = sList.findIndex(x => String(x.id || x.santriId) === id);
+          if (si >= 0 && ("koin" in sList[si] || "poin" in sList[si])) {
+            sList[si] = { ...sList[si], koin: newTotal, poin: newTotal };
+            sListChanged = true;
+          }
+        }
+      });
+
+      const patch = { skor, updatedAt: Date.now() };
+      if (sListChanged && sList) patch.santri = sList;
+      tx.set(docRef, patch, { merge: true });
+    });
+    const now = getPendingMap();
+    ids.forEach(id => { if (now[id] && num(now[id].poin) === num(snapshotMap[id].poin)) delete now[id]; });
+    writeJSON(KEYS.pending, now);
+    showToast("Koin offline berhasil disinkronkan!");
+    renderAll();
+  } catch (e) {
+  } finally { isSyncingPending = false; }
+}
+
+// ===================== FIREBASE =====================
+function initFirebase() {
+  try {
+    if (typeof firebase === "undefined") { lastFirebaseError = "SDK Firebase gagal dimuat (cek izin INTERNET)"; return updateSyncUI(false, "Lokal"); }
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+      try { firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true }); } catch (e) {}
+    }
+    docRef = firebase.firestore().collection("balai_pengajian").doc("data_utama");
+    initProfilListener();
+    updateSyncUI(false, "Menghubungkan...");
+    if (unsubSnap) unsubSnap();
+    unsubSnap = docRef.onSnapshot(snap => {
+      lastFirebaseError = "";
+      updateSyncUI(true, "Online");
+      if (snap.exists) {
+        const inc = snap.data() || {};
+        appState = normalizeState(inc);
+        syncPasswordsFromServer(appState.santri);
+        writeJSON(KEYS.state, appState);
+        sinkronkanPendingKoin();
+        cekNamaSantriLive();
+        isQuizPlaying ? renderBeranda() : renderAll();
+        if (currentSantriId && !getSantriAktif()) keluarAkun();
+      }
+    }, err => { lastFirebaseError = (err && err.message) || "Gagal terhubung ke Firestore"; updateSyncUI(false, "Lokal"); });
+  } catch (e) { lastFirebaseError = e.message || "Error koneksi Firebase"; updateSyncUI(false, "Lokal"); }
+}
+
+function refreshManual() {
+  if (!navigator.onLine) return showToast("Mode Offline • Koin disimpan lokal di HP");
+  showToast(lastFirebaseError ? "Info: " + lastFirebaseError : "Menyinkronkan data dengan portal guru...");
+  initFirebase();
+  sinkronkanPendingKoin();
+}
+
+window.onAndroidNetworkChanged = ok => { if (ok) { initFirebase(); sinkronkanPendingKoin(); sinkronProfil(); } else updateSyncUI(false, "Lokal"); };
+window.addEventListener("online", () => window.onAndroidNetworkChanged(true));
+window.addEventListener("offline", () => window.onAndroidNetworkChanged(false));
+
+// ===================== LOGIN =====================
+function cariSantri(teks) {
+  const q = String(teks || "").trim().toLowerCase();
+  if (!q) return null;
+  return (appState.santri || []).find(s => (s.nama || "").trim().toLowerCase() === q || (s.username || "").trim().toLowerCase() === q) || null;
+}
+
+function cekNamaSantriLive() {
+  const box = $("loginKoinPreview"), v = $("loginNamaInput").value;
+  const s = cariSantri(v);
+  const L = t => `<span style="font-size:12px;color:var(--tx2)">${t}</span>`;
+  if (!v.trim()) box.innerHTML = L("Status Akun") + `<strong style="font-size:13px">Ketik nama Anda di atas</strong>`;
+  else if (s) box.innerHTML = L(`${esc(s.nama)} (${esc(s.kelas || "Umum")})`) + `<strong style="font-size:14px">${getKoinSantri(s.id)} Koin</strong>`;
+  else box.innerHTML = L("Nama belum cocok") + `<strong style="font-size:12px">Periksa ejaan nama</strong>`;
+}
+
+function masukSantri() {
+  const nama = $("loginNamaInput").value.trim();
+  if (!nama) return showToast("Ketik nama santri terlebih dahulu!");
+  const s = cariSantri(nama);
+  if (!s) return showToast("Nama santri tidak ditemukan!");
+  const pass = $("loginPassword").value.trim();
+  if (!pass) return showToast("Masukkan sandi terlebih dahulu!");
+  if (pass !== getSandiSantri(s)) return showToast("Sandi salah! Coba lagi.");
+
+  currentSantriId = s.id;
+  localStorage.setItem(KEYS.aktif, s.id);
+  $("loginPassword").value = "";
+  $("loginScreen").style.display = "none";
+  gotoTab("beranda");
+  renderAll();
+  showToast("Selamat datang, " + s.nama + "!");
+}
+
+async function keluarAkun() {
+  if (isQuizPlaying) { await keluarDanSimpanKuis(); kembaliKeLobbyKuis(); }
+  currentSantriId = "";
+  localStorage.removeItem(KEYS.aktif);
+  $("loginNamaInput").value = "";
+  $("loginPassword").value = "";
+  cekNamaSantriLive();
+  $("loginScreen").style.display = "flex";
+}
+
+function gotoTab(tab) {
+  if (isQuizPlaying && tab !== "kuis") return showToast("Selesaikan atau tekan Keluar & Simpan dahulu");
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.toggle("active", n.dataset.tab === tab));
+  $("sec-" + tab).classList.add("active");
+  if (tab === "pengumuman") tandaiPengumumanDibaca();
+  window.scrollTo(0, 0);
+}
+
+// ===================== PENGUMUMAN =====================
+function getSeenAnnIds() {
+  const map = readJSON(KEYS.seenAnn, {});
+  return Array.isArray(map[currentSantriId]) ? map[currentSantriId] : [];
+}
+
+function getUnreadAnnCount() {
+  const list = Array.isArray(appState.pengumuman) ? appState.pengumuman : [];
+  if (!list.length || !currentSantriId) return 0;
+  const seen = new Set(getSeenAnnIds());
+  return list.filter(p => !seen.has(p.id)).length;
+}
+
+function tandaiPengumumanDibaca() {
+  const list = Array.isArray(appState.pengumuman) ? appState.pengumuman : [];
+  if (!currentSantriId || !list.length) return;
+  const map = readJSON(KEYS.seenAnn, {});
+  map[currentSantriId] = list.map(p => p.id);
+  writeJSON(KEYS.seenAnn, map);
+  updateNavBadgePengumuman();
+}
+
+function updateNavBadgePengumuman() {
+  const badge = $("navBadgePengumuman");
+  if (!badge) return;
+  const unread = getUnreadAnnCount();
+  badge.textContent = unread > 9 ? "9+" : String(unread);
+  badge.classList.toggle("show", unread > 0);
+}
+
+function renderPengumuman() {
+  const list = Array.isArray(appState.pengumuman) ? appState.pengumuman : [];
+  const seen = new Set(getSeenAnnIds());
+  updateNavBadgePengumuman();
+
+  const banner = $("berandaPengumumanCard");
+  if (banner) {
+    if (!list.length) {
+      banner.style.display = "none";
+    } else {
+      const top = list.find(p => p.penting) || list[0];
+      const isNew = !seen.has(top.id);
+      const preview = top.isi.length > 95 ? top.isi.slice(0, 95) + "..." : top.isi;
+      banner.style.display = "block";
+      banner.innerHTML = `<div class="ann-banner">
+        <div style="min-width:0;flex:1">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+            <span class="badge ${isNew || top.penting ? "urgent" : ""}">${isNew ? "Pengumuman Baru" : (top.penting ? "Penting" : "Pengumuman")}</span>
+            ${top.tanggal ? `<span style="font-size:11px;color:var(--tx3)">${esc(top.tanggal)}</span>` : ""}
+          </div>
+          <div style="font-size:14px;font-weight:800;margin-bottom:2px">${esc(top.judul)}</div>
+          ${preview ? `<div style="font-size:12px;color:var(--tx2)">${esc(preview)}</div>` : ""}
+        </div>
+        <span style="font-size:11px;font-weight:700;color:var(--tx2);white-space:nowrap">Lihat &rsaquo;</span>
+      </div>`;
+    }
+  }
+
+  $("pengumumanCountBadge").textContent = `${list.length} Info`;
+  $("pengumumanListContainer").innerHTML = list.length
+    ? list.map(p => `<div class="neu-card ${p.penting ? "ann-card-pinned" : ""}">
+        <div class="row" style="margin-bottom:6px">
+          <div style="display:flex;gap:6px;align-items:center">
+            <span class="badge ${p.penting ? "urgent" : ""}">${esc(p.penting ? "Penting" : (p.kategori || "Umum"))}</span>
+            ${!seen.has(p.id) ? `<span class="badge urgent">Baru</span>` : ""}
+          </div>
+          <span style="font-size:11px;color:var(--tx3)">${esc(p.tanggal)}</span>
+        </div>
+        <h3 style="font-size:15px;font-weight:800;margin-bottom:6px">${esc(p.judul)}</h3>
+        <p style="font-size:13px;color:var(--tx2);white-space:pre-line">${esc(p.isi)}</p>
+      </div>`).join("")
+    : `<div class="neu-card empty">Belum ada pengumuman dari guru pengajian.</div>`;
+}
+
+// ===================== LEADERBOARD =====================
+function buildCombinedLeaderboard() {
+  const list = Array.isArray(appState.santri) ? appState.santri : [];
+  const map = new Map();
+  (appState.skor || []).forEach(sc => {
+    const so = list.find(x => x.id === sc.santriId);
+    map.set(sc.santriId, { santriId: sc.santriId, nama: (so && so.nama) || sc.nama, kelas: so ? so.kelas || "Umum" : "Umum", poin: num(sc.poin) });
+  });
+  const pend = getPendingMap();
+  Object.keys(pend).forEach(id => {
+    const add = num((pend[id] || {}).poin);
+    if (map.has(id)) map.get(id).poin += add;
+    else {
+      const so = list.find(x => x.id === id);
+      map.set(id, { santriId: id, nama: so ? so.nama : pend[id].nama || id, kelas: so ? so.kelas || "Umum" : "Umum", poin: add });
+    }
+  });
+  return [...map.values()].filter(r => r.poin > 0).sort((a, b) => b.poin - a.poin || String(a.nama).localeCompare(String(b.nama)));
+}
+
+const LB_LEVELS = [[0, "Pemula"], [50, "Rajin"], [150, "Cerdas"], [300, "Mahir"], [600, "Juara"]];
+let lbKelas = "ALL";
+const lbLevel = p => { let l = LB_LEVELS[0][1]; LB_LEVELS.forEach(([m, n]) => { if (p >= m) l = n; }); return l; };
+const ORN = n => `<svg class="lb-orn c${n}" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5 38V18C5 10 10 5 18 5h20"/><path d="M11 38V22c0-5.5 5.5-11 11-11h16" opacity=".4"/><g fill="currentColor" stroke="none"><circle cx="9" cy="5.5" r="2.4"/><circle cx="9" cy="12.5" r="2.4"/><circle cx="5.5" cy="9" r="2.4"/><circle cx="12.5" cy="9" r="2.4"/><path d="M21 5c3.2 0 5.4 2.1 6.4 5.2-3.2 0-5.4-2.1-6.4-5.2zM5 21c0 3.2 2.1 5.4 5.2 6.4 0-3.2-2.1-5.4-5.2-6.4z"/></g><circle cx="9" cy="9" r="1.7" fill="var(--bg)" stroke="none"/></svg>`;
+const GEM = `<svg viewBox="0 0 24 22" aria-hidden="true"><path d="M6 2h12l5 6-11 13L1 8l5-6z" fill="currentColor"/><path d="M1 8h22M6 2l3 6 3-6 3 6 3-6M9 8l3 13 3-13" fill="none" stroke="var(--surface)" stroke-width="1" stroke-linejoin="round" opacity=".55"/></svg>`;
+const CROWN_SVG = `<svg class="lb-crown" viewBox="0 0 28 22" aria-hidden="true"><path d="M2 8l5.5 5L14 3l6.5 10L26 8l-2 12H4L2 8z" fill="currentColor"/><g fill="currentColor"><circle cx="2" cy="7" r="1.9"/><circle cx="14" cy="2.6" r="1.9"/><circle cx="26" cy="7" r="1.9"/></g><g fill="var(--bg)"><circle cx="14" cy="15.5" r="1.5"/><circle cx="8.5" cy="16" r="1.1"/><circle cx="19.5" cy="16" r="1.1"/></g></svg>`;
+
+function getInitials(n) {
+  const p = String(n || "S").trim().split(/\s+/);
+  return (p.length >= 2 ? p[0][0] + p[1][0] : String(n || "S").slice(0, 2)).toUpperCase();
+}
+
+function renderPodiumHTML(rk) {
+  if (!rk || !rk.length) return "";
+  const me = currentSantriId;
+  const slot = (it, n) => {
+    if (!it) return `<div class="lb-slot r${n}" style="opacity:.35"><div class="lb-avw"><div class="lb-av">-</div></div><div class="lb-p-name">Kosong</div><div class="lb-p-pts">0 Koin</div><div class="lb-ped">${n}</div></div>`;
+    return `<div class="lb-slot r${n}"><div class="lb-avw">${n === 1 && !hasFrame(it.santriId) ? CROWN_SVG : ""}${avatarHTML(it.santriId, it.nama, n === 1 ? 56 : 46)}</div>
+      <div class="lb-p-name">${esc(it.nama)}${it.santriId === me ? " •" : ""}</div>
+      <div class="lb-p-pts">${it.poin} Koin</div><div class="lb-ped">${n}</div></div>`;
+  };
+  return `<div class="lb-stage"><span class="lb-gem-top">${GEM}</span>${ORN(1)}${ORN(2)}${slot(rk[1], 2)}${slot(rk[0], 1)}${slot(rk[2], 3)}</div>`;
+}
+
+function renderMyRankHTML(rk, me) {
+  const s = (appState.santri || []).find(x => x.id === me);
+  if (!s) return "";
+  const idx = rk.findIndex(r => r.santriId === me);
+  if (idx < 0) return `<div class="lb-me">${ORN(1)}${ORN(3)}<div class="lb-me-top"><div class="lb-me-rank"><small>PERINGKAT</small><b>-</b></div><div class="lb-me-info"><div class="n">${esc(s.nama)}</div><div class="t">Belum masuk klasemen</div></div><div class="lb-me-coin"><b>0</b><span>KOIN</span></div></div><div class="lb-me-gap">Mainkan kuis untuk mengumpulkan koin pertamamu.</div></div>`;
+  const r = rk[idx], prev = rk[idx - 1];
+  const pct = prev ? Math.max(4, Math.min(100, Math.round(r.poin / prev.poin * 100))) : 100;
+  const msg = prev ? `Kurang <b>${prev.poin - r.poin} koin</b> lagi untuk menyalip <b>${esc(prev.nama)}</b>` : `Kamu berada di puncak klasemen. Pertahankan!`;
+  return `<div class="lb-me">${ORN(1)}${ORN(3)}<div class="lb-me-top"><div class="lb-me-rank"><small>PERINGKAT</small><b>#${idx + 1}</b></div>
+    <div class="lb-me-info"><div class="n">${esc(s.nama)}</div><div class="t">${esc(lbLevel(r.poin))} • ${esc(r.kelas || "Umum")}</div></div>
+    <div class="lb-me-coin"><b>${r.poin}</b><span>KOIN</span></div></div>
+    <div class="lb-me-gap">${msg}</div><div class="lb-me-bar"><i style="width:${pct}%"></i></div></div>`;
+}
+
+function renderRowsHTML(rk, me) {
+  if (!rk || !rk.length) return `<div class="empty">Belum ada santri yang mengumpulkan koin.</div>`;
+  const top = rk[0].poin || 1;
+  return `<div class="lb-list">` + rk.map((r, i) => {
+    const pct = Math.max(3, Math.round(r.poin / top * 100)), isMe = me && r.santriId === me;
+    const deco = i === 0 ? `<span class="lb-gem lb-gem-crown">${CROWN_SVG}</span>` : i < 3 ? `<span class="lb-gem">${GEM}</span>` : "";
+    return `<div class="lb-item ${i < 3 ? "top" + (i + 1) : ""} ${isMe ? "me" : ""}">${deco}
+      <span class="lb-rk">${i + 1}</span><span class="lb-avs">${avatarHTML(r.santriId, r.nama, 38)}</span>
+      <div class="lb-mid"><div class="lb-nm">${esc(r.nama)}${isMe ? `<span class="badge me" style="margin:0">Anda</span>` : ""}</div>
+        <div class="lb-meta">${esc(lbLevel(r.poin))} • ${esc(r.kelas || "Umum")}</div>
+        <div class="lb-tr"><i style="width:${pct}%"></i></div></div>
+      <div class="lb-sc"><b>${r.poin}</b><span>KOIN</span></div></div>`;
+  }).join("") + `</div>`;
+}
+
+function renderKelasFilterHTML(all) {
+  const cats = ["ALL", ...new Set(all.map(r => r.kelas || "Umum"))];
+  if (!cats.includes(lbKelas)) lbKelas = "ALL";
+  if (cats.length < 3) return "";
+  return `<div class="lb-filter">` + cats.map(c => `<button type="button" class="pill ${c === lbKelas ? "active" : ""}" data-lbk="${esc(c)}">${c === "ALL" ? "Semua Kelas" : esc(c)}</button>`).join("") + `</div>`;
+}
+
+function animateCounts() {}
+
+// ===================== PROFIL: FOTO & BINGKAI =====================
+const PROFIL_KEY = "bustanul_profil_map";
+const GOLD3 = ["#fff3b8", "#e6b422", "#8a5a00"];
+const FRAMES = [
+  { id: "none", nama: "Tanpa Bingkai" },
+  { id: "emas", nama: "Emas Klasik", c: GOLD3, d: [] },
+  { id: "mahkota", nama: "Mahkota Emas", c: GOLD3, d: ["crown"], g: "#ff3d6e" },
+  { id: "ruby", nama: "Permata Ruby", c: GOLD3, d: ["gem"], g: "#ff3d6e" },
+  { id: "sayap", nama: "Sayap Emas", c: GOLD3, d: ["wings", "gem"], g: "#ff3d6e" },
+  { id: "perak", nama: "Sayap Perak", c: ["#ffffff", "#b9c4d6", "#66758f"], d: ["wings", "gem"], g: "#3d9bff" },
+  { id: "laurel", nama: "Laurel Emas", c: GOLD3, d: ["laurel"], lc: "#e9c24a" },
+  { id: "zamrud", nama: "Zamrud Hijau", c: ["#d9ffe0", "#2fbf71", "#0b6b3a"], d: ["laurel", "gem"], lc: "#35c97a", g: "#ffd34d" },
+  { id: "hilal", nama: "Bulan Bintang", c: GOLD3, d: ["crescent"] },
+  { id: "kerajaan", nama: "Kerajaan Ungu", c: ["#ffe9a6", "#c05cff", "#6a1fb3"], d: ["crown", "wings"], g: "#ffd34d" },
+  { id: "lavender", nama: "Bunga Lavender", c: ["#f3e6ff", "#b98cf0", "#7a4fc2"], d: ["flower"], f: ["#efe0ff", "#b98cf0"] },
+  { id: "sakura", nama: "Bunga Sakura", c: ["#ffe3ee", "#ff8fb5", "#d44f7e"], d: ["flower"], f: ["#ffd9e6", "#ff7aa6"] },
+  { id: "bintang", nama: "Bintang Pelangi", c: ["#7af0ff", "#3d8bff", "#9b4dff"], d: ["stars"] },
+  { id: "hati", nama: "Hati Cinta", c: ["#ffd0dc", "#ff4d79", "#a8173f"], d: ["hearts"], g: "#ff3d6e" },
+  { id: "api", nama: "Api Semangat", c: ["#ffe08a", "#ff7a1a", "#b3260a"], d: ["flame"] },
+  { id: "awan", nama: "Awan Langit", c: ["#d6ecff", "#7aaeff", "#3f6fd6"], d: ["cloud"] },
+  { id: "berlian", nama: "Berlian Biru", c: ["#e8fbff", "#4fd1e8", "#1b7fa6"], d: ["gems4"], g: "#7df0ff" }
+];
+
+let profilMap = readJSON(PROFIL_KEY, {});
+let unsubProfil = null, _fid = 0;
+const hasFrame = id => { const p = profilMap[id]; const f = p && FRAMES.find(x => x.id === p.frame); return !!(f && f.c); };
+
+function starPath(cx, cy, R) {
+  let d = "";
+  for (let i = 0; i < 10; i++) { const r = i % 2 ? R * .45 : R, a = (-90 + i * 36) * Math.PI / 180; d += (i ? "L" : "M") + (cx + r * Math.cos(a)).toFixed(1) + " " + (cy + r * Math.sin(a)).toFixed(1); }
+  return d + "Z";
+}
+
+function frameSVG(f) {
+  if (!f || !f.c) return "";
+  const id = "fg" + (++_fid), [c1, c2, c3] = f.c, D = f.d || [], g = f.g || "#ff3d6e", G = `url(#${id})`;
+  const P = (deg, r) => { const a = deg * Math.PI / 180; return [68 + r * Math.cos(a), 68 + r * Math.sin(a)]; };
+  const defs = `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset=".5" stop-color="${c2}"/><stop offset="1" stop-color="${c3}"/></linearGradient>`;
+  let back = "", front = "", extra = "";
+
+  if (D.includes("wings")) {
+    const w = `<path d="M31 90C12 92 3 111 8 128c8-10 14-12 22-12-6-4-4-10 4-12-6-4-4-8 4-8z" fill="${G}" stroke="${c3}" stroke-width="1" stroke-linejoin="round"/><path d="M12 118c6-6 12-8 20-8M16 108c5-4 10-6 18-6" stroke="${c3}" stroke-opacity=".5" fill="none" stroke-width=".9"/>`;
+    back += w + `<g transform="translate(136 0) scale(-1 1)">${w}</g>`;
+  }
+  if (D.includes("laurel")) {
+    const lc = f.lc || c2;
+    [[104, 0], [122, 1], [140, 2], [158, 3], [176, 4], [194, 5], [212, 6]].forEach(([a]) => {
+      [a, 180 - a].forEach(deg => { const [x, y] = P(deg, 55); back += `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="4.3" ry="10" transform="rotate(${deg + (deg > 90 ? 18 : -18)} ${x.toFixed(1)} ${y.toFixed(1)})" fill="${lc}" stroke="${c3}" stroke-width=".8"/>`; });
+    });
+  }
+  if (D.includes("flame")) {
+    for (let a = -180; a <= 0; a += 22.5) { const [x, y] = P(a, 54), s = a === -90 ? 1.25 : 1; back += `<path transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${a + 90}) scale(${s})" d="M-5 2C-8-8-1-11 0-22 1-11 8-8 5 2z" fill="${G}" stroke="${c3}" stroke-width=".8" stroke-linejoin="round"/>`; }
+  }
+
+  const ring = `<circle cx="68" cy="68" r="52" fill="none" stroke="${G}" stroke-width="7"/><circle cx="68" cy="68" r="48.6" fill="none" stroke="${c1}" stroke-opacity=".7" stroke-width="1"/><circle cx="68" cy="68" r="55.4" fill="none" stroke="${c3}" stroke-opacity=".6" stroke-width="1"/>`;
+
+  if (D.includes("crown")) front += `<path d="M50 21L47 6l11 7L68 0l10 13 11-7-3 15z" fill="${G}" stroke="${c3}" stroke-width="1" stroke-linejoin="round"/><circle cx="68" cy="14" r="3" fill="${g}" stroke="#fff" stroke-width=".8"/><circle cx="55" cy="16" r="1.8" fill="${g}"/><circle cx="81" cy="16" r="1.8" fill="${g}"/>`;
+  if (D.includes("gem")) front += `<path d="M58 112H78L83 119 68 134 53 119z" fill="${g}" stroke="${c3}" stroke-width="1.4" stroke-linejoin="round"/><path d="M53 119H83M58 112L63 119 68 134 73 119 78 112" stroke="#fff" stroke-opacity=".65" fill="none" stroke-width=".9"/>`;
+  if (D.includes("gems4")) [[68, 16], [68, 120], [16, 68], [120, 68]].forEach(([x, y]) => { front += `<path transform="translate(${x} ${y})" d="M0-10L7 0 0 10-7 0z" fill="${g}" stroke="${c3}" stroke-width="1.2" stroke-linejoin="round"/><path transform="translate(${x} ${y})" d="M-7 0H7M0-10L-3 0 0 10 3 0z" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width=".8"/>`; });
+  if (D.includes("flower")) {
+    const fa = (f.f || ["#fff", "#ccc"]);
+    const flower = (cx, cy, r) => { let s = ""; for (let k = 0; k < 5; k++) { const a = (-90 + k * 72) * Math.PI / 180; s += `<circle cx="${(cx + r * .62 * Math.cos(a)).toFixed(1)}" cy="${(cy + r * .62 * Math.sin(a)).toFixed(1)}" r="${(r * .5).toFixed(1)}" fill="${fa[0]}" stroke="${fa[1]}" stroke-width=".8"/>`; } return s + `<circle cx="${cx}" cy="${cy}" r="${(r * .3).toFixed(1)}" fill="#ffd34d" stroke="#d99a00" stroke-width=".6"/>`; };
+    front += `<ellipse cx="88" cy="124" rx="9" ry="4" transform="rotate(-25 88 124)" fill="#7fd99a" stroke="#3a9b5c" stroke-width=".7"/><ellipse cx="122" cy="84" rx="9" ry="4" transform="rotate(-70 122 84)" fill="#7fd99a" stroke="#3a9b5c" stroke-width=".7"/><ellipse cx="22" cy="34" rx="7" ry="3.4" transform="rotate(35 22 34)" fill="#7fd99a" stroke="#3a9b5c" stroke-width=".7"/>` + flower(106, 106, 13) + flower(121, 88, 8.5) + flower(88, 123, 8.5) + flower(26, 30, 8);
+  }
+  if (D.includes("stars")) [[-145, 6], [-118, 8.5], [-90, 12], [-62, 8.5], [-35, 6]].forEach(([a, R]) => { const [x, y] = P(a, 56); front += `<path d="${starPath(x, y, R)}" fill="#ffd34d" stroke="#c98a00" stroke-width=".9" stroke-linejoin="round"/>`; });
+  if (D.includes("hearts")) [[68, 119, 1.5], [112, 34, .95], [22, 98, .75]].forEach(([x, y, s]) => { front += `<path transform="translate(${x} ${y}) scale(${s})" d="M0-2C-1-6-8-6-8-1-8 4 0 8 0 11 0 8 8 4 8-1 8-6 1-6 0-2z" fill="${g}" stroke="#fff" stroke-width=".9"/>`; });
+  if (D.includes("cloud")) [[26, 30, 1.1], [112, 108, 1], [118, 32, .7]].forEach(([x, y, s]) => { front += `<g transform="translate(${x} ${y}) scale(${s})" fill="#fff" stroke="#bcd8ff" stroke-width="1"><circle r="8"/><circle cx="10" cy="3" r="6"/><circle cx="-10" cy="3" r="6"/><rect x="-10" y="3" width="20" height="6" stroke="none"/></g>`; });
+  if (D.includes("crescent")) { extra = `<mask id="${id}m"><rect width="136" height="136" fill="#fff"/><circle cx="71" cy="9" r="8" fill="#000"/></mask>`; front += `<circle cx="66" cy="10" r="10" fill="${G}" stroke="${c3}" stroke-width=".8" mask="url(#${id}m)"/><path d="${starPath(80, 9, 5.5)}" fill="${G}" stroke="${c3}" stroke-width=".8" stroke-linejoin="round"/>`; }
+
+  return `<svg class="pf-fr" viewBox="0 0 136 136" aria-hidden="true"><defs>${defs}${extra}</defs>${back}${ring}${front}</svg>`;
+}
+
+function avatarCore(foto, nama, fid, px) {
+  const f = FRAMES.find(x => x.id === fid), fr = f && f.c ? frameSVG(f) : "";
+  const inner = foto ? `<img src="${foto}" alt="" decoding="async">` : esc(getInitials(nama));
+  return `<span class="pf ${fr ? "has-fr" : "no-fr"}" style="--s:${px}px"><span class="pf-img">${inner}</span>${fr}</span>`;
+}
+const avatarHTML = (id, nama, px) => { const p = profilMap[id] || {}; return avatarCore(p.foto, nama, p.frame, px); };
+
+// ---- sinkron ----
+async function sinkronProfil() {
+  if (!navigator.onLine || !docRef) return;
+  const ids = Object.keys(profilMap).filter(i => profilMap[i] && profilMap[i].dirty);
+  for (const id of ids) {
+    const p = profilMap[id];
+    try {
+      await firebase.firestore().collection("balai_pengajian").doc("profil_" + id).set({ santriId: id, frame: p.frame || "none", foto: p.foto || "", updatedAt: p.t || Date.now() });
+      if (profilMap[id] && profilMap[id].t === p.t) delete profilMap[id].dirty;
+    } catch (e) {}
+  }
+  writeJSON(PROFIL_KEY, profilMap);
+}
+
+function initProfilListener() {
+  try {
+    if (unsubProfil) unsubProfil();
+    const fs = firebase.firestore();
+    unsubProfil = fs.collection("balai_pengajian").orderBy(firebase.firestore.FieldPath.documentId()).startAt("profil_").endAt("profil_").onSnapshot(snap => {
+      snap.docChanges().forEach(ch => {
+        const d = ch.doc.data() || {}, id = String(d.santriId || ch.doc.id.replace("profil_", ""));
+        if (ch.type === "removed") { if (!(profilMap[id] && profilMap[id].dirty)) delete profilMap[id]; return; }
+        if (profilMap[id] && profilMap[id].dirty && num(profilMap[id].t) >= num(d.updatedAt)) return;
+        profilMap[id] = { frame: d.frame || "none", foto: d.foto || "", t: num(d.updatedAt) };
+      });
+      writeJSON(PROFIL_KEY, profilMap);
+      if (currentSantriId) isQuizPlaying ? renderBeranda() : renderAll();
+      sinkronProfil();
+    }, () => {});
+  } catch (e) {}
+}
+
+// ---- editor foto ----
+const CROP = 240, OUT = 176;
+let PR = { img: null, foto: "", frame: "none", zoom: 1, ox: 0, oy: 0 };
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+function cropMetrics() {
+  const iw = PR.img.naturalWidth || PR.img.width, ih = PR.img.naturalHeight || PR.img.height;
+  const base = Math.max(CROP / iw, CROP / ih) * PR.zoom, w = iw * base, h = ih * base;
+  PR.ox = clamp(PR.ox, -Math.max(0, (w - CROP) / 2), Math.max(0, (w - CROP) / 2));
+  PR.oy = clamp(PR.oy, -Math.max(0, (h - CROP) / 2), Math.max(0, (h - CROP) / 2));
+  return { w, h };
+}
+
+function drawCrop() {
+  if (!PR.img) return;
+  const c = $("profCanvas"), x = c.getContext("2d"), { w, h } = cropMetrics();
+  x.clearRect(0, 0, CROP, CROP);
+  x.imageSmoothingQuality = "high";
+  x.drawImage(PR.img, (CROP - w) / 2 + PR.ox, (CROP - h) / 2 + PR.oy, w, h);
+  x.fillStyle = "rgba(0,0,0,.55)";
+  x.beginPath(); x.rect(0, 0, CROP, CROP); x.arc(CROP / 2, CROP / 2, CROP / 2 - 6, 0, Math.PI * 2, true); x.fill("evenodd");
+  x.strokeStyle = "rgba(255,255,255,.9)"; x.lineWidth = 2;
+  x.beginPath(); x.arc(CROP / 2, CROP / 2, CROP / 2 - 6, 0, Math.PI * 2); x.stroke();
+}
+
+function exportFoto() {
+  const out = document.createElement("canvas"); out.width = out.height = OUT;
+  const x = out.getContext("2d"), k = OUT / CROP, { w, h } = cropMetrics();
+  x.fillStyle = "#fff"; x.fillRect(0, 0, OUT, OUT);
+  x.imageSmoothingQuality = "high";
+  x.drawImage(PR.img, ((CROP - w) / 2 + PR.ox) * k, ((CROP - h) / 2 + PR.oy) * k, w * k, h * k);
+  let q = .8, d = out.toDataURL("image/jpeg", q);
+  while (d.length > 40000 && q > .4) { q -= .1; d = out.toDataURL("image/jpeg", q); }
+  return d;
+}
+
+function refreshProfUI() {
+  const s = getSantriAktif(); if (!s) return;
+  $("profPreview").innerHTML = avatarCore(PR.foto, s.nama, PR.frame, 104);
+  const f = FRAMES.find(x => x.id === PR.frame);
+  $("profFrameName").textContent = f ? f.nama : "";
+  $("profFrameGrid").innerHTML = FRAMES.map(fr => `<button type="button" class="fr-tile ${fr.id === PR.frame ? "sel" : ""}" data-fr="${fr.id}">${avatarCore(PR.foto, s.nama, fr.id, 46)}<span>${esc(fr.nama)}</span></button>`).join("");
+}
+
+function bukaProfil() {
+  const s = getSantriAktif(); if (!s) return;
+  const p = profilMap[s.id] || {};
+  PR = { img: null, foto: p.foto || "", frame: p.frame || "none", zoom: 1, ox: 0, oy: 0 };
+  $("profEditor").style.display = "none";
+  $("profZoom").value = 1;
+  $("profFile").value = "";
+  $("btnHapusFoto").style.display = PR.foto ? "" : "none";
+  refreshProfUI();
+  $("modalProfil").classList.add("open");
+}
+const tutupProfil = () => $("modalProfil").classList.remove("open");
+const pilihBingkai = id => { PR.frame = id; refreshProfUI(); };
+
+function pilihFile(file) {
+  if (!file) return;
+  const url = URL.createObjectURL(file), img = new Image();
+  img.onload = () => {
+    PR.img = img; PR.zoom = 1; PR.ox = PR.oy = 0; $("profZoom").value = 1;
+    $("profEditor").style.display = "block";
+    drawCrop(); PR.foto = exportFoto(); $("btnHapusFoto").style.display = ""; refreshProfUI();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  };
+  img.onerror = () => { URL.revokeObjectURL(url); showToast("Foto tidak bisa dibuka. Coba foto lain (JPG/PNG)."); };
+  img.src = url;
+}
+
+async function simpanProfil() {
+  const s = getSantriAktif(); if (!s) return;
+  if (PR.img) PR.foto = exportFoto();
+  profilMap[s.id] = { frame: PR.frame, foto: PR.foto || "", t: Date.now(), dirty: true };
+  writeJSON(PROFIL_KEY, profilMap);
+  tutupProfil(); renderAll();
+  showToast(navigator.onLine && docRef ? "Profil disimpan!" : "Profil disimpan di HP, akan tersinkron saat online");
+  sinkronProfil();
+}
+
+(function wireProfil() {
+  $("btnTutupProfil").onclick = tutupProfil;
+  $("btnSimpanProfil").onclick = simpanProfil;
+  $("btnPilihFoto").onclick = () => $("profFile").click();
+  $("profFile").addEventListener("change", e => pilihFile(e.target.files && e.target.files[0]));
+  $("btnHapusFoto").onclick = () => { PR.img = null; PR.foto = ""; $("profEditor").style.display = "none"; $("btnHapusFoto").style.display = "none"; refreshProfUI(); };
+  $("modalProfil").addEventListener("click", e => { if (e.target === e.currentTarget) tutupProfil(); });
+  $("profZoom").addEventListener("input", e => { PR.zoom = Number(e.target.value); drawCrop(); });
+  $("profZoom").addEventListener("change", () => { if (PR.img) { PR.foto = exportFoto(); refreshProfUI(); } });
+  const cv = $("profCanvas"); let drag = null;
+  cv.addEventListener("pointerdown", e => { drag = { x: e.clientX, y: e.clientY, ox: PR.ox, oy: PR.oy }; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener("pointermove", e => { if (!drag || !PR.img) return; const k = CROP / cv.getBoundingClientRect().width; PR.ox = drag.ox + (e.clientX - drag.x) * k; PR.oy = drag.oy + (e.clientY - drag.y) * k; drawCrop(); });
+  const end = () => { if (drag && PR.img) { PR.foto = exportFoto(); refreshProfUI(); } drag = null; };
+  cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+  cv.addEventListener("wheel", e => { if (!PR.img) return; e.preventDefault(); PR.zoom = clamp(PR.zoom + (e.deltaY < 0 ? .08 : -.08), 1, 4); $("profZoom").value = PR.zoom; drawCrop(); }, { passive: false });
+})();
+
+// ===================== BERANDA =====================
+function renderBeranda() {
+  const s = getSantriAktif();
+  if (!s) return;
+  const total = getKoinSantri(s.id), p = getPendingMap()[s.id], pend = p ? num(p.poin) : 0;
+  $("headerSantriName").textContent = s.nama;
+  $("headerAvatar").innerHTML = avatarHTML(s.id, s.nama, 34);
+  $("berandaAvatar").innerHTML = avatarHTML(s.id, s.nama, 64);
+  $("headerSantriKelas").textContent = s.kelas || "Umum";
+  $("headerCoinCount").textContent = total;
+  $("berandaKelasBadge").textContent = `${s.kelas || "Umum"} • @${s.username || s.id}`;
+  $("berandaNamaTitle").textContent = `Assalamu'alaikum, ${s.nama}`;
+  $("berandaTotalKoin").textContent = `${total} Koin`;
+  $("berandaPendingInfo").textContent = pend > 0 ? `Termasuk +${pend} koin lokal menunggu sinyal online` : "Saldo tersinkron dengan portal guru & klasemen";
+
+  const ab = appState.absensi || {};
+  const c = { Hadir: 0, Izin: 0, Sakit: 0, Alpa: 0 };
+  Object.keys(ab).forEach(k => { const st = (ab[k] || {})[s.id]; if (st in c) c[st]++; });
+  const tot = c.Hadir + c.Izin + c.Sakit + c.Alpa, pct = tot ? Math.round(c.Hadir / tot * 100) : 0;
+  $("berandaAbsensiSummary").innerHTML = `<div class="row"><div><div style="font-size:14px;font-weight:800">Kehadiran Pengajian</div><div style="font-size:11px;color:var(--tx2)">Hadir ${c.Hadir} dari ${tot} sesi pengajian</div></div><div style="font-size:22px;font-weight:800">${pct}%</div></div><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>`;
+  $("berandaAbsensiGrid").innerHTML = Object.keys(c).map(k => `<div class="stat-box"><div class="stat-val">${c[k]}</div><div class="stat-lbl">${k}</div></div>`).join("");
+
+  const rk = buildCombinedLeaderboard(), my = rk.findIndex(r => r.santriId === s.id);
+  $("berandaMyRankBadge").textContent = my >= 0 ? `Peringkat #${my + 1}` : "Belum Peringkat";
+  $("berandaMyRank").innerHTML = renderMyRankHTML(rk, s.id);
+  $("berandaPodiumContainer").innerHTML = renderPodiumHTML(rk);
+  $("berandaTopLeaderboard").innerHTML = renderRowsHTML(rk.slice(0, 5), s.id);
+  animateCounts($("berandaMyRank")); animateCounts($("berandaPodiumContainer")); animateCounts($("berandaTopLeaderboard"));
+}
+
+// ===================== KUIS =====================
+function setQuizCategory(idx) {
+  selectedQuizCategory = quizCats[idx] || "ALL";
+  renderLobbyKuis();
+}
+
+const soalByCategory = () => {
+  const all = Array.isArray(appState.kuisSoal) ? appState.kuisSoal.filter(q => q && q.pertanyaan && Array.isArray(q.opsi) && q.opsi.length > 1) : [];
+  return selectedQuizCategory === "ALL" ? all : all.filter(q => (q.kategori || "Umum") === selectedQuizCategory);
+};
+
+function renderLobbyKuis() {
+  const s = getSantriAktif(), koin = s ? getKoinSantri(s.id) : 0;
+  $("kuisSaldoBadge").textContent = `Saldo: ${koin} Koin`;
+  $("lobbyKoinLama").textContent = `${koin} Koin`;
+  $("maxSoalInfo").textContent = MAX_SOAL;
+  const all = Array.isArray(appState.kuisSoal) ? appState.kuisSoal : [];
+  quizCats = ["ALL", ...new Set(all.map(q => q.kategori || "Umum"))];
+  if (!quizCats.includes(selectedQuizCategory)) selectedQuizCategory = "ALL";
+  $("quizCategoryPills").innerHTML = quizCats.map((c, i) => `<button type="button" class="pill ${c === selectedQuizCategory ? "active" : ""}" data-cat="${i}">${c === "ALL" ? "Semua Materi" : esc(c)}</button>`).join("");
+  $("lobbyJumlahSoal").textContent = `${soalByCategory().length} Soal`;
+  const lbAll = buildCombinedLeaderboard();
+  $("kuisKelasPills").innerHTML = renderKelasFilterHTML(lbAll);
+  const lb = lbKelas === "ALL" ? lbAll : lbAll.filter(r => (r.kelas || "Umum") === lbKelas);
+  $("kuisTotalPesertaBadge").textContent = `${lb.length} Santri`;
+  $("kuisMyRank").innerHTML = s ? renderMyRankHTML(lbAll, s.id) : "";
+  $("kuisPodiumContainer").innerHTML = renderPodiumHTML(lb);
+  $("kuisFullLeaderboard").innerHTML = renderRowsHTML(lb, s ? s.id : "");
+  ["kuisMyRank", "kuisPodiumContainer", "kuisFullLeaderboard"].forEach(i => animateCounts($(i)));
+}
+
+function mulaiKuis() {
+  const pool = [...soalByCategory()];
+  if (!pool.length) return showToast("Belum ada soal pada kategori ini");
+  for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+  activeQuestions = pool.slice(0, MAX_SOAL);
+  currentQIndex = 0; selectedOptionIdx = null; answerChecked = false;
+  sessionBenar = sessionSalah = sessionKoin = 0;
+  isQuizPlaying = true;
+  $("quizLobbyView").style.display = "none";
+  $("quizResultView").style.display = "none";
+  $("quizPlayView").style.display = "block";
+  renderPertanyaanAktif();
+}
+
+function renderPertanyaanAktif() {
+  const q = activeQuestions[currentQIndex], total = activeQuestions.length;
+  selectedOptionIdx = null; answerChecked = false;
+  $("playProgressBadge").textContent = `Soal ${currentQIndex + 1}/${total}`;
+  $("playSessionCoinBadge").textContent = `+${sessionKoin} Koin Sesi Ini`;
+  $("playProgressBar").style.width = `${Math.round(currentQIndex / total * 100)}%`;
+  $("playSoalKategori").textContent = `${q.kategori || "Umum"} • Bernilai +${num(q.poin) || 10} Koin`;
+  $("playSoalTeks").textContent = q.pertanyaan;
+  $("playFeedback").textContent = "";
+  $("playFeedback").style.color = "";
+  $("playExplainNote").style.display = "none";
+  $("playExplainNote").textContent = "";
+  $("playOptionsList").innerHTML = q.opsi.map((o, i) => `<button type="button" class="quiz-option" data-opt="${i}"><span class="quiz-opt-letter">${"ABCDE"[i] || i + 1}</span><span>${esc(o)}</span></button>`).join("");
+  $("btnNextSoal").textContent = "Periksa Jawaban";
+}
+
+function getKunciIndex(q) {
+  const n = (q.opsi || []).length;
+  let v = q.jawaban;
+  if (v === undefined || v === null || v === "") v = q.kunci !== undefined ? q.kunci : (q.jawabanBenar !== undefined ? q.jawabanBenar : q.benar);
+  if (v === undefined || v === null) return -1;
+  if (typeof v === "number" || /^\s*\d+\s*$/.test(String(v))) {
+    const k = Number(v);
+    if (k >= 0 && k < n) return k;
+    if (k === n) return k - 1;
+    return -1;
+  }
+  const t = String(v).trim();
+  if (/^[A-Ea-e][\.\)]?$/.test(t)) { const k = t.toUpperCase().charCodeAt(0) - 65; return k < n ? k : -1; }
+  return (q.opsi || []).findIndex(o => String(o).trim().toLowerCase() === t.toLowerCase());
+}
+
+function pilihJawaban(idx) {
+  if (answerChecked) return;
+  selectedOptionIdx = idx;
+  document.querySelectorAll(".quiz-option").forEach((b, i) => b.classList.toggle("selected", i === idx));
+}
+
+async function lanjutSoalBerikutnya() {
+  if (isBusy) return;
+  const q = activeQuestions[currentQIndex], total = activeQuestions.length;
+  if (!answerChecked) {
+    if (selectedOptionIdx === null) return showToast("Pilih salah satu jawaban terlebih dahulu!");
+    answerChecked = true;
+    const poin = num(q.poin) || 10, kunci = getKunciIndex(q), benar = kunci >= 0 && selectedOptionIdx === kunci;
+    if (kunci < 0) {
+    } else if (benar) { sessionBenar++; sessionKoin += poin; } else sessionSalah++;
+    document.querySelectorAll(".quiz-option").forEach((b, i) => {
+      b.disabled = true; b.classList.remove("selected");
+      if (kunci >= 0 && i === kunci) b.classList.add("correct"); else if (kunci >= 0 && i === selectedOptionIdx) b.classList.add("wrong");
+    });
+    const fb = $("playFeedback");
+    fb.textContent = kunci < 0 ? "Kunci jawaban soal ini belum valid (hubungi guru). Soal tidak dihitung." : benar ? `Benar! +${poin} Koin` : `Kurang tepat. Jawaban benar: ${"ABCDE"[kunci]}`;
+    fb.style.color = kunci < 0 ? "var(--tx2)" : benar ? "var(--ok)" : "var(--bad)";
+    if (q.pembahasan) {
+      $("playExplainNote").textContent = "Pembahasan: " + q.pembahasan;
+      $("playExplainNote").style.display = "block";
+    }
+    $("playSessionCoinBadge").textContent = `+${sessionKoin} Koin Sesi Ini`;
+    $("playProgressBar").style.width = `${Math.round((currentQIndex + 1) / total * 100)}%`;
+    $("btnNextSoal").textContent = currentQIndex === total - 1 ? "Selesai & Simpan Koin" : "Soal Berikutnya";
+    return;
+  }
+  if (currentQIndex < total - 1) { currentQIndex++; renderPertanyaanAktif(); }
+  else { isBusy = true; try { await selesaikanKuis(false); } finally { isBusy = false; } }
+}
+
+async function keluarDanSimpanKuis() {
+  if (isBusy || !isQuizPlaying) return;
+  isBusy = true;
+  try {
+    const q = activeQuestions[currentQIndex];
+    if (!answerChecked && selectedOptionIdx !== null && q) {
+      const k = getKunciIndex(q);
+      if (k >= 0) { if (selectedOptionIdx === k) { sessionBenar++; sessionKoin += num(q.poin) || 10; } else sessionSalah++; }
+    }
+    selectedOptionIdx = null;
+    await selesaikanKuis(true);
+  } finally { isBusy = false; }
+}
+
+async function selesaikanKuis(early) {
+  const s = getSantriAktif();
+  isQuizPlaying = false;
+  if (!s) return;
+  $("quizPlayView").style.display = "none";
+  $("quizResultView").style.display = "block";
+  const h = await simpanDanAkumulasiKoin(s.id, s.nama, sessionKoin, sessionBenar, sessionSalah, sessionBenar + sessionSalah);
+  $("resHeaderBadge").textContent = early ? "Keluar & Poin Disimpan" : "Sesi Kuis Selesai";
+  $("resHeaderTitle").textContent = sessionKoin > 0 ? `Alhamdulillah, +${sessionKoin} Koin Tersimpan!` : "Permainan Selesai";
+  $("resKoinLama").textContent = `${h.koinSebelumnya} Koin`;
+  $("resKoinBaru").textContent = `+${h.koinBaru} Koin`;
+  $("resKoinTotal").textContent = `${h.totalKoin} Koin`;
+  $("resBenarCount").textContent = sessionBenar;
+  $("resSalahCount").textContent = sessionSalah;
+  $("resSyncStatusText").textContent = h.mode === "online" ? "Poin otomatis digabungkan dengan saldo sebelumnya di server." : "Poin tersimpan di HP & otomatis digabung ke server saat online.";
+  if (sessionKoin > 0) showToast(`+${sessionKoin} Koin berhasil disimpan!`);
+  renderAll();
+}
+
+function kembaliKeLobbyKuis() {
+  $("quizResultView").style.display = "none";
+  $("quizPlayView").style.display = "none";
+  $("quizLobbyView").style.display = "block";
+  renderLobbyKuis();
+}
+
+// ===================== MATERI & ABSENSI =====================
+function setMateriFilter(idx) {
+  selectedMateriFilter = materiCats[idx] || "ALL";
+  renderMateri();
+}
+
+function renderMateri() {
+  const all = Array.isArray(appState.materi) ? appState.materi : [];
+  materiCats = ["ALL", ...new Set(all.map(m => m.kelas || "Umum"))];
+  if (!materiCats.includes(selectedMateriFilter)) selectedMateriFilter = "ALL";
+  $("materiFilterPills").innerHTML = all.length
+    ? materiCats.map((c, i) => `<button type="button" class="pill ${c === selectedMateriFilter ? "active" : ""}" data-mcat="${i}">${c === "ALL" ? "Semua Kitab" : esc(c)}</button>`).join("")
+    : "";
+  const list = selectedMateriFilter === "ALL" ? all : all.filter(m => (m.kelas || "Umum") === selectedMateriFilter);
+  $("materiCountBadge").textContent = `${list.length} Materi`;
+  $("materiListContainer").innerHTML = list.length
+    ? list.map(m => `<div class="neu-card"><div class="row" style="margin-bottom:6px"><span class="badge">${esc(m.kelas || "Umum")}</span><span style="font-size:11px;color:var(--tx3)">${esc(m.tanggal)}</span></div><h3 style="font-size:15px;font-weight:800;margin-bottom:6px">${esc(m.judul || "Materi")}</h3><p style="font-size:13px;color:var(--tx2);white-space:pre-line">${esc(m.isi)}</p></div>`).join("")
+    : `<div class="neu-card empty">Belum ada materi pengajian yang ditambahkan guru.</div>`;
+}
+
+function renderRiwayat() {
+  const s = getSantriAktif();
+  if (!s) return;
+  const ab = appState.absensi || {}, logs = [];
+  Object.keys(ab).sort().reverse().forEach(k => { const st = (ab[k] || {})[s.id]; if (st) { const [tgl, sesi] = k.split("_"); logs.push({ tgl, sesi, st }); } });
+  $("riwayatLogsContainer").innerHTML = logs.length ? `<div class="neu-card">` + logs.map(r => `<div class="row" style="padding:10px 0;border-bottom:1px solid var(--border);font-size:13px"><div><strong>${esc(r.tgl)}</strong><span style="font-size:11px;color:var(--tx2);display:block">Sesi: ${esc(r.sesi || "-")}</span></div><span class="badge" ${r.st === "Hadir" ? 'style="background:var(--accent);color:var(--acc-tx)"' : ""}>${esc(r.st)}</span></div>`).join("") + `</div>`
+    : `<div class="neu-card empty">Belum ada riwayat kehadiran tercatat.</div>`;
+}
+
+function renderAll() {
+  renderBeranda();
+  renderPengumuman();
+  if (!isQuizPlaying) renderLobbyKuis();
+  renderMateri();
+  renderRiwayat();
+}
+
+// ===================== EVENT =====================
+$("loginNamaInput").addEventListener("input", cekNamaSantriLive);
+$("loginNamaInput").addEventListener("keydown", e => { if (e.key === "Enter") $("loginPassword").focus(); });
+$("loginPassword").addEventListener("keydown", e => { if (e.key === "Enter") masukSantri(); });
+$("btnLogin").onclick = masukSantri;
+$("btnBukaSandi").onclick = bukaModalSandi;
+$("btnTutupSandi").onclick = tutupModalSandi;
+$("btnSimpanSandi").onclick = simpanSandiBaru;
+$("modalUbahSandi").addEventListener("click", e => { if (e.target === e.currentTarget) tutupModalSandi(); });
+$("btnKeluar").onclick = keluarAkun;
+$("btnSync").onclick = refreshManual;
+$("btnMulai").onclick = mulaiKuis;
+$("btnNextSoal").onclick = lanjutSoalBerikutnya;
+$("btnKeluarKuis").onclick = keluarDanSimpanKuis;
+$("btnKembaliLobby").onclick = kembaliKeLobbyKuis;
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-toggle],[data-goto],[data-tab],[data-cat],[data-mcat],[data-opt],[data-lbk],[data-fr],[data-profopen]");
+  if (!t) return;
+  if (t.dataset.toggle) toggleInputPass(t.dataset.toggle, t);
+  else if (t.dataset.goto) gotoTab(t.dataset.goto);
+  else if (t.dataset.tab) gotoTab(t.dataset.tab);
+  else if (t.dataset.cat !== undefined) setQuizCategory(Number(t.dataset.cat));
+  else if (t.dataset.mcat !== undefined) setMateriFilter(Number(t.dataset.mcat));
+  else if (t.dataset.opt !== undefined) pilihJawaban(Number(t.dataset.opt));
+  else if (t.dataset.lbk !== undefined) { lbKelas = t.dataset.lbk; renderLobbyKuis(); }
+  else if (t.dataset.fr !== undefined) pilihBingkai(t.dataset.fr);
+  else if (t.dataset.profopen !== undefined) bukaProfil();
 });
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden" && isQuizPlaying && sessionKoin > 0) keluarDanSimpanKuis();

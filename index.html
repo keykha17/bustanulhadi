@@ -53,10 +53,10 @@ input{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--bor
 input:focus{border-color:var(--accent)}
 label{display:block;font-size:11px;color:var(--tx2);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
 header{position:sticky;top:0;z-index:40;background-color:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;padding-top:calc(12px + env(safe-area-inset-top,0px));display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
 .brand-icon{width:36px;height:36px;border-radius:11px;background:var(--elev);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 7px var(--sd),-2px -2px 5px var(--sl)}
-.brand h1{font-size:15px;font-weight:800}.brand span{font-size:11px;color:var(--tx2);display:block}
-.header-right{display:flex;align-items:center;gap:6px}
+.brand h1{font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand span{font-size:11px;color:var(--tx2);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.header-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .status-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:var(--elev);border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--tx);cursor:pointer}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--tx3)}.status-dot.online{background:var(--ok)}
 main{max-width:720px;margin:0 auto;padding:16px}
@@ -97,9 +97,13 @@ main{max-width:720px;margin:0 auto;padding:16px}
 .lb-row.is-me{border:2px solid var(--accent)}
 .lb-rank{width:28px;height:28px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
 .lb-row.top .lb-rank{background:var(--accent);color:var(--acc-tx);border-color:var(--accent)}
-.bottom-nav{position:fixed;bottom:-2px;left:0;right:0;z-index:40;background-color:var(--surface);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 2px calc(12px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 12px var(--sd)}
-.nav-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;color:var(--tx3);font-size:10px;font-weight:700;cursor:pointer;padding:4px 0}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background-color:var(--surface);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 2px calc(10px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 18px color-mix(in srgb,var(--sd) 70%,transparent);transition:background-color .25s,border-color .25s}
+.nav-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;background:transparent;border:none;color:var(--tx3);font-size:10px;font-weight:700;cursor:pointer;padding:4px 0;transition:color .2s,transform .15s}
 .nav-item.active{color:var(--accent)}
+.nav-item .icon{transition:transform .2s}
+.nav-item.active .icon{transform:translateY(-2px) scale(1.12)}
+.nav-item.active::before{content:"";position:absolute;top:-7px;left:50%;width:22px;height:3px;margin-left:-11px;border-radius:0 0 4px 4px;background:var(--accent)}
+.nav-item:active{transform:scale(.93)}
 .nav-badge{position:absolute;top:1px;right:calc(50% - 17px);min-width:15px;height:15px;padding:0 4px;border-radius:999px;background:var(--accent);color:var(--acc-tx);font-size:9px;font-weight:800;display:none;align-items:center;justify-content:center}
 .nav-badge.show{display:inline-flex}
 .ann-banner{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;cursor:pointer}
@@ -117,86 +121,231 @@ main{max-width:720px;margin:0 auto;padding:16px}
 .empty{text-align:center;color:var(--tx2);font-size:13px;padding:12px 0}
 .row{display:flex;justify-content:space-between;align-items:center}
 
-/* ===== NAVBAR IKUT TEMA HP (gelap/terang) ===== */
-html{background-color:var(--bg)}
-header,.bottom-nav{background-color:var(--surface);transition:background-color .25s,border-color .25s}
-.bottom-nav{bottom:0;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 18px color-mix(in srgb,var(--sd) 70%,transparent)}
-.nav-item{transition:color .2s,transform .15s}
-.nav-item .icon{transition:transform .2s}
-.nav-item.active .icon{transform:translateY(-2px) scale(1.12)}
-.nav-item.active::before{content:"";position:absolute;top:-7px;left:50%;width:22px;height:3px;margin-left:-11px;border-radius:0 0 4px 4px;background:var(--accent)}
-.nav-item:active{transform:scale(.93)}
-
-/* ===== LEADERBOARD PREMIUM ===== */
-:root{--gold1:#ffe08a;--gold2:#d4a017;--gold3:#8a6508;--silv1:#f1f4f8;--silv2:#aab3c0;--silv3:#6b7585;--bron1:#f2b88a;--bron2:#c27a43;--bron3:#7a4521}
-.lb-hero{position:relative;overflow:hidden;border-radius:18px;padding:14px;margin-bottom:14px;background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 70%,#888));color:var(--acc-tx);border:1px solid var(--accent);box-shadow:0 10px 24px color-mix(in srgb,var(--accent) 22%,transparent)}
-.lb-hero::after{content:"";position:absolute;right:-30px;top:-30px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.22),transparent 70%);pointer-events:none}
-.lb-hero-top{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
-.lb-hero-rank{min-width:58px;height:58px;border-radius:16px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);display:flex;flex-direction:column;align-items:center;justify-content:center}
-html:not(.force-dark) .lb-hero-rank{background:rgba(255,255,255,.14)}
-.lb-hero-rank small{font-size:9px;font-weight:700;letter-spacing:.6px;opacity:.8}
-.lb-hero-rank b{font-size:22px;font-weight:900;line-height:1}
-.lb-hero-info{flex:1;min-width:0}
-.lb-hero-info .t{font-size:11px;font-weight:700;opacity:.8;letter-spacing:.3px}
-.lb-hero-info .n{font-size:16px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lb-hero-coin{text-align:right}.lb-hero-coin b{font-size:22px;font-weight:900;display:block;line-height:1}.lb-hero-coin span{font-size:10px;opacity:.8;font-weight:700}
-.lb-hero-gap{position:relative;z-index:1;margin-top:11px;font-size:11.5px;font-weight:600;opacity:.92}
-.lb-hero-bar{position:relative;z-index:1;height:7px;margin-top:6px;border-radius:999px;background:rgba(255,255,255,.22);overflow:hidden}
-.lb-hero-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--gold1),var(--gold2));transition:width .8s cubic-bezier(.2,.8,.2,1)}
-.lb-stage{position:relative;display:grid;grid-template-columns:1fr 1.18fr 1fr;align-items:flex-end;gap:7px;padding:26px 8px 0;margin-bottom:16px;border-radius:20px;overflow:hidden;background:radial-gradient(120% 90% at 50% 0%,color-mix(in srgb,var(--gold2) 20%,transparent),transparent 62%),var(--bg);border:1px solid var(--border);box-shadow:inset 4px 4px 10px var(--sd),inset -3px -3px 9px var(--sl)}
-.lb-stage::before{content:"";position:absolute;left:50%;top:-40px;width:260px;height:260px;margin-left:-130px;background:conic-gradient(from 0deg,transparent 0 8%,color-mix(in srgb,var(--gold1) 22%,transparent) 10%,transparent 14% 30%,color-mix(in srgb,var(--gold1) 18%,transparent) 32%,transparent 36% 55%,color-mix(in srgb,var(--gold1) 20%,transparent) 57%,transparent 61% 80%,color-mix(in srgb,var(--gold1) 16%,transparent) 82%,transparent 86%);border-radius:50%;animation:lbspin 18s linear infinite;pointer-events:none;-webkit-mask-image:radial-gradient(circle,#000 18%,transparent 68%);mask-image:radial-gradient(circle,#000 18%,transparent 68%)}
-@keyframes lbspin{to{transform:rotate(360deg)}}
-.lb-spark{position:absolute;width:5px;height:5px;border-radius:50%;background:var(--gold1);box-shadow:0 0 8px 2px var(--gold2);opacity:0;animation:lbtw 3s ease-in-out infinite;pointer-events:none}
-@keyframes lbtw{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1)}}
-.lb-slot{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;animation:lbrise .7s cubic-bezier(.2,.9,.3,1.1) both}
-.lb-slot.r2{animation-delay:.1s}.lb-slot.r3{animation-delay:.2s}.lb-slot.r1{animation-delay:0s}
-@keyframes lbrise{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:none}}
-.lb-av-wrap{position:relative;margin-bottom:7px}
-.lb-av{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#1a1a1a;position:relative}
-.lb-slot.r1 .lb-av{width:66px;height:66px;font-size:21px;margin-top:16px;animation:lbfloat 3.2s ease-in-out infinite}
-@keyframes lbfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.lb-av::before{content:"";position:absolute;inset:-4px;border-radius:50%;z-index:-1}
-.lb-slot.r1 .lb-av{background:linear-gradient(145deg,var(--gold1),var(--gold2))}.lb-slot.r1 .lb-av::before{background:conic-gradient(var(--gold1),var(--gold3),var(--gold1),var(--gold2),var(--gold1));box-shadow:0 0 22px color-mix(in srgb,var(--gold2) 65%,transparent)}
-.lb-slot.r2 .lb-av{background:linear-gradient(145deg,var(--silv1),var(--silv2))}.lb-slot.r2 .lb-av::before{background:conic-gradient(var(--silv1),var(--silv3),var(--silv1),var(--silv2),var(--silv1))}
-.lb-slot.r3 .lb-av{background:linear-gradient(145deg,var(--bron1),var(--bron2))}.lb-slot.r3 .lb-av::before{background:conic-gradient(var(--bron1),var(--bron3),var(--bron1),var(--bron2),var(--bron1))}
-.lb-crown{position:absolute;top:-4px;left:50%;width:30px;height:30px;margin-left:-15px;transform:translateY(-100%) rotate(-6deg);color:var(--gold2);filter:drop-shadow(0 2px 5px color-mix(in srgb,var(--gold2) 70%,transparent));z-index:2}
-.lb-medal{position:absolute;bottom:-7px;left:50%;margin-left:-10px;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;color:#1a1a1a;border:2px solid var(--bg);z-index:2}
-.lb-slot.r1 .lb-medal{background:var(--gold2)}.lb-slot.r2 .lb-medal{background:var(--silv2)}.lb-slot.r3 .lb-medal{background:var(--bron2)}
-.lb-p-name{font-size:12.5px;font-weight:800;max-width:96px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lb-p-me{font-size:9px;font-weight:800;padding:1px 6px;border-radius:999px;background:var(--accent);color:var(--acc-tx);margin-top:2px}
-.lb-p-pts{font-size:11px;font-weight:800;color:var(--tx2);margin:2px 0 7px;display:flex;align-items:center;gap:3px}
-.lb-ped{position:relative;width:100%;border-radius:12px 12px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;font-weight:900;font-size:22px;color:#1a1a1a;overflow:hidden}
-.lb-ped::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-18deg);animation:lbshine 4.5s ease-in-out infinite}
-@keyframes lbshine{0%,55%{left:-60%}100%{left:130%}}
-.lb-slot.r1 .lb-ped{height:92px;background:linear-gradient(180deg,var(--gold1),var(--gold2) 60%,var(--gold3));font-size:28px}
-.lb-slot.r2 .lb-ped{height:66px;background:linear-gradient(180deg,var(--silv1),var(--silv2) 60%,var(--silv3))}
-.lb-slot.r3 .lb-ped{height:50px;background:linear-gradient(180deg,var(--bron1),var(--bron2) 60%,var(--bron3))}
-.lb-filter{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 6px;margin-bottom:8px;scrollbar-width:none}
-.lb-filter::-webkit-scrollbar{display:none}
-.lb-list{display:flex;flex-direction:column;gap:9px}
-.lb-item{position:relative;display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:15px;background:var(--elev);border:1px solid var(--border);box-shadow:3px 3px 8px var(--sd),-2px -2px 6px var(--sl);overflow:hidden;animation:lbin .45s ease both;animation-delay:calc(var(--i,0)*45ms)}
-@keyframes lbin{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
-.lb-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:calc(var(--pct,0)*1%);background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 11%,transparent),transparent);pointer-events:none}
-.lb-item.top1{border-color:color-mix(in srgb,var(--gold2) 70%,var(--border))}.lb-item.top2{border-color:color-mix(in srgb,var(--silv2) 70%,var(--border))}.lb-item.top3{border-color:color-mix(in srgb,var(--bron2) 70%,var(--border))}
-.lb-item.me{border:2px solid var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent),3px 3px 8px var(--sd)}
-.lb-rk{flex-shrink:0;width:32px;height:32px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;background:var(--bg);border:1px solid var(--border);position:relative;z-index:1}
-.lb-item.top1 .lb-rk{background:linear-gradient(145deg,var(--gold1),var(--gold2));color:#1a1a1a;border-color:transparent}
-.lb-item.top2 .lb-rk{background:linear-gradient(145deg,var(--silv1),var(--silv2));color:#1a1a1a;border-color:transparent}
-.lb-item.top3 .lb-rk{background:linear-gradient(145deg,var(--bron1),var(--bron2));color:#1a1a1a;border-color:transparent}
-.lb-ava{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;position:relative;z-index:1}
-.lb-mid{flex:1;min-width:0;position:relative;z-index:1}
+/* ===== LEADERBOARD (tenang & rapi) ===== */
+:root{--gold:#d4a017;--silv:#9aa3af;--bron:#b9733f}
+.lb-me{border-radius:16px;padding:12px 14px;margin-bottom:14px;background:var(--bg);border:1px solid var(--border);box-shadow:inset 3px 3px 7px var(--sd),inset -2px -2px 6px var(--sl)}
+.lb-me-top{display:flex;align-items:center;gap:12px}
+.lb-me-rank{min-width:50px;height:50px;border-radius:14px;background:var(--accent);color:var(--acc-tx);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.lb-me-rank small{font-size:8.5px;font-weight:700;letter-spacing:.5px;opacity:.75}.lb-me-rank b{font-size:18px;font-weight:900;line-height:1.05}
+.lb-me-info{flex:1;min-width:0}.lb-me-info .n{font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lb-me-info .t{font-size:11px;color:var(--tx2);font-weight:600;margin-top:1px}
+.lb-me-coin{text-align:right}.lb-me-coin b{font-size:19px;font-weight:900;display:block;line-height:1.1}.lb-me-coin span{font-size:10px;color:var(--tx2);font-weight:700}
+.lb-me-gap{font-size:11.5px;color:var(--tx2);margin-top:10px}.lb-me-gap b{color:var(--tx)}
+.lb-me-bar{height:6px;border-radius:999px;background:var(--surface);border:1px solid var(--border);margin-top:6px;overflow:hidden}.lb-me-bar i{display:block;height:100%;border-radius:999px;background:var(--accent)}
+.lb-stage{display:grid;grid-template-columns:1fr 1.1fr 1fr;align-items:flex-end;gap:8px;padding:32px 8px 0;margin-bottom:14px;border-radius:16px;background:var(--bg);border:1px solid var(--border);box-shadow:inset 3px 3px 8px var(--sd),inset -2px -2px 7px var(--sl);overflow:visible}
+.lb-slot{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;--c:var(--silv);position:relative;z-index:1}
+.lb-slot.r1{--c:var(--gold)}.lb-slot.r3{--c:var(--bron)}
+.lb-av{width:46px;height:46px;border-radius:50%;background:var(--elev);border:2.5px solid var(--c);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;margin-bottom:6px}
+.lb-slot.r1 .lb-av{width:54px;height:54px;font-size:17px}
+.lb-p-name{font-size:12px;font-weight:800;max-width:92px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-p-pts{font-size:11px;font-weight:700;color:var(--tx2);margin:1px 0 7px}
+.lb-ped{width:100%;display:flex;align-items:flex-start;justify-content:center;padding-top:7px;font-weight:900;font-size:17px;color:var(--c);background:color-mix(in srgb,var(--c) 14%,var(--elev));border:1px solid var(--border);border-top:3px solid var(--c);border-bottom:none;border-radius:10px 10px 0 0}
+.lb-slot.r1 .lb-ped{height:68px}.lb-slot.r2 .lb-ped{height:52px}.lb-slot.r3 .lb-ped{height:40px}
+.lb-filter{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 6px;margin-bottom:8px;scrollbar-width:none}.lb-filter::-webkit-scrollbar{display:none}
+.lb-list{display:flex;flex-direction:column;gap:8px}
+.lb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--elev);border:1px solid var(--border);box-shadow:2px 2px 6px var(--sd),-1px -1px 4px var(--sl);position:relative;overflow:visible}
+.lb-item.me{border:2px solid var(--accent)}
+.lb-rk{flex-shrink:0;width:26px;text-align:center;font-size:14px;font-weight:900;color:var(--tx2)}
+.lb-item.top1 .lb-rk{color:var(--gold)}.lb-item.top2 .lb-rk{color:var(--silv)}.lb-item.top3 .lb-rk{color:var(--bron)}
+.lb-ava{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.lb-item.top1 .lb-ava{border:2px solid var(--gold)}.lb-item.top2 .lb-ava{border:2px solid var(--silv)}.lb-item.top3 .lb-ava{border:2px solid var(--bron)}
+.lb-mid{flex:1;min-width:0}
 .lb-nm{font-size:13.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:5px}
-.lb-meta{display:flex;align-items:center;gap:6px;margin-top:3px;font-size:10.5px;color:var(--tx2);font-weight:600;flex-wrap:nowrap;overflow:hidden}
-.lb-lvl{padding:1px 7px;border-radius:999px;background:var(--bg);border:1px solid var(--border);font-weight:800;font-size:9.5px;white-space:nowrap;color:var(--tx)}
-.lb-tr{height:5px;border-radius:999px;background:var(--bg);border:1px solid var(--border);margin-top:6px;overflow:hidden}
-.lb-tr i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 55%,transparent),var(--accent));animation:lbbar 1s .2s cubic-bezier(.2,.8,.2,1) forwards;--w:0%}
-@keyframes lbbar{to{width:var(--w)}}
-.lb-item.top1 .lb-tr i{background:linear-gradient(90deg,var(--gold1),var(--gold2))}.lb-item.top2 .lb-tr i{background:linear-gradient(90deg,var(--silv1),var(--silv2))}.lb-item.top3 .lb-tr i{background:linear-gradient(90deg,var(--bron1),var(--bron2))}
-.lb-sc{flex-shrink:0;text-align:right;position:relative;z-index:1}
-.lb-sc b{font-size:16px;font-weight:900;display:block;line-height:1.1}.lb-sc span{font-size:9.5px;color:var(--tx2);font-weight:700;letter-spacing:.3px}
-.lb-more{text-align:center;font-size:11px;color:var(--tx3);padding:6px}
-.lb-coin-ic{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-@media(prefers-reduced-motion:reduce){.lb-stage::before,.lb-spark,.lb-ped::after,.lb-slot,.lb-slot.r1 .lb-av,.lb-item{animation:none!important}.lb-tr i{animation:none;width:var(--w)}}
+.lb-meta{font-size:10.5px;color:var(--tx2);font-weight:600;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-tr{height:4px;border-radius:999px;background:var(--bg);margin-top:6px;overflow:hidden}.lb-tr i{display:block;height:100%;border-radius:999px;background:var(--accent);opacity:.75}
+.lb-sc{flex-shrink:0;text-align:right}.lb-sc b{font-size:15px;font-weight:900;display:block;line-height:1.1}.lb-sc span{font-size:9.5px;color:var(--tx2);font-weight:700}
+
+/* ===== BORDER GRADIEN BERGERAK ===== */
+@keyframes borderFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@keyframes borderSpin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+@keyframes floatGem{
+  0%,100%{transform:translateY(0px)}
+  50%{transform:translateY(-2.5px)}
+}
+@keyframes floatCrown{
+  0%,100%{transform:translateY(0px) scale(1)}
+  50%{transform:translateY(-3px) scale(1.04)}
+}
+
+.lb-stage{
+  border:2px solid transparent;
+  background:
+    linear-gradient(var(--bg),var(--bg)) padding-box,
+    linear-gradient(125deg,var(--gold),var(--silv),var(--bron),var(--gold)) 0% 50% / 260% 260% border-box;
+  animation:borderFlow 7s ease infinite;
+}
+.lb-av{
+  border:2.5px solid transparent;
+  background:
+    linear-gradient(var(--elev),var(--elev)) padding-box,
+    linear-gradient(135deg,var(--c),#fff,var(--c)) 0% 50% / 220% 220% border-box;
+  animation:borderFlow 5s ease infinite;
+}
+.lb-ped{
+  border:1px solid transparent;
+  border-top:3px solid var(--c);
+  background:
+    linear-gradient(180deg,color-mix(in srgb,var(--c) 18%,var(--elev)),var(--elev)) padding-box,
+    linear-gradient(180deg,var(--c),var(--border),var(--c)) 50% 0% / 100% 220% border-box;
+  border-bottom:none;
+  animation:borderFlow 6s ease infinite;
+}
+.lb-me{
+  position:relative;
+  border:2px solid transparent;
+  background:
+    linear-gradient(var(--bg),var(--bg)) padding-box,
+    linear-gradient(120deg,var(--gold),var(--accent),var(--silv),var(--gold)) 0% 50% / 260% 260% border-box;
+  animation:borderFlow 6.5s ease infinite;
+}
+.lb-item{
+  --bc:var(--border);
+  border:2px solid transparent;
+  background:
+    linear-gradient(var(--elev),var(--elev)) padding-box,
+    linear-gradient(130deg,color-mix(in srgb,var(--tx3) 65%,var(--border)),var(--border),color-mix(in srgb,var(--accent) 45%,var(--border))) 0% 50% / 240% 240% border-box;
+  animation:borderFlow 8s linear infinite;
+}
+.lb-item.top1{--bc:var(--gold)}
+.lb-item.top2{--bc:var(--silv)}
+.lb-item.top3{--bc:var(--bron)}
+.lb-item.top1,.lb-item.top2,.lb-item.top3{
+  background:
+    linear-gradient(var(--elev),var(--elev)) padding-box,
+    linear-gradient(125deg,var(--bc),color-mix(in srgb,var(--bc) 25%,#fff),var(--bc)) 0% 50% / 240% 240% border-box;
+  animation:borderFlow 5.5s ease infinite;
+}
+.lb-item.me{
+  border:2px solid transparent;
+  background:
+    linear-gradient(var(--elev),var(--elev)) padding-box,
+    linear-gradient(125deg,var(--accent),var(--gold),var(--accent)) 0% 50% / 240% 240% border-box;
+  animation:borderFlow 5s ease infinite;
+}
+.neu-card{
+  position:relative;
+  border:1.5px solid transparent;
+  background:
+    linear-gradient(var(--surface),var(--surface)) padding-box,
+    linear-gradient(135deg,color-mix(in srgb,var(--accent) 26%,var(--border)),var(--border),color-mix(in srgb,var(--gold) 32%,var(--border))) 0% 50% / 250% 250% border-box;
+  animation:borderFlow 10s ease infinite;
+}
+
+/* ===== ORNAMEN: BUNGA, PERMATA, MAHKOTA ===== */
+.lb-orn{position:absolute;width:34px;height:34px;color:var(--gold);pointer-events:none;z-index:2}
+.lb-orn.c1{top:2px;left:2px}.lb-orn.c2{top:2px;right:2px;transform:rotate(90deg)}.lb-orn.c3{bottom:2px;right:2px;transform:rotate(180deg)}
+.lb-orn .orn-spin{transform-origin:9px 9px;animation:borderSpin 12s linear infinite}
+.lb-me .lb-orn{width:26px;height:26px;opacity:.9}
+.lb-me .lb-orn.c1{top:1px;left:1px}.lb-me .lb-orn.c3{bottom:1px;right:1px}
+.lb-me-top,.lb-me-gap,.lb-me-bar{position:relative;z-index:1}
+.lb-gem-top{position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:0 8px;background:var(--surface);color:var(--gold);line-height:0;z-index:3;border-radius:999px}
+.lb-gem-top svg{width:22px;height:20px;animation:floatGem 2.6s ease-in-out infinite}
+.lb-avw{position:relative;margin-bottom:14px}.lb-avw .lb-av{margin-bottom:0}
+.lb-crown{position:absolute;top:-21px;left:50%;width:30px;height:23px;margin-left:-15px;color:var(--gold);animation:floatCrown 2.4s ease-in-out infinite}
+.lb-gem{position:absolute;top:-9px;right:18px;padding:0 5px;background:var(--surface);color:var(--bc);line-height:0;border-radius:999px}
+.lb-gem svg{width:15px;height:14px;animation:floatGem 2.8s ease-in-out infinite}
+.lb-gem-crown svg{width:22px;height:17px;animation:floatCrown 2.4s ease-in-out infinite}
+
+/* ===== AVATAR, FOTO & BINGKAI ===== */
+.pf{position:relative;display:inline-block;width:var(--s);height:var(--s);flex-shrink:0;vertical-align:middle;font-size:calc(var(--s)*.34)}
+.pf-img{position:absolute;inset:0;border-radius:50%;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--tx)}
+.pf-img img{width:100%;height:100%;object-fit:cover;display:block}
+.pf.no-fr .pf-img{border:2px solid var(--c,var(--border))}
+.pf-fr{position:absolute;left:-18%;top:-18%;width:136%;height:136%;pointer-events:none;overflow:visible}
+.pf.has-fr .pf-fr{animation:floatGem 3.4s ease-in-out infinite}
+.lb-avs{flex-shrink:0;display:inline-flex;margin:0 4px 0 2px}
+.lb-item.top1 .pf{--c:var(--gold)}.lb-item.top2 .pf{--c:var(--silv)}.lb-item.top3 .pf{--c:var(--bron)}
+.hdr-av{background:none;border:none;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;width:42px;height:42px;flex-shrink:0;color:inherit}
+.fr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 6px;margin-top:8px}
+.fr-tile{background:var(--elev);border:1.5px solid var(--border);border-radius:12px;padding:12px 2px 7px;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;font-size:9.5px;font-weight:700;color:var(--tx2);text-align:center;line-height:1.2}
+.fr-tile.sel{border-color:var(--accent);background:var(--bg);color:var(--tx)}
+.zoom-range{padding:0;height:28px;box-shadow:none;border:none;background:transparent;accent-color:var(--accent)}
+
+/* ===== PENGATURAN KHUSUS KANAN (GERIGI / PROFIL) ===== */
+.gear-btn{
+  width:34px;height:34px;border-radius:999px;
+  background:var(--elev);color:var(--tx);
+  border:1.5px solid transparent;
+  background:
+    linear-gradient(var(--elev),var(--elev)) padding-box,
+    linear-gradient(135deg,var(--gold),var(--border),var(--accent)) 0% 50% / 220% 220% border-box;
+  animation:borderFlow 6s ease infinite;
+  display:inline-flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;
+  box-shadow:3px 3px 7px var(--sd),-2px -2px 5px var(--sl);
+  transition:transform .2s;
+}
+.gear-btn:active{transform:scale(.93)}
+.gear-btn svg{transition:transform .35s ease}
+.gear-btn:hover svg{transform:rotate(65deg)}
+
+.settings-drawer-backdrop{
+  position:fixed;inset:0;z-index:85;
+  background:rgba(0,0,0,.58);
+  display:none;justify-content:flex-end;
+}
+.settings-drawer-backdrop.open{display:flex;animation:fade .18s}
+.settings-drawer{
+  width:min(360px,90vw);height:100%;
+  background:var(--surface);
+  border-left:2px solid transparent;
+  background:
+    linear-gradient(var(--surface),var(--surface)) padding-box,
+    linear-gradient(180deg,var(--gold),var(--border),var(--accent),var(--gold)) 50% 0% / 100% 240% border-box;
+  animation:borderFlow 8s ease infinite;
+  padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(24px + env(safe-area-inset-bottom,0px));
+  overflow-y:auto;
+  display:flex;flex-direction:column;gap:12px;
+  box-shadow:-10px 0 28px rgba(0,0,0,.35);
+}
+.settings-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding-bottom:12px;border-bottom:1px solid var(--border);
+}
+.settings-profile-card{
+  display:flex;align-items:center;gap:12px;
+  padding:12px;border-radius:14px;
+  background:var(--bg);border:1px solid var(--border);
+}
+.settings-menu-list{display:flex;flex-direction:column;gap:8px}
+.settings-menu-btn{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px 13px;border-radius:13px;
+  background:var(--elev);color:var(--tx);
+  border:1px solid var(--border);
+  font-size:13px;font-weight:700;cursor:pointer;text-align:left;
+  box-shadow:2px 2px 6px var(--sd),-1px -1px 4px var(--sl);
+  transition:transform .12s,border-color .15s;
+}
+.settings-menu-btn:active{transform:scale(.98)}
+.settings-menu-btn .left{display:flex;align-items:center;gap:10px;min-width:0}
+.settings-menu-btn .sub{font-size:11px;color:var(--tx2);font-weight:600;display:block}
+.settings-menu-btn.danger{color:var(--bad)}
+.settings-panel{
+  display:none;
+  padding:14px;border-radius:14px;
+  background:var(--bg);border:1px solid var(--border);
+  margin-top:2px;
+}
+.settings-panel.open{display:block;animation:fade .18s}
+.settings-panel-top{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);
+}
+.settings-panel-title{font-size:14px;font-weight:800}
+
+@media(prefers-reduced-motion:reduce){
+  .lb-stage,.lb-av,.lb-ped,.lb-me,.lb-item,.neu-card,.gear-btn,.settings-drawer,
+  .lb-orn .orn-spin,.lb-gem-top svg,.lb-crown,.lb-gem,.pf.has-fr .pf-fr{
+    animation:none !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -214,35 +363,166 @@ html:not(.force-dark) .lb-hero-rank{background:rgba(255,255,255,.14)}
   <div class="pass-wrap" style="margin-bottom:12px"><input type="password" id="loginPassword" placeholder="Masukkan sandi (awal: 1234)"><button type="button" class="pass-toggle" data-toggle="loginPassword">Lihat</button></div>
   <div id="loginKoinPreview" class="neu-inset row" style="padding:11px 12px;margin-bottom:14px"></div>
   <button type="button" class="btn btn-primary btn-block" id="btnLogin">Masuk Portal Santri</button>
-  <div style="font-size:11px;color:var(--tx3);text-align:center;margin-top:10px">Sandi awal: <strong>1234</strong> (ubah di menu Beranda setelah masuk)</div>
+  <div style="font-size:11px;color:var(--tx3);text-align:center;margin-top:10px">Sandi awal: <strong>1234</strong> (ubah di menu Pengaturan setelah masuk)</div>
   <button type="button" class="btn btn-sm btn-block btn-install" style="display:none;margin-top:12px">Pasang di layar utama</button>
 </div></div></div>
 
-<!-- UBAH SANDI -->
-<div id="modalUbahSandi" class="modal-backdrop"><div class="modal-box">
-  <div class="row" style="margin-bottom:12px"><h3 style="font-size:16px;font-weight:800">Ubah Sandi Akun</h3><button type="button" class="btn btn-sm" id="btnTutupSandi">Tutup</button></div>
-  <p style="font-size:12px;color:var(--tx2);margin-bottom:12px">Ganti sandi pribadi agar koin dan progres kuis tetap aman.</p>
-  <label>Sandi Lama</label><div class="pass-wrap" style="margin-bottom:10px"><input type="password" id="oldPassInput" placeholder="Sandi saat ini"><button type="button" class="pass-toggle" data-toggle="oldPassInput">Lihat</button></div>
-  <label>Sandi Baru</label><div class="pass-wrap" style="margin-bottom:10px"><input type="password" id="newPassInput" placeholder="Minimal 4 karakter"><button type="button" class="pass-toggle" data-toggle="newPassInput">Lihat</button></div>
-  <label>Konfirmasi Sandi Baru</label><div class="pass-wrap" style="margin-bottom:14px"><input type="password" id="confirmPassInput" placeholder="Ulangi sandi baru"><button type="button" class="pass-toggle" data-toggle="confirmPassInput">Lihat</button></div>
-  <button type="button" class="btn btn-primary btn-block" id="btnSimpanSandi">Simpan Sandi Baru</button>
-</div></div>
+<!-- DRAWER PENGATURAN KHUSUS (SEBELAH KANAN - GERIGI / PROFIL) -->
+<div id="settingsDrawerBackdrop" class="settings-drawer-backdrop" aria-hidden="true">
+  <aside class="settings-drawer" role="dialog" aria-label="Pengaturan Profil & Akun">
+    <div class="settings-head">
+      <div>
+        <div style="font-size:15px;font-weight:800">Pengaturan</div>
+        <div style="font-size:11px;color:var(--tx2)">Profil, Tampilan & Akun Santri</div>
+      </div>
+      <button type="button" class="btn btn-sm" id="btnCloseSettings">Tutup</button>
+    </div>
+
+    <div class="settings-profile-card">
+      <div id="drawerAvatarWrap"></div>
+      <div style="min-width:0;flex:1">
+        <div id="drawerDisplayName" style="font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Santri</div>
+        <div id="drawerRealNameNote" style="font-size:11px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Nama asli: -</div>
+      </div>
+    </div>
+
+    <!-- MENU UTAMA PENGATURAN -->
+    <div id="settingsMainMenu" class="settings-menu-list">
+      <button type="button" class="settings-menu-btn" data-setpanel="sandi">
+        <span class="left">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span><span>Ubah Sandi</span><span class="sub">Ganti sandi akun santri</span></span>
+        </span>
+        <span>&rsaquo;</span>
+      </button>
+
+      <button type="button" class="settings-menu-btn" data-setpanel="foto">
+        <span class="left">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span><span>Ubah / Hapus Foto Profil</span><span class="sub">Atur foto atau hapus foto profil</span></span>
+        </span>
+        <span>&rsaquo;</span>
+      </button>
+
+      <button type="button" class="settings-menu-btn" data-setpanel="bingkai">
+        <span class="left">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>
+          <span><span>Ubah Bingkai</span><span class="sub" id="drawerFrameSub">Bingkai saat ini</span></span>
+        </span>
+        <span>&rsaquo;</span>
+      </button>
+
+      <button type="button" class="settings-menu-btn" data-setpanel="panggilan">
+        <span class="left">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <span><span>Edit Nama Panggilan</span><span class="sub">Nama asli di guru tetap</span></span>
+        </span>
+        <span>&rsaquo;</span>
+      </button>
+
+      <button type="button" class="settings-menu-btn danger" id="btnDrawerKeluar">
+        <span class="left">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span><span>Keluar</span><span class="sub">Keluar dari akun santri</span></span>
+        </span>
+        <span>&rsaquo;</span>
+      </button>
+    </div>
+
+    <!-- SUB-PANEL 1: UBAH SANDI -->
+    <div id="panel-sandi" class="settings-panel">
+      <div class="settings-panel-top">
+        <span class="settings-panel-title">Ubah Sandi</span>
+        <button type="button" class="btn btn-sm" data-backmenu="1">&lsaquo; Kembali</button>
+      </div>
+      <label>Sandi Lama</label>
+      <div class="pass-wrap" style="margin-bottom:10px"><input type="password" id="oldPassInput" placeholder="Sandi saat ini"><button type="button" class="pass-toggle" data-toggle="oldPassInput">Lihat</button></div>
+      <label>Sandi Baru</label>
+      <div class="pass-wrap" style="margin-bottom:10px"><input type="password" id="newPassInput" placeholder="Minimal 4 karakter"><button type="button" class="pass-toggle" data-toggle="newPassInput">Lihat</button></div>
+      <label>Konfirmasi Sandi Baru</label>
+      <div class="pass-wrap" style="margin-bottom:12px"><input type="password" id="confirmPassInput" placeholder="Ulangi sandi baru"><button type="button" class="pass-toggle" data-toggle="confirmPassInput">Lihat</button></div>
+      <button type="button" class="btn btn-primary btn-block" id="btnSimpanSandi">Simpan Sandi Baru</button>
+    </div>
+
+    <!-- SUB-PANEL 2: UBAH / HAPUS FOTO PROFIL -->
+    <div id="panel-foto" class="settings-panel">
+      <div class="settings-panel-top">
+        <span class="settings-panel-title">Ubah / Hapus Foto Profil</span>
+        <button type="button" class="btn btn-sm" data-backmenu="1">&lsaquo; Kembali</button>
+      </div>
+      <div style="text-align:center;padding:12px 0 8px"><div id="profFotoPreview" style="display:inline-block"></div></div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button type="button" class="btn btn-primary" style="flex:1" id="btnPilihFoto">Ubah Foto</button>
+        <button type="button" class="btn" id="btnHapusFoto">Hapus Foto</button>
+      </div>
+      <input type="file" id="profFile" accept="image/*" hidden>
+      <div id="profEditor" style="display:none;text-align:center;margin-bottom:10px">
+        <p style="font-size:11px;color:var(--tx2);margin-bottom:8px">Geser foto untuk mengatur posisi, slider untuk memperbesar.</p>
+        <canvas id="profCanvas" width="240" height="240" style="width:220px;max-width:100%;border-radius:16px;touch-action:none;background:var(--surface);border:1px solid var(--border)"></canvas>
+        <input type="range" id="profZoom" class="zoom-range" min="1" max="4" step="0.01" value="1" style="margin-top:8px" aria-label="Perbesar foto">
+      </div>
+      <button type="button" class="btn btn-primary btn-block" id="btnSimpanFoto">Simpan Foto Profil</button>
+    </div>
+
+    <!-- SUB-PANEL 3: UBAH BINGKAI -->
+    <div id="panel-bingkai" class="settings-panel">
+      <div class="settings-panel-top">
+        <span class="settings-panel-title">Ubah Bingkai</span>
+        <button type="button" class="btn btn-sm" data-backmenu="1">&lsaquo; Kembali</button>
+      </div>
+      <div style="text-align:center;padding:16px 0 6px">
+        <div id="profFramePreview" style="display:inline-block"></div>
+        <div id="profFrameName" style="font-size:12px;font-weight:800;margin-top:10px"></div>
+      </div>
+      <div class="fr-grid" id="profFrameGrid"></div>
+      <button type="button" class="btn btn-primary btn-block" id="btnSimpanBingkai" style="margin-top:14px">Simpan Bingkai</button>
+    </div>
+
+    <!-- SUB-PANEL 4: EDIT NAMA PANGGILAN -->
+    <div id="panel-panggilan" class="settings-panel">
+      <div class="settings-panel-top">
+        <span class="settings-panel-title">Edit Nama Panggilan</span>
+        <button type="button" class="btn btn-sm" data-backmenu="1">&lsaquo; Kembali</button>
+      </div>
+      <p style="font-size:11.5px;color:var(--tx2);margin-bottom:10px">Nama panggilan tampil di aplikasi santri & klasemen. Di data guru, nama asli tetap muncul dan tidak berubah.</p>
+      <label for="nicknameInput">Nama Panggilan</label>
+      <input type="text" id="nicknameInput" maxlength="30" placeholder="Kosongkan untuk pakai nama asli" style="margin-bottom:8px">
+      <div id="nicknameRealInfo" style="font-size:11px;color:var(--tx3);margin-bottom:12px"></div>
+      <div style="display:flex;gap:8px">
+        <button type="button" class="btn" id="btnResetNickname">Pakai Nama Asli</button>
+        <button type="button" class="btn btn-primary" style="flex:1" id="btnSimpanNickname">Simpan Panggilan</button>
+      </div>
+    </div>
+  </aside>
+</div>
 
 <header>
-  <div class="brand"><div class="brand-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
-    <div><h1 id="headerSantriName">Santri</h1><span id="headerSantriKelas">BUSTANUL HADI</span></div></div>
+  <div class="brand">
+    <button type="button" class="hdr-av" id="headerAvatar" data-profopen="1" aria-label="Profil & Pengaturan"><span class="brand-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span></button>
+    <div style="min-width:0">
+      <h1 id="headerSantriName">Santri</h1>
+      <span id="headerSantriKelas">BUSTANUL HADI</span>
+    </div>
+  </div>
   <div class="header-right">
     <div class="coin-pill" data-goto="kuis"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8"/><path d="M9.5 10.5c0-1 1.1-1.5 2.5-1.5s2.5.5 2.5 1.5-1.1 1.5-2.5 1.5-2.5.5-2.5 1.5 1.1 1.5 2.5 1.5 2.5-.5 2.5-1.5"/></svg><span id="headerCoinCount">0</span></div>
     <button type="button" class="status-pill" id="btnSync"><span id="syncDot" class="status-dot"></span><span id="syncLabel">Lokal</span></button>
+    <button type="button" class="gear-btn" id="btnOpenSettings" data-profopen="1" aria-label="Pengaturan" title="Pengaturan">
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
   </div>
 </header>
 
 <main>
   <section id="sec-beranda" class="section active">
     <div class="neu-card">
-      <div class="row" style="align-items:flex-start;gap:8px;margin-bottom:10px">
-        <div><span class="badge" id="berandaKelasBadge">Kelas</span><h2 style="font-size:18px;font-weight:800;margin-top:4px" id="berandaNamaTitle"></h2></div>
-        <div style="display:flex;gap:6px"><button type="button" class="btn btn-sm" id="btnBukaSandi">Ubah Sandi</button><button type="button" class="btn btn-sm" id="btnKeluar">Keluar</button></div>
+      <div class="row" style="justify-content:flex-start;gap:16px;margin-bottom:12px;padding:6px 4px 0">
+        <button type="button" class="hdr-av" id="berandaAvatar" data-profopen="1" style="width:84px;height:84px" aria-label="Buka pengaturan profil"></button>
+        <div style="min-width:0;flex:1">
+          <span class="badge" id="berandaKelasBadge">Kelas</span>
+          <h2 style="font-size:18px;font-weight:800;margin-top:4px" id="berandaNamaTitle"></h2>
+          <div style="font-size:11px;color:var(--tx2);margin-top:2px" id="berandaNamaAsliSub"></div>
+        </div>
       </div>
       <div class="neu-inset row" style="padding:12px">
         <div><div style="font-size:11px;color:var(--tx2);font-weight:700">TOTAL KOIN TERKUMPUL</div><div style="font-size:24px;font-weight:800" id="berandaTotalKoin">0 Koin</div><div style="font-size:11px;color:var(--tx3)" id="berandaPendingInfo"></div></div>
@@ -490,8 +770,22 @@ function toggleInputPass(id, btn) {
   btn.textContent = show ? "Sembunyi" : "Lihat";
 }
 
-// ===================== SANDI =====================
+// ===================== SANDI & NAMA ASLI / PANGGILAN =====================
 const getSantriAktif = () => (appState.santri || []).find(s => s.id === currentSantriId) || null;
+const getRealName = (id, fallbackNama) => {
+  const s = (appState.santri || []).find(x => x.id === id);
+  return String((s && s.nama) || fallbackNama || "Santri").trim();
+};
+const getNickname = id => {
+  const p = profilMap[id] || {};
+  return String(p.nickname || "").trim();
+};
+// Nama tampilan untuk santri & klasemen: pakai nama panggilan jika ada, namun nama asli di guru tetap utuh
+const getDisplayName = (id, fallbackNama) => {
+  const real = getRealName(id, fallbackNama);
+  const nick = getNickname(id);
+  return nick || real;
+};
 
 function getSandiSantri(s) {
   if (!s) return "1234";
@@ -513,12 +807,10 @@ function syncPasswordsFromServer(santriList) {
   if (changed) writeJSON(KEYS.pass, local);
 }
 
-function bukaModalSandi() {
-  ["oldPassInput", "newPassInput", "confirmPassInput"].forEach(i => { $(i).value = ""; $(i).type = "password"; });
-  document.querySelectorAll("#modalUbahSandi .pass-toggle").forEach(b => b.textContent = "Lihat");
-  $("modalUbahSandi").classList.add("open");
+function resetSandiForm() {
+  ["oldPassInput", "newPassInput", "confirmPassInput"].forEach(i => { if ($(i)) { $(i).value = ""; $(i).type = "password"; } });
+  document.querySelectorAll("#panel-sandi .pass-toggle").forEach(b => b.textContent = "Lihat");
 }
-const tutupModalSandi = () => $("modalUbahSandi").classList.remove("open");
 
 async function simpanSandiBaru() {
   const s = getSantriAktif();
@@ -553,7 +845,8 @@ async function simpanSandiBaru() {
       msg = "Sandi berhasil diubah & disinkronkan!";
     } catch (e) { msg = "Sandi tersimpan di HP (belum tersinkron)"; }
   }
-  tutupModalSandi();
+  resetSandiForm();
+  openSettingsMenu();
   showToast(msg);
 }
 
@@ -567,19 +860,21 @@ function getKoinSantri(id) {
 }
 
 function tambahPending(id, nama, koin, benar, salah, total, waktu) {
+  const realNama = getRealName(id, nama);
   const map = getPendingMap();
   const p = map[id] || { poin: 0, benar: 0, salah: 0, total: 0 };
-  map[id] = { nama, poin: num(p.poin) + koin, benar: num(p.benar) + benar, salah: num(p.salah) + salah, total: num(p.total) + total, waktu };
+  map[id] = { nama: realNama, poin: num(p.poin) + koin, benar: num(p.benar) + benar, salah: num(p.salah) + salah, total: num(p.total) + total, waktu };
   writeJSON(KEYS.pending, map);
 }
 
 async function simpanDanAkumulasiKoin(id, nama, koin, benar, salah, total) {
+  const realNama = getRealName(id, nama);
   const waktu = new Date().toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
   const sebelum = getKoinSantri(id);
   koin = num(koin);
   if (!koin && !benar && !salah) return { koinSebelumnya: sebelum, koinBaru: 0, totalKoin: sebelum, mode: navigator.onLine && docRef ? "online" : "offline" };
 
-  const offline = () => { tambahPending(id, nama, koin, benar, salah, total, waktu); return { koinSebelumnya: sebelum, koinBaru: koin, totalKoin: sebelum + koin, mode: "offline" }; };
+  const offline = () => { tambahPending(id, realNama, koin, benar, salah, total, waktu); return { koinSebelumnya: sebelum, koinBaru: koin, totalKoin: sebelum + koin, mode: "offline" }; };
   if (!navigator.onLine || !docRef) return offline();
 
   try {
@@ -596,7 +891,7 @@ async function simpanDanAkumulasiKoin(id, nama, koin, benar, salah, total) {
       const rec = {
         ...old,
         santriId: id,
-        nama,
+        nama: realNama,
         poin: finalTotal,
         koin: finalTotal,
         koinTerakhir: koin,
@@ -640,14 +935,14 @@ async function sinkronkanPendingKoin() {
 
       ids.forEach(id => {
         const p = snapshotMap[id], i = skor.findIndex(x => String(x.santriId || x.id) === id);
-        const so = (appState.santri || []).find(s => s.id === id);
+        const realNama = getRealName(id, p.nama);
         const old = i >= 0 ? skor[i] : {};
         const oldPoin = num(old.poin !== undefined ? old.poin : old.koin);
         const newTotal = oldPoin + num(p.poin);
         const rec = {
           ...old,
           santriId: id,
-          nama: so ? so.nama : (p.nama || old.nama || id),
+          nama: realNama,
           poin: newTotal,
           koin: newTotal,
           benar: num(old.benar) + num(p.benar),
@@ -688,6 +983,7 @@ function initFirebase() {
       try { firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true }); } catch (e) {}
     }
     docRef = firebase.firestore().collection("balai_pengajian").doc("data_utama");
+    initProfilListener();
     updateSyncUI(false, "Menghubungkan...");
     if (unsubSnap) unsubSnap();
     unsubSnap = docRef.onSnapshot(snap => {
@@ -714,7 +1010,7 @@ function refreshManual() {
   sinkronkanPendingKoin();
 }
 
-window.onAndroidNetworkChanged = ok => { if (ok) { initFirebase(); sinkronkanPendingKoin(); } else updateSyncUI(false, "Lokal"); };
+window.onAndroidNetworkChanged = ok => { if (ok) { initFirebase(); sinkronkanPendingKoin(); sinkronProfil(); } else updateSyncUI(false, "Lokal"); };
 window.addEventListener("online", () => window.onAndroidNetworkChanged(true));
 window.addEventListener("offline", () => window.onAndroidNetworkChanged(false));
 
@@ -749,10 +1045,11 @@ function masukSantri() {
   $("loginScreen").style.display = "none";
   gotoTab("beranda");
   renderAll();
-  showToast("Selamat datang, " + s.nama + "!");
+  showToast("Selamat datang, " + getDisplayName(s.id, s.nama) + "!");
 }
 
 async function keluarAkun() {
+  closeSettingsDrawer();
   if (isQuizPlaying) { await keluarDanSimpanKuis(); kembaliKeLobbyKuis(); }
   currentSantriId = "";
   localStorage.removeItem(KEYS.aktif);
@@ -851,7 +1148,8 @@ function buildCombinedLeaderboard() {
   const map = new Map();
   (appState.skor || []).forEach(sc => {
     const so = list.find(x => x.id === sc.santriId);
-    map.set(sc.santriId, { santriId: sc.santriId, nama: (so && so.nama) || sc.nama, kelas: so ? so.kelas || "Umum" : "Umum", poin: num(sc.poin) });
+    const disp = getDisplayName(sc.santriId, (so && so.nama) || sc.nama);
+    map.set(sc.santriId, { santriId: sc.santriId, nama: disp, kelas: so ? so.kelas || "Umum" : "Umum", poin: num(sc.poin) });
   });
   const pend = getPendingMap();
   Object.keys(pend).forEach(id => {
@@ -859,7 +1157,8 @@ function buildCombinedLeaderboard() {
     if (map.has(id)) map.get(id).poin += add;
     else {
       const so = list.find(x => x.id === id);
-      map.set(id, { santriId: id, nama: so ? so.nama : pend[id].nama || id, kelas: so ? so.kelas || "Umum" : "Umum", poin: add });
+      const disp = getDisplayName(id, so ? so.nama : pend[id].nama || id);
+      map.set(id, { santriId: id, nama: disp, kelas: so ? so.kelas || "Umum" : "Umum", poin: add });
     }
   });
   return [...map.values()].filter(r => r.poin > 0).sort((a, b) => b.poin - a.poin || String(a.nama).localeCompare(String(b.nama)));
@@ -868,8 +1167,9 @@ function buildCombinedLeaderboard() {
 const LB_LEVELS = [[0, "Pemula"], [50, "Rajin"], [150, "Cerdas"], [300, "Mahir"], [600, "Juara"]];
 let lbKelas = "ALL";
 const lbLevel = p => { let l = LB_LEVELS[0][1]; LB_LEVELS.forEach(([m, n]) => { if (p >= m) l = n; }); return l; };
-const COIN_SVG = `<svg class="lb-coin-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5c0-1 1.1-1.5 2.5-1.5s2.5.5 2.5 1.5-1.1 1.5-2.5 1.5-2.5.5-2.5 1.5 1.1 1.5 2.5 1.5 2.5-.5 2.5-1.5"/></svg>`;
-const CROWN_SVG = `<svg class="lb-crown" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18 1.5 6.5 7.5 11 12 3.5 16.5 11l6-4.5L21 18H3zm0 2h18v2H3z"/></svg>`;
+const ORN = n => `<svg class="lb-orn c${n}" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5 38V18C5 10 10 5 18 5h20"/><path d="M11 38V22c0-5.5 5.5-11 11-11h16" opacity=".4"/><g class="orn-spin" fill="currentColor" stroke="none"><circle cx="9" cy="5.5" r="2.4"/><circle cx="9" cy="12.5" r="2.4"/><circle cx="5.5" cy="9" r="2.4"/><circle cx="12.5" cy="9" r="2.4"/></g><path fill="currentColor" stroke="none" d="M21 5c3.2 0 5.4 2.1 6.4 5.2-3.2 0-5.4-2.1-6.4-5.2zM5 21c0 3.2 2.1 5.4 5.2 6.4 0-3.2-2.1-5.4-5.2-6.4z"/><circle cx="9" cy="9" r="1.7" fill="var(--bg)" stroke="none"/></svg>`;
+const GEM = `<svg viewBox="0 0 24 22" aria-hidden="true"><path d="M6 2h12l5 6-11 13L1 8l5-6z" fill="currentColor"/><path d="M1 8h22M6 2l3 6 3-6 3 6 3-6M9 8l3 13 3-13" fill="none" stroke="var(--surface)" stroke-width="1" stroke-linejoin="round" opacity=".55"/></svg>`;
+const CROWN_SVG = `<svg class="lb-crown" viewBox="0 0 28 22" aria-hidden="true"><path d="M2 8l5.5 5L14 3l6.5 10L26 8l-2 12H4L2 8z" fill="currentColor"/><g fill="currentColor"><circle cx="2" cy="7" r="1.9"/><circle cx="14" cy="2.6" r="1.9"/><circle cx="26" cy="7" r="1.9"/></g><g fill="var(--bg)"><circle cx="14" cy="15.5" r="1.5"/><circle cx="8.5" cy="16" r="1.1"/><circle cx="19.5" cy="16" r="1.1"/></g></svg>`;
 
 function getInitials(n) {
   const p = String(n || "S").trim().split(/\s+/);
@@ -880,28 +1180,27 @@ function renderPodiumHTML(rk) {
   if (!rk || !rk.length) return "";
   const me = currentSantriId;
   const slot = (it, n) => {
-    if (!it) return `<div class="lb-slot r${n}" style="opacity:.35"><div class="lb-av-wrap"><div class="lb-av">-</div></div><div class="lb-p-name">Kosong</div><div class="lb-p-pts">0 Koin</div><div class="lb-ped">${n}</div></div>`;
-    return `<div class="lb-slot r${n}"><div class="lb-av-wrap">${n === 1 ? CROWN_SVG : ""}<div class="lb-av">${esc(getInitials(it.nama))}</div><span class="lb-medal">${n}</span></div>
-      <div class="lb-p-name">${esc(it.nama)}</div>${it.santriId === me ? `<span class="lb-p-me">ANDA</span>` : ""}
-      <div class="lb-p-pts">${COIN_SVG}<span data-count="${it.poin}" data-key="pod${n}">${it.poin}</span></div><div class="lb-ped">${n}</div></div>`;
+    if (!it) return `<div class="lb-slot r${n}" style="opacity:.35"><div class="lb-avw"><div class="lb-av">-</div></div><div class="lb-p-name">Kosong</div><div class="lb-p-pts">0 Koin</div><div class="lb-ped">${n}</div></div>`;
+    return `<div class="lb-slot r${n}"><div class="lb-avw">${n === 1 && !hasFrame(it.santriId) ? CROWN_SVG : ""}${avatarHTML(it.santriId, it.nama, n === 1 ? 56 : 46)}</div>
+      <div class="lb-p-name">${esc(it.nama)}${it.santriId === me ? " •" : ""}</div>
+      <div class="lb-p-pts">${it.poin} Koin</div><div class="lb-ped">${n}</div></div>`;
   };
-  const sparks = [[12, 22, 0], [86, 30, .8], [28, 58, 1.5], [70, 14, 2.1], [50, 8, 1.1], [92, 62, 2.6]].map(([x, y, d]) => `<i class="lb-spark" style="left:${x}%;top:${y}%;animation-delay:${d}s"></i>`).join("");
-  return `<div class="lb-stage">${sparks}${slot(rk[1], 2)}${slot(rk[0], 1)}${slot(rk[2], 3)}</div>`;
+  return `<div class="lb-stage"><span class="lb-gem-top">${GEM}</span>${ORN(1)}${ORN(2)}${slot(rk[1], 2)}${slot(rk[0], 1)}${slot(rk[2], 3)}</div>`;
 }
 
 function renderMyRankHTML(rk, me) {
   const s = (appState.santri || []).find(x => x.id === me);
   if (!s) return "";
+  const disp = getDisplayName(s.id, s.nama);
   const idx = rk.findIndex(r => r.santriId === me);
-  if (idx < 0) return `<div class="lb-hero"><div class="lb-hero-top"><div class="lb-hero-rank"><small>PERINGKAT</small><b>-</b></div><div class="lb-hero-info"><div class="t">PERINGKATMU</div><div class="n">${esc(s.nama)}</div></div><div class="lb-hero-coin"><b>0</b><span>KOIN</span></div></div><div class="lb-hero-gap">Mainkan kuis dan kumpulkan koin pertamamu untuk masuk klasemen!</div></div>`;
+  if (idx < 0) return `<div class="lb-me">${ORN(1)}${ORN(3)}<div class="lb-me-top"><div class="lb-me-rank"><small>PERINGKAT</small><b>-</b></div><div class="lb-me-info"><div class="n">${esc(disp)}</div><div class="t">Belum masuk klasemen</div></div><div class="lb-me-coin"><b>0</b><span>KOIN</span></div></div><div class="lb-me-gap">Mainkan kuis untuk mengumpulkan koin pertamamu.</div></div>`;
   const r = rk[idx], prev = rk[idx - 1];
-  const gap = prev ? prev.poin - r.poin : 0;
   const pct = prev ? Math.max(4, Math.min(100, Math.round(r.poin / prev.poin * 100))) : 100;
-  const msg = prev ? `Kurang <b>${gap} koin</b> lagi untuk menyalip <b>${esc(prev.nama)}</b>` : `Kamu di puncak klasemen! Pertahankan, ${esc(s.nama)}!`;
-  return `<div class="lb-hero"><div class="lb-hero-top"><div class="lb-hero-rank"><small>PERINGKAT</small><b>#${idx + 1}</b></div>
-    <div class="lb-hero-info"><div class="t">PERINGKATMU • ${esc(lbLevel(r.poin).toUpperCase())}</div><div class="n">${esc(s.nama)}</div></div>
-    <div class="lb-hero-coin"><b data-count="${r.poin}" data-key="hero">${r.poin}</b><span>KOIN</span></div></div>
-    <div class="lb-hero-gap">${msg}</div><div class="lb-hero-bar"><i style="width:${pct}%"></i></div></div>`;
+  const msg = prev ? `Kurang <b>${prev.poin - r.poin} koin</b> lagi untuk menyalip <b>${esc(prev.nama)}</b>` : `Kamu berada di puncak klasemen. Pertahankan!`;
+  return `<div class="lb-me">${ORN(1)}${ORN(3)}<div class="lb-me-top"><div class="lb-me-rank"><small>PERINGKAT</small><b>#${idx + 1}</b></div>
+    <div class="lb-me-info"><div class="n">${esc(disp)}</div><div class="t">${esc(lbLevel(r.poin))} • ${esc(r.kelas || "Umum")}</div></div>
+    <div class="lb-me-coin"><b>${r.poin}</b><span>KOIN</span></div></div>
+    <div class="lb-me-gap">${msg}</div><div class="lb-me-bar"><i style="width:${pct}%"></i></div></div>`;
 }
 
 function renderRowsHTML(rk, me) {
@@ -909,13 +1208,13 @@ function renderRowsHTML(rk, me) {
   const top = rk[0].poin || 1;
   return `<div class="lb-list">` + rk.map((r, i) => {
     const pct = Math.max(3, Math.round(r.poin / top * 100)), isMe = me && r.santriId === me;
-    const cls = [i < 3 ? "top" + (i + 1) : "", isMe ? "me" : ""].join(" ");
-    return `<div class="lb-item ${cls}" style="--i:${Math.min(i, 12)};--pct:${pct}">
-      <span class="lb-rk">${i + 1}</span><span class="lb-ava">${esc(getInitials(r.nama))}</span>
+    const deco = i === 0 ? `<span class="lb-gem lb-gem-crown">${CROWN_SVG}</span>` : i < 3 ? `<span class="lb-gem">${GEM}</span>` : "";
+    return `<div class="lb-item ${i < 3 ? "top" + (i + 1) : ""} ${isMe ? "me" : ""}">${deco}
+      <span class="lb-rk">${i + 1}</span><span class="lb-avs">${avatarHTML(r.santriId, r.nama, 38)}</span>
       <div class="lb-mid"><div class="lb-nm">${esc(r.nama)}${isMe ? `<span class="badge me" style="margin:0">Anda</span>` : ""}</div>
-        <div class="lb-meta"><span class="lb-lvl">${esc(lbLevel(r.poin))}</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.kelas || "Umum")}</span></div>
-        <div class="lb-tr"><i style="--w:${pct}%"></i></div></div>
-      <div class="lb-sc"><b data-count="${r.poin}" data-key="row${esc(r.santriId)}">${r.poin}</b><span>KOIN</span></div></div>`;
+        <div class="lb-meta">${esc(lbLevel(r.poin))} • ${esc(r.kelas || "Umum")}</div>
+        <div class="lb-tr"><i style="width:${pct}%"></i></div></div>
+      <div class="lb-sc"><b>${r.poin}</b><span>KOIN</span></div></div>`;
   }).join("") + `</div>`;
 }
 
@@ -926,31 +1225,329 @@ function renderKelasFilterHTML(all) {
   return `<div class="lb-filter">` + cats.map(c => `<button type="button" class="pill ${c === lbKelas ? "active" : ""}" data-lbk="${esc(c)}">${c === "ALL" ? "Semua Kelas" : esc(c)}</button>`).join("") + `</div>`;
 }
 
-const lbPrev = {};
-function animateCounts(root) {
-  if (!root || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
-  root.querySelectorAll("[data-count]").forEach(el => {
-    const to = num(el.dataset.count), key = el.dataset.key, from = lbPrev[key] !== undefined ? lbPrev[key] : 0;
-    lbPrev[key] = to;
-    if (from === to) return;
-    const t0 = performance.now(), dur = 900;
-    const step = t => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = Math.round(from + (to - from) * e); if (k < 1) requestAnimationFrame(step); };
-    requestAnimationFrame(step);
-  });
+function animateCounts() {}
+
+// ===================== PROFIL: FOTO, BINGKAI, PANGGILAN & PENGATURAN =====================
+const PROFIL_KEY = "bustanul_profil_map";
+const GOLD3 = ["#fff3b8", "#e6b422", "#8a5a00"];
+const FRAMES = [
+  { id: "none", nama: "Tanpa Bingkai" },
+  { id: "emas", nama: "Emas Klasik", c: GOLD3, d: [] },
+  { id: "mahkota", nama: "Mahkota Emas", c: GOLD3, d: ["crown"], g: "#ff3d6e" },
+  { id: "ruby", nama: "Permata Ruby", c: GOLD3, d: ["gem"], g: "#ff3d6e" },
+  { id: "sayap", nama: "Sayap Emas", c: GOLD3, d: ["wings", "gem"], g: "#ff3d6e" },
+  { id: "perak", nama: "Sayap Perak", c: ["#ffffff", "#b9c4d6", "#66758f"], d: ["wings", "gem"], g: "#3d9bff" },
+  { id: "laurel", nama: "Laurel Emas", c: GOLD3, d: ["laurel"], lc: "#e9c24a" },
+  { id: "zamrud", nama: "Zamrud Hijau", c: ["#d9ffe0", "#2fbf71", "#0b6b3a"], d: ["laurel", "gem"], lc: "#35c97a", g: "#ffd34d" },
+  { id: "hilal", nama: "Bulan Bintang", c: GOLD3, d: ["crescent"] },
+  { id: "kerajaan", nama: "Kerajaan Ungu", c: ["#ffe9a6", "#c05cff", "#6a1fb3"], d: ["crown", "wings"], g: "#ffd34d" },
+  { id: "lavender", nama: "Bunga Lavender", c: ["#f3e6ff", "#b98cf0", "#7a4fc2"], d: ["flower"], f: ["#efe0ff", "#b98cf0"] },
+  { id: "sakura", nama: "Bunga Sakura", c: ["#ffe3ee", "#ff8fb5", "#d44f7e"], d: ["flower"], f: ["#ffd9e6", "#ff7aa6"] },
+  { id: "bintang", nama: "Bintang Pelangi", c: ["#7af0ff", "#3d8bff", "#9b4dff"], d: ["stars"] },
+  { id: "hati", nama: "Hati Cinta", c: ["#ffd0dc", "#ff4d79", "#a8173f"], d: ["hearts"], g: "#ff3d6e" },
+  { id: "api", nama: "Api Semangat", c: ["#ffe08a", "#ff7a1a", "#b3260a"], d: ["flame"] },
+  { id: "awan", nama: "Awan Langit", c: ["#d6ecff", "#7aaeff", "#3f6fd6"], d: ["cloud"] },
+  { id: "berlian", nama: "Berlian Biru", c: ["#e8fbff", "#4fd1e8", "#1b7fa6"], d: ["gems4"], g: "#7df0ff" }
+];
+
+let profilMap = readJSON(PROFIL_KEY, {});
+let unsubProfil = null, _fid = 0;
+const hasFrame = id => { const p = profilMap[id]; const f = p && FRAMES.find(x => x.id === p.frame); return !!(f && f.c); };
+
+function starPath(cx, cy, R) {
+  let d = "";
+  for (let i = 0; i < 10; i++) { const r = i % 2 ? R * .45 : R, a = (-90 + i * 36) * Math.PI / 180; d += (i ? "L" : "M") + (cx + r * Math.cos(a)).toFixed(1) + " " + (cy + r * Math.sin(a)).toFixed(1); }
+  return d + "Z";
 }
+
+function frameSVG(f) {
+  if (!f || !f.c) return "";
+  const id = "fg" + (++_fid), [c1, c2, c3] = f.c, D = f.d || [], g = f.g || "#ff3d6e", G = `url(#${id})`;
+  const P = (deg, r) => { const a = deg * Math.PI / 180; return [68 + r * Math.cos(a), 68 + r * Math.sin(a)]; };
+  const defs = `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset=".5" stop-color="${c2}"/><stop offset="1" stop-color="${c3}"/></linearGradient>`;
+  let back = "", front = "", extra = "";
+
+  if (D.includes("wings")) {
+    const w = `<path d="M31 90C12 92 3 111 8 128c8-10 14-12 22-12-6-4-4-10 4-12-6-4-4-8 4-8z" fill="${G}" stroke="${c3}" stroke-width="1" stroke-linejoin="round"/><path d="M12 118c6-6 12-8 20-8M16 108c5-4 10-6 18-6" stroke="${c3}" stroke-opacity=".5" fill="none" stroke-width=".9"/>`;
+    back += w + `<g transform="translate(136 0) scale(-1 1)">${w}</g>`;
+  }
+  if (D.includes("laurel")) {
+    const lc = f.lc || c2;
+    [[104, 0], [122, 1], [140, 2], [158, 3], [176, 4], [194, 5], [212, 6]].forEach(([a]) => {
+      [a, 180 - a].forEach(deg => { const [x, y] = P(deg, 55); back += `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="4.3" ry="10" transform="rotate(${deg + (deg > 90 ? 18 : -18)} ${x.toFixed(1)} ${y.toFixed(1)})" fill="${lc}" stroke="${c3}" stroke-width=".8"/>`; });
+    });
+  }
+  if (D.includes("flame")) {
+    for (let a = -180; a <= 0; a += 22.5) { const [x, y] = P(a, 54), s = a === -90 ? 1.25 : 1; back += `<path transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${a + 90}) scale(${s})" d="M-5 2C-8-8-1-11 0-22 1-11 8-8 5 2z" fill="${G}" stroke="${c3}" stroke-width=".8" stroke-linejoin="round"/>`; }
+  }
+
+  const ring = `<circle cx="68" cy="68" r="52" fill="none" stroke="${G}" stroke-width="7"/><circle cx="68" cy="68" r="48.6" fill="none" stroke="${c1}" stroke-opacity=".7" stroke-width="1"/><circle cx="68" cy="68" r="55.4" fill="none" stroke="${c3}" stroke-opacity=".6" stroke-width="1"/>`;
+
+  if (D.includes("crown")) front += `<path d="M50 21L47 6l11 7L68 0l10 13 11-7-3 15z" fill="${G}" stroke="${c3}" stroke-width="1" stroke-linejoin="round"/><circle cx="68" cy="14" r="3" fill="${g}" stroke="#fff" stroke-width=".8"/><circle cx="55" cy="16" r="1.8" fill="${g}"/><circle cx="81" cy="16" r="1.8" fill="${g}"/>`;
+  if (D.includes("gem")) front += `<path d="M58 112H78L83 119 68 134 53 119z" fill="${g}" stroke="${c3}" stroke-width="1.4" stroke-linejoin="round"/><path d="M53 119H83M58 112L63 119 68 134 73 119 78 112" stroke="#fff" stroke-opacity=".65" fill="none" stroke-width=".9"/>`;
+  if (D.includes("gems4")) [[68, 16], [68, 120], [16, 68], [120, 68]].forEach(([x, y]) => { front += `<path transform="translate(${x} ${y})" d="M0-10L7 0 0 10-7 0z" fill="${g}" stroke="${c3}" stroke-width="1.2" stroke-linejoin="round"/><path transform="translate(${x} ${y})" d="M-7 0H7M0-10L-3 0 0 10 3 0z" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width=".8"/>`; });
+  if (D.includes("flower")) {
+    const fa = (f.f || ["#fff", "#ccc"]);
+    const flower = (cx, cy, r) => { let s = ""; for (let k = 0; k < 5; k++) { const a = (-90 + k * 72) * Math.PI / 180; s += `<circle cx="${(cx + r * .62 * Math.cos(a)).toFixed(1)}" cy="${(cy + r * .62 * Math.sin(a)).toFixed(1)}" r="${(r * .5).toFixed(1)}" fill="${fa[0]}" stroke="${fa[1]}" stroke-width=".8"/>`; } return s + `<circle cx="${cx}" cy="${cy}" r="${(r * .3).toFixed(1)}" fill="#ffd34d" stroke="#d99a00" stroke-width=".6"/>`; };
+    front += `<ellipse cx="88" cy="124" rx="9" ry="4" transform="rotate(-25 88 124)" fill="#7fd99a" stroke="#3a9b5c" stroke-width=".7"/><ellipse cx="122" cy="84" rx="9" ry="4" transform="rotate(-70 122 84)" fill="#7fd99a" stroke="#3a9b5c" stroke-width=".7"/><ellipse cx="22" cy="34" rx="7" ry="3.4" transform="rotate(35 22 34)" fill="#7fd99a" stroke="#3a9b5c" stroke-width=".7"/>` + flower(106, 106, 13) + flower(121, 88, 8.5) + flower(88, 123, 8.5) + flower(26, 30, 8);
+  }
+  if (D.includes("stars")) [[-145, 6], [-118, 8.5], [-90, 12], [-62, 8.5], [-35, 6]].forEach(([a, R]) => { const [x, y] = P(a, 56); front += `<path d="${starPath(x, y, R)}" fill="#ffd34d" stroke="#c98a00" stroke-width=".9" stroke-linejoin="round"/>`; });
+  if (D.includes("hearts")) [[68, 119, 1.5], [112, 34, .95], [22, 98, .75]].forEach(([x, y, s]) => { front += `<path transform="translate(${x} ${y}) scale(${s})" d="M0-2C-1-6-8-6-8-1-8 4 0 8 0 11 0 8 8 4 8-1 8-6 1-6 0-2z" fill="${g}" stroke="#fff" stroke-width=".9"/>`; });
+  if (D.includes("cloud")) [[26, 30, 1.1], [112, 108, 1], [118, 32, .7]].forEach(([x, y, s]) => { front += `<g transform="translate(${x} ${y}) scale(${s})" fill="#fff" stroke="#bcd8ff" stroke-width="1"><circle r="8"/><circle cx="10" cy="3" r="6"/><circle cx="-10" cy="3" r="6"/><rect x="-10" y="3" width="20" height="6" stroke="none"/></g>`; });
+  if (D.includes("crescent")) { extra = `<mask id="${id}m"><rect width="136" height="136" fill="#fff"/><circle cx="71" cy="9" r="8" fill="#000"/></mask>`; front += `<circle cx="66" cy="10" r="10" fill="${G}" stroke="${c3}" stroke-width=".8" mask="url(#${id}m)"/><path d="${starPath(80, 9, 5.5)}" fill="${G}" stroke="${c3}" stroke-width=".8" stroke-linejoin="round"/>`; }
+
+  return `<svg class="pf-fr" viewBox="0 0 136 136" aria-hidden="true"><defs>${defs}${extra}</defs>${back}${ring}${front}</svg>`;
+}
+
+function avatarCore(foto, nama, fid, px) {
+  const f = FRAMES.find(x => x.id === fid), fr = f && f.c ? frameSVG(f) : "";
+  const inner = foto ? `<img src="${foto}" alt="" decoding="async">` : esc(getInitials(nama));
+  return `<span class="pf ${fr ? "has-fr" : "no-fr"}" style="--s:${px}px"><span class="pf-img">${inner}</span>${fr}</span>`;
+}
+const avatarHTML = (id, nama, px) => {
+  const p = profilMap[id] || {};
+  return avatarCore(p.foto, getDisplayName(id, nama), p.frame, px);
+};
+
+// ---- sinkron profil (nickname disimpan lokal di HP agar nama asli di guru tidak berubah) ----
+async function sinkronProfil() {
+  if (!navigator.onLine || !docRef) return;
+  const ids = Object.keys(profilMap).filter(i => profilMap[i] && profilMap[i].dirty);
+  for (const id of ids) {
+    const p = profilMap[id];
+    try {
+      await firebase.firestore().collection("balai_pengajian").doc("profil_" + id).set({ santriId: id, frame: p.frame || "none", foto: p.foto || "", updatedAt: p.t || Date.now() });
+      if (profilMap[id] && profilMap[id].t === p.t) delete profilMap[id].dirty;
+    } catch (e) {}
+  }
+  writeJSON(PROFIL_KEY, profilMap);
+}
+
+function initProfilListener() {
+  try {
+    if (unsubProfil) unsubProfil();
+    const fs = firebase.firestore();
+    unsubProfil = fs.collection("balai_pengajian").orderBy(firebase.firestore.FieldPath.documentId()).startAt("profil_").endAt("profil_").onSnapshot(snap => {
+      snap.docChanges().forEach(ch => {
+        const d = ch.doc.data() || {}, id = String(d.santriId || ch.doc.id.replace("profil_", ""));
+        const prevNick = (profilMap[id] && profilMap[id].nickname) || "";
+        if (ch.type === "removed") {
+          if (!(profilMap[id] && profilMap[id].dirty)) {
+            if (prevNick) profilMap[id] = { frame: "none", foto: "", t: Date.now(), nickname: prevNick };
+            else delete profilMap[id];
+          }
+          return;
+        }
+        if (profilMap[id] && profilMap[id].dirty && num(profilMap[id].t) >= num(d.updatedAt)) return;
+        profilMap[id] = { frame: d.frame || "none", foto: d.foto || "", t: num(d.updatedAt), nickname: prevNick };
+      });
+      writeJSON(PROFIL_KEY, profilMap);
+      if (currentSantriId) isQuizPlaying ? renderBeranda() : renderAll();
+      sinkronProfil();
+    }, () => {});
+  } catch (e) {}
+}
+
+// ---- editor foto ----
+const CROP = 240, OUT = 176;
+let PR = { img: null, foto: "", frame: "none", zoom: 1, ox: 0, oy: 0 };
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+function cropMetrics() {
+  const iw = PR.img.naturalWidth || PR.img.width, ih = PR.img.naturalHeight || PR.img.height;
+  const base = Math.max(CROP / iw, CROP / ih) * PR.zoom, w = iw * base, h = ih * base;
+  PR.ox = clamp(PR.ox, -Math.max(0, (w - CROP) / 2), Math.max(0, (w - CROP) / 2));
+  PR.oy = clamp(PR.oy, -Math.max(0, (h - CROP) / 2), Math.max(0, (h - CROP) / 2));
+  return { w, h };
+}
+
+function drawCrop() {
+  if (!PR.img) return;
+  const c = $("profCanvas"), x = c.getContext("2d"), { w, h } = cropMetrics();
+  x.clearRect(0, 0, CROP, CROP);
+  x.imageSmoothingQuality = "high";
+  x.drawImage(PR.img, (CROP - w) / 2 + PR.ox, (CROP - h) / 2 + PR.oy, w, h);
+  x.fillStyle = "rgba(0,0,0,.55)";
+  x.beginPath(); x.rect(0, 0, CROP, CROP); x.arc(CROP / 2, CROP / 2, CROP / 2 - 6, 0, Math.PI * 2, true); x.fill("evenodd");
+  x.strokeStyle = "rgba(255,255,255,.9)"; x.lineWidth = 2;
+  x.beginPath(); x.arc(CROP / 2, CROP / 2, CROP / 2 - 6, 0, Math.PI * 2); x.stroke();
+}
+
+function exportFoto() {
+  const out = document.createElement("canvas"); out.width = out.height = OUT;
+  const x = out.getContext("2d"), k = OUT / CROP, { w, h } = cropMetrics();
+  x.fillStyle = "#fff"; x.fillRect(0, 0, OUT, OUT);
+  x.imageSmoothingQuality = "high";
+  x.drawImage(PR.img, ((CROP - w) / 2 + PR.ox) * k, ((CROP - h) / 2 + PR.oy) * k, w * k, h * k);
+  let q = .8, d = out.toDataURL("image/jpeg", q);
+  while (d.length > 40000 && q > .4) { q -= .1; d = out.toDataURL("image/jpeg", q); }
+  return d;
+}
+
+function refreshFotoPanelUI() {
+  const s = getSantriAktif(); if (!s) return;
+  const disp = getDisplayName(s.id, s.nama);
+  $("profFotoPreview").innerHTML = avatarCore(PR.foto, disp, PR.frame, 92);
+  $("btnHapusFoto").style.display = PR.foto ? "" : "none";
+}
+
+function refreshBingkaiPanelUI() {
+  const s = getSantriAktif(); if (!s) return;
+  const disp = getDisplayName(s.id, s.nama);
+  $("profFramePreview").innerHTML = avatarCore(PR.foto, disp, PR.frame, 96);
+  const f = FRAMES.find(x => x.id === PR.frame);
+  $("profFrameName").textContent = f ? f.nama : "";
+  $("profFrameGrid").innerHTML = FRAMES.map(fr => `<button type="button" class="fr-tile ${fr.id === PR.frame ? "sel" : ""}" data-fr="${fr.id}">${avatarCore(PR.foto, disp, fr.id, 44)}<span>${esc(fr.nama)}</span></button>`).join("");
+}
+
+function refreshDrawerSummary() {
+  const s = getSantriAktif(); if (!s) return;
+  const p = profilMap[s.id] || {};
+  const disp = getDisplayName(s.id, s.nama);
+  const nick = getNickname(s.id);
+  const f = FRAMES.find(x => x.id === (p.frame || "none"));
+  $("drawerAvatarWrap").innerHTML = avatarHTML(s.id, s.nama, 52);
+  $("drawerDisplayName").textContent = disp;
+  $("drawerRealNameNote").textContent = nick ? `Nama asli (guru): ${s.nama}` : `Kelas: ${s.kelas || "Umum"}`;
+  $("drawerFrameSub").textContent = `Bingkai: ${(f && f.nama) || "Tanpa Bingkai"}`;
+}
+
+function openSettingsMenu() {
+  const s = getSantriAktif(); if (!s) return;
+  const p = profilMap[s.id] || {};
+  PR = { img: null, foto: p.foto || "", frame: p.frame || "none", zoom: 1, ox: 0, oy: 0 };
+  $("profEditor").style.display = "none";
+  $("profZoom").value = 1;
+  $("profFile").value = "";
+  document.querySelectorAll(".settings-panel").forEach(el => el.classList.remove("open"));
+  $("settingsMainMenu").style.display = "flex";
+  refreshDrawerSummary();
+}
+
+function openSettingsDrawer(initialPanel) {
+  const s = getSantriAktif(); if (!s) return;
+  openSettingsMenu();
+  $("settingsDrawerBackdrop").classList.add("open");
+  $("settingsDrawerBackdrop").setAttribute("aria-hidden", "false");
+  if (initialPanel) openSettingsSubPanel(initialPanel);
+}
+
+function closeSettingsDrawer() {
+  $("settingsDrawerBackdrop").classList.remove("open");
+  $("settingsDrawerBackdrop").setAttribute("aria-hidden", "true");
+}
+
+function openSettingsSubPanel(panelKey) {
+  const s = getSantriAktif(); if (!s) return;
+  $("settingsMainMenu").style.display = "none";
+  document.querySelectorAll(".settings-panel").forEach(el => el.classList.remove("open"));
+  const target = $("panel-" + panelKey);
+  if (target) target.classList.add("open");
+  if (panelKey === "sandi") resetSandiForm();
+  else if (panelKey === "foto") refreshFotoPanelUI();
+  else if (panelKey === "bingkai") refreshBingkaiPanelUI();
+  else if (panelKey === "panggilan") {
+    $("nicknameInput").value = getNickname(s.id);
+    $("nicknameRealInfo").textContent = `Nama asli di data guru: "${s.nama}"`;
+  }
+}
+
+const pilihBingkai = id => { PR.frame = id; refreshBingkaiPanelUI(); };
+
+function pilihFile(file) {
+  if (!file) return;
+  const url = URL.createObjectURL(file), img = new Image();
+  img.onload = () => {
+    PR.img = img; PR.zoom = 1; PR.ox = PR.oy = 0; $("profZoom").value = 1;
+    $("profEditor").style.display = "block";
+    drawCrop(); PR.foto = exportFoto(); refreshFotoPanelUI();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  };
+  img.onerror = () => { URL.revokeObjectURL(url); showToast("Foto tidak bisa dibuka. Coba foto lain (JPG/PNG)."); };
+  img.src = url;
+}
+
+async function simpanFotoProfil() {
+  const s = getSantriAktif(); if (!s) return;
+  if (PR.img) PR.foto = exportFoto();
+  const prev = profilMap[s.id] || {};
+  profilMap[s.id] = { ...prev, frame: prev.frame || "none", foto: PR.foto || "", t: Date.now(), dirty: true };
+  writeJSON(PROFIL_KEY, profilMap);
+  openSettingsMenu();
+  renderAll();
+  showToast(PR.foto ? "Foto profil disimpan!" : "Foto profil dihapus!");
+  sinkronProfil();
+}
+
+async function simpanBingkaiProfil() {
+  const s = getSantriAktif(); if (!s) return;
+  const prev = profilMap[s.id] || {};
+  profilMap[s.id] = { ...prev, frame: PR.frame || "none", foto: prev.foto || "", t: Date.now(), dirty: true };
+  writeJSON(PROFIL_KEY, profilMap);
+  openSettingsMenu();
+  renderAll();
+  showToast("Bingkai profil disimpan!");
+  sinkronProfil();
+}
+
+function simpanNamaPanggilan(resetOnly) {
+  const s = getSantriAktif(); if (!s) return;
+  const val = resetOnly ? "" : String($("nicknameInput").value || "").trim().slice(0, 30);
+  const prev = profilMap[s.id] || {};
+  profilMap[s.id] = { ...prev, frame: prev.frame || "none", foto: prev.foto || "", nickname: val };
+  writeJSON(PROFIL_KEY, profilMap);
+  openSettingsMenu();
+  renderAll();
+  showToast(val ? `Nama panggilan disimpan: ${val}` : "Kembali memakai nama asli");
+}
+
+(function wireSettingsAndProfil() {
+  $("btnCloseSettings").onclick = closeSettingsDrawer;
+  $("settingsDrawerBackdrop").addEventListener("click", e => { if (e.target === e.currentTarget) closeSettingsDrawer(); });
+  $("btnDrawerKeluar").onclick = keluarAkun;
+
+  $("btnPilihFoto").onclick = () => $("profFile").click();
+  $("profFile").addEventListener("change", e => pilihFile(e.target.files && e.target.files[0]));
+  $("btnHapusFoto").onclick = () => {
+    PR.img = null; PR.foto = "";
+    $("profEditor").style.display = "none";
+    refreshFotoPanelUI();
+  };
+  $("btnSimpanFoto").onclick = simpanFotoProfil;
+  $("btnSimpanBingkai").onclick = simpanBingkaiProfil;
+
+  $("btnSimpanNickname").onclick = () => simpanNamaPanggilan(false);
+  $("btnResetNickname").onclick = () => simpanNamaPanggilan(true);
+  $("nicknameInput").addEventListener("keydown", e => { if (e.key === "Enter") simpanNamaPanggilan(false); });
+
+  $("profZoom").addEventListener("input", e => { PR.zoom = Number(e.target.value); drawCrop(); });
+  $("profZoom").addEventListener("change", () => { if (PR.img) { PR.foto = exportFoto(); refreshFotoPanelUI(); } });
+  const cv = $("profCanvas"); let drag = null;
+  cv.addEventListener("pointerdown", e => { drag = { x: e.clientX, y: e.clientY, ox: PR.ox, oy: PR.oy }; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener("pointermove", e => { if (!drag || !PR.img) return; const k = CROP / cv.getBoundingClientRect().width; PR.ox = drag.ox + (e.clientX - drag.x) * k; PR.oy = drag.oy + (e.clientY - drag.y) * k; drawCrop(); });
+  const end = () => { if (drag && PR.img) { PR.foto = exportFoto(); refreshFotoPanelUI(); } drag = null; };
+  cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+  cv.addEventListener("wheel", e => { if (!PR.img) return; e.preventDefault(); PR.zoom = clamp(PR.zoom + (e.deltaY < 0 ? .08 : -.08), 1, 4); $("profZoom").value = PR.zoom; drawCrop(); }, { passive: false });
+})();
 
 // ===================== BERANDA =====================
 function renderBeranda() {
   const s = getSantriAktif();
   if (!s) return;
+  const disp = getDisplayName(s.id, s.nama);
+  const nick = getNickname(s.id);
   const total = getKoinSantri(s.id), p = getPendingMap()[s.id], pend = p ? num(p.poin) : 0;
-  $("headerSantriName").textContent = s.nama;
+  $("headerSantriName").textContent = disp;
+  $("headerAvatar").innerHTML = avatarHTML(s.id, s.nama, 34);
+  $("berandaAvatar").innerHTML = avatarHTML(s.id, s.nama, 64);
   $("headerSantriKelas").textContent = s.kelas || "Umum";
   $("headerCoinCount").textContent = total;
   $("berandaKelasBadge").textContent = `${s.kelas || "Umum"} • @${s.username || s.id}`;
-  $("berandaNamaTitle").textContent = `Assalamu'alaikum, ${s.nama}`;
+  $("berandaNamaTitle").textContent = `Assalamu'alaikum, ${disp}`;
+  $("berandaNamaAsliSub").textContent = nick ? `Nama asli (guru): ${s.nama}` : "Ketuk foto atau gerigi kanan atas untuk pengaturan";
   $("berandaTotalKoin").textContent = `${total} Koin`;
   $("berandaPendingInfo").textContent = pend > 0 ? `Termasuk +${pend} koin lokal menunggu sinyal online` : "Saldo tersinkron dengan portal guru & klasemen";
+  if ($("settingsDrawerBackdrop").classList.contains("open")) refreshDrawerSummary();
 
   const ab = appState.absensi || {};
   const c = { Hadir: 0, Izin: 0, Sakit: 0, Alpa: 0 };
@@ -1161,18 +1758,14 @@ $("loginNamaInput").addEventListener("input", cekNamaSantriLive);
 $("loginNamaInput").addEventListener("keydown", e => { if (e.key === "Enter") $("loginPassword").focus(); });
 $("loginPassword").addEventListener("keydown", e => { if (e.key === "Enter") masukSantri(); });
 $("btnLogin").onclick = masukSantri;
-$("btnBukaSandi").onclick = bukaModalSandi;
-$("btnTutupSandi").onclick = tutupModalSandi;
 $("btnSimpanSandi").onclick = simpanSandiBaru;
-$("modalUbahSandi").addEventListener("click", e => { if (e.target === e.currentTarget) tutupModalSandi(); });
-$("btnKeluar").onclick = keluarAkun;
 $("btnSync").onclick = refreshManual;
 $("btnMulai").onclick = mulaiKuis;
 $("btnNextSoal").onclick = lanjutSoalBerikutnya;
 $("btnKeluarKuis").onclick = keluarDanSimpanKuis;
 $("btnKembaliLobby").onclick = kembaliKeLobbyKuis;
 document.addEventListener("click", e => {
-  const t = e.target.closest("[data-toggle],[data-goto],[data-tab],[data-cat],[data-mcat],[data-opt],[data-lbk]");
+  const t = e.target.closest("[data-toggle],[data-goto],[data-tab],[data-cat],[data-mcat],[data-opt],[data-lbk],[data-fr],[data-profopen],[data-setpanel],[data-backmenu]");
   if (!t) return;
   if (t.dataset.toggle) toggleInputPass(t.dataset.toggle, t);
   else if (t.dataset.goto) gotoTab(t.dataset.goto);
@@ -1181,6 +1774,10 @@ document.addEventListener("click", e => {
   else if (t.dataset.mcat !== undefined) setMateriFilter(Number(t.dataset.mcat));
   else if (t.dataset.opt !== undefined) pilihJawaban(Number(t.dataset.opt));
   else if (t.dataset.lbk !== undefined) { lbKelas = t.dataset.lbk; renderLobbyKuis(); }
+  else if (t.dataset.fr !== undefined) pilihBingkai(t.dataset.fr);
+  else if (t.dataset.setpanel !== undefined) openSettingsSubPanel(t.dataset.setpanel);
+  else if (t.dataset.backmenu !== undefined) openSettingsMenu();
+  else if (t.dataset.profopen !== undefined) openSettingsDrawer();
 });
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden" && isQuizPlaying && sessionKoin > 0) keluarDanSimpanKuis();

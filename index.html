@@ -259,6 +259,16 @@ header,.bottom-nav{background-color:var(--surface);transition:background-color .
   <button type="button" class="btn btn-primary btn-block" id="btnSimpanSandi">Simpan Sandi Baru</button>
 </div></div>
 
+<!-- RESET POIN SENDIRI -->
+<div id="modalResetPoin" class="modal-backdrop"><div class="modal-box">
+  <div class="row" style="margin-bottom:12px"><h3 style="font-size:16px;font-weight:800">Reset Poin Saya</h3><button type="button" class="btn btn-sm" id="btnTutupReset">Tutup</button></div>
+  <p style="font-size:12px;color:var(--tx2);margin-bottom:12px">Poin kuismu akan dikembalikan ke 0 dan namamu keluar dari klasemen sampai bermain lagi. Tindakan ini tidak bisa dibatalkan.</p>
+  <div class="neu-inset row" style="padding:11px 12px;margin-bottom:12px"><span style="font-size:12px;color:var(--tx2)">Poin sekarang</span><strong id="resetPoinSaatIni">0 Koin</strong></div>
+  <label>Masukkan sandi untuk konfirmasi</label>
+  <div class="pass-wrap" style="margin-bottom:14px"><input type="password" id="resetPassInput" placeholder="Sandi akun kamu"><button type="button" class="pass-toggle" data-toggle="resetPassInput">Lihat</button></div>
+  <button type="button" class="btn btn-primary btn-block" id="btnKonfirmasiReset">Ya, Reset Poin Saya</button>
+</div></div>
+
 <!-- PROFIL: FOTO & BINGKAI -->
 <div id="modalProfil" class="modal-backdrop"><div class="modal-box" style="max-height:92vh;overflow-y:auto">
   <div class="row" style="margin-bottom:6px"><h3 style="font-size:16px;font-weight:800">Foto & Bingkai Profil</h3><button type="button" class="btn btn-sm" id="btnTutupProfil">Tutup</button></div>
@@ -301,7 +311,7 @@ header,.bottom-nav{background-color:var(--surface);transition:background-color .
         <div style="display:flex;gap:6px"><button type="button" class="btn btn-sm" id="btnBukaSandi">Ubah Sandi</button><button type="button" class="btn btn-sm" id="btnKeluar">Keluar</button></div>
       </div>
       <div class="neu-inset row" style="padding:12px">
-        <div><div style="font-size:11px;color:var(--tx2);font-weight:700">TOTAL KOIN TERKUMPUL</div><div style="font-size:24px;font-weight:800" id="berandaTotalKoin">0 Koin</div><div style="font-size:11px;color:var(--tx3)" id="berandaPendingInfo"></div></div>
+        <div><div style="font-size:11px;color:var(--tx2);font-weight:700">TOTAL KOIN TERKUMPUL</div><div style="font-size:24px;font-weight:800" id="berandaTotalKoin">0 Koin</div><div style="font-size:11px;color:var(--tx3)" id="berandaPendingInfo"></div><button type="button" class="btn btn-sm" id="btnBukaResetPoin" style="margin-top:8px">Reset Poin Saya</button></div>
         <button type="button" class="btn btn-primary" data-goto="kuis">Main Kuis</button>
       </div>
     </div>
@@ -529,7 +539,7 @@ function normalizeState(raw) {
   const kc = src.kuisConfig && typeof src.kuisConfig === "object" ? src.kuisConfig : {};
   const kuisConfig = { ...kc, penaltiSalah: kc.penaltiSalah !== undefined && kc.penaltiSalah !== "" && !isNaN(Number(kc.penaltiSalah)) ? Math.max(0, Number(kc.penaltiSalah)) : 5 };
 
-  return { ...fallbackState, ...src, kelasList, santri, kuisSoal, skor: [...skorMap.values()], materi, pengumuman, absensi, kuisConfig };
+  return { ...fallbackState, ...src, kelasList, santri, kuisSoal, skor: [...skorMap.values()].filter(x => santri.some(s => s.id === x.santriId)), materi, pengumuman, absensi, kuisConfig };
 }
 
 function showToast(msg) {
@@ -621,6 +631,15 @@ async function simpanSandiBaru() {
 // ===================== KOIN =====================
 const getPendingMap = () => readJSON(KEYS.pending, {});
 
+// Buang koin offline milik akun yang sudah dihapus guru
+function purgePendingOrphans() {
+  const ids = new Set((appState.santri || []).map(s => s.id));
+  const m = getPendingMap();
+  let changed = false;
+  Object.keys(m).forEach(id => { if (!ids.has(id)) { delete m[id]; changed = true; } });
+  if (changed) writeJSON(KEYS.pending, m);
+}
+
 // Pengurangan poin jika salah (diatur guru di portal guru)
 const getPenalti = () => {
   const v = Number(appState.kuisConfig && appState.kuisConfig.penaltiSalah);
@@ -702,7 +721,7 @@ async function simpanDanAkumulasiKoin(id, nama, koin, benar, salah, total) {
 async function sinkronkanPendingKoin() {
   if (!navigator.onLine || !docRef || isSyncingPending) return;
   const snapshotMap = getPendingMap();
-  const ids = Object.keys(snapshotMap).filter(id => num((snapshotMap[id] || {}).poin) !== 0 || num((snapshotMap[id] || {}).total) > 0);
+  const ids = Object.keys(snapshotMap).filter(id => (appState.santri || []).some(s => s.id === id) && (num((snapshotMap[id] || {}).poin) !== 0 || num((snapshotMap[id] || {}).total) > 0));
   if (!ids.length) return;
   isSyncingPending = true;
   try {
@@ -772,6 +791,7 @@ function initFirebase() {
       if (snap.exists) {
         const inc = snap.data() || {};
         appState = normalizeState(inc);
+        purgePendingOrphans();
         syncPasswordsFromServer(appState.santri);
         writeJSON(KEYS.state, appState);
         sinkronkanPendingKoin();
@@ -932,11 +952,10 @@ function buildCombinedLeaderboard() {
   const pend = getPendingMap();
   Object.keys(pend).forEach(id => {
     const add = num((pend[id] || {}).poin);
+    const so = list.find(x => x.id === id);
+    if (!so) return; // akun sudah dihapus guru: abaikan
     if (map.has(id)) map.get(id).poin += add;
-    else {
-      const so = list.find(x => x.id === id);
-      map.set(id, { santriId: id, nama: so ? so.nama : pend[id].nama || id, kelas: so ? so.kelas || "Umum" : "Umum", poin: add });
-    }
+    else map.set(id, { santriId: id, nama: so.nama, kelas: so.kelas || "Umum", poin: add });
   });
   map.forEach(r => { r.poin = Math.max(0, r.poin); });
   return [...map.values()].filter(r => r.poin > 0).sort((a, b) => b.poin - a.poin || String(a.nama).localeCompare(String(b.nama)));
@@ -1451,7 +1470,55 @@ function renderAll() {
   renderRiwayat();
 }
 
+// ===================== RESET POIN SENDIRI =====================
+function bukaModalReset() {
+  const s = getSantriAktif(); if (!s) return;
+  $("resetPoinSaatIni").textContent = `${getKoinSantri(s.id)} Koin`;
+  $("resetPassInput").value = ""; $("resetPassInput").type = "password";
+  document.querySelectorAll("#modalResetPoin .pass-toggle").forEach(b => b.textContent = "Lihat");
+  $("modalResetPoin").classList.add("open");
+}
+const tutupModalReset = () => $("modalResetPoin").classList.remove("open");
+
+async function resetPoinSendiri() {
+  const s = getSantriAktif(); if (!s || isBusy) return;
+  if ($("resetPassInput").value.trim() !== getSandiSantri(s)) return showToast("Sandi salah!");
+  if (!navigator.onLine || !docRef) return showToast("Reset poin butuh internet agar tersinkron dengan guru");
+  isBusy = true;
+  try {
+    const waktu = new Date().toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+    await firebase.firestore().runTransaction(async tx => {
+      const snap = await tx.get(docRef);
+      const data = snap.exists ? snap.data() : {};
+      const skor = Array.isArray(data.skor) ? [...data.skor] : [];
+      const i = skor.findIndex(x => String(x.santriId || x.id) === s.id);
+      if (i >= 0) skor[i] = { ...skor[i], poin: 0, koin: 0, koinTerakhir: 0, benar: 0, salah: 0, total: 0, waktu };
+      const patch = { skor, updatedAt: Date.now() };
+      if (Array.isArray(data.santri)) {
+        const sList = [...data.santri];
+        const si = sList.findIndex(x => String(x.id || x.santriId) === s.id);
+        if (si >= 0 && ("koin" in sList[si] || "poin" in sList[si])) { sList[si] = { ...sList[si], koin: 0, poin: 0 }; patch.santri = sList; }
+      }
+      tx.set(docRef, patch, { merge: true });
+    });
+    const pm = getPendingMap(); delete pm[s.id]; writeJSON(KEYS.pending, pm);
+    appState.skor = (appState.skor || []).map(x => x.santriId === s.id ? { ...x, poin: 0, benar: 0, salah: 0, total: 0 } : x);
+    const si = (appState.santri || []).findIndex(x => x.id === s.id);
+    if (si >= 0) appState.santri[si].koin = 0;
+    writeJSON(KEYS.state, appState);
+    tutupModalReset();
+    renderAll();
+    showToast("Poinmu sudah direset ke 0");
+  } catch (e) {
+    showToast("Gagal mereset poin. Coba lagi saat koneksi stabil.");
+  } finally { isBusy = false; }
+}
+
 // ===================== EVENT =====================
+$("btnBukaResetPoin").onclick = bukaModalReset;
+$("btnTutupReset").onclick = tutupModalReset;
+$("btnKonfirmasiReset").onclick = resetPoinSendiri;
+$("modalResetPoin").addEventListener("click", e => { if (e.target === e.currentTarget) tutupModalReset(); });
 $("loginNamaInput").addEventListener("input", cekNamaSantriLive);
 $("loginNamaInput").addEventListener("keydown", e => { if (e.key === "Enter") $("loginPassword").focus(); });
 $("loginPassword").addEventListener("keydown", e => { if (e.key === "Enter") masukSantri(); });

@@ -27,7 +27,8 @@
             name: "BUSTANUL HADI - Portal Santri", short_name: "Bustanul Hadi", lang: "id",
             start_url: base, scope: base.replace(/[^\/]*$/, ""), id: base,
             display: "standalone", orientation: "portrait",
-            background_color: "#121212", theme_color: "#171717",
+            background_color: (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) ? "#121212" : "#f0f0f0",
+            theme_color: (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) ? "#171717" : "#f7f7f7",
             icons: [
               { src: p192, sizes: "192x192", type: "image/png", purpose: "any" },
               { src: p512, sizes: "512x512", type: "image/png", purpose: "any" },
@@ -38,6 +39,13 @@
           l.rel = "manifest";
           l.href = URL.createObjectURL(new Blob([JSON.stringify(m)], { type: "application/manifest+json" }));
           document.head.appendChild(l);
+          if (window.matchMedia) matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function (ev) {
+            try {
+              m.background_color = ev.matches ? "#121212" : "#f0f0f0";
+              m.theme_color = ev.matches ? "#171717" : "#f7f7f7";
+              l.href = URL.createObjectURL(new Blob([JSON.stringify(m)], { type: "application/manifest+json" }));
+            } catch (e) {}
+          });
         } catch (e) {}
       };
       img.src = svgUrl;
@@ -1468,7 +1476,10 @@ document.addEventListener("click", e => {
 });
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden" && isQuizPlaying && sessionKoin !== 0) keluarDanSimpanKuis();
-  else if (document.visibilityState === "visible" && navigator.onLine) { initFirebase(); sinkronkanPendingKoin(); }
+  else if (document.visibilityState === "visible") {
+    applyThemeMode();
+    if (navigator.onLine) { initFirebase(); sinkronkanPendingKoin(); }
+  }
 });
 
 // ===================== PWA / PASANG APLIKASI =====================
@@ -1504,11 +1515,15 @@ function applyThemeMode(forceDarkOverride) {
   const surfaceColor = dark ? "#171717" : "#f7f7f7";
   document.documentElement.style.colorScheme = dark ? "dark" : "light";
   document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.setAttribute("content", surfaceColor));
-  if (window.Android) {
-    if (typeof window.Android.setSystemBarColor === "function") window.Android.setSystemBarColor(surfaceColor, dark);
-    if (typeof window.Android.setStatusBarColor === "function") window.Android.setStatusBarColor(surfaceColor, !dark);
-    if (typeof window.Android.setNavigationBarColor === "function") window.Android.setNavigationBarColor(surfaceColor, !dark);
-  }
+  const pushToAndroid = () => {
+    if (!window.Android) return;
+    const call = (name, a, b) => { try { if (typeof window.Android[name] === "function") window.Android[name](a, b); } catch (e) {} };
+    call("setSystemBarColor", surfaceColor, dark);
+    call("setStatusBarColor", surfaceColor, !dark);
+    call("setNavigationBarColor", surfaceColor, !dark);
+  };
+  pushToAndroid();
+  setTimeout(pushToAndroid, 400);
 }
 window.onAndroidThemeChanged = isDark => applyThemeMode(Boolean(isDark));
 applyThemeMode();

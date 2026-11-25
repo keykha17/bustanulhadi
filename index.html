@@ -232,7 +232,7 @@ header{
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
 .status-dot.online{background:var(--ok);box-shadow:0 0 6px var(--ok)}
 
-main{max-width:520px;margin:0 auto;padding:12px 14px}
+main{max-width:520px;margin:0 auto;padding:8px 14px 12px}
 .section{display:none}.section.active{display:block;animation:fade .2s ease}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .section-title{font-size:16px;font-weight:800;letter-spacing:-.01em;margin-bottom:14px}
@@ -352,6 +352,88 @@ main{max-width:520px;margin:0 auto;padding:12px 14px}
 .pass-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--tx2);font-size:11px;font-weight:700;cursor:pointer;padding:6px}
 .empty{text-align:center;color:var(--tx2);font-size:13px;padding:14px 0}
 .row{display:flex;justify-content:space-between;align-items:center}
+
+/* ===== TEKS UCAPAN BERJALAN (SEKALI JALAN SAMPAI HABIS, TIDAK BERULANG) ===== */
+.global-ticker-wrap{
+  max-width:520px;
+  margin:8px auto 0;
+  padding:0 14px
+}
+.running-ticker{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 11px;
+  border-radius:14px;
+  background:var(--surface);
+  border:1px solid color-mix(in srgb,var(--accent) 42%,var(--border));
+  box-shadow:var(--shadow-out-sm)
+}
+.running-ticker.celebration{
+  background:linear-gradient(135deg,color-mix(in srgb,var(--gold-light) 18%,var(--surface)),var(--surface));
+  border-color:color-mix(in srgb,var(--accent) 65%,transparent);
+  box-shadow:var(--shadow-out-sm),0 0 14px var(--gold-glow)
+}
+.running-ticker.paused .running-ticker-track{animation-play-state:paused}
+.running-ticker-viewport{
+  position:relative;flex:1;min-width:0;overflow:hidden;
+  mask-image:linear-gradient(90deg,transparent 0%,#000 5%,#000 95%,transparent 100%);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 5%,#000 95%,transparent 100%)
+}
+.running-ticker-track{
+  display:inline-block;
+  white-space:nowrap;
+  font-size:11.5px;font-weight:700;color:var(--accent);
+  padding-left:100%;
+  animation:marqueeOneShot var(--ticker-duration,32s) linear 1 forwards;
+  will-change:transform
+}
+@keyframes marqueeOneShot{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-100%)}
+}
+.running-ticker-meta{
+  display:inline-flex;align-items:center;gap:5px;flex-shrink:0
+}
+.running-ticker-timer{
+  font-size:10px;font-weight:800;font-variant-numeric:tabular-nums;
+  padding:2px 6px;border-radius:7px;
+  background:rgba(224,176,75,.16);color:var(--accent)
+}
+.running-ticker-close{
+  background:none;border:none;color:var(--tx3);
+  font-size:12px;font-weight:700;cursor:pointer;padding:2px 4px;line-height:1
+}
+.running-ticker-close:hover{color:var(--tx)}
+
+/* ===== TIER & UCAPAN SELAMAT DI KARTU UTAMA ===== */
+.tier-congrats{
+  position:relative;
+  border-radius:15px;
+  padding:11px 13px;
+  margin-bottom:12px;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--gold-light) 22%,var(--elev)),color-mix(in srgb,var(--accent) 10%,var(--surface)));
+  border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
+  box-shadow:var(--shadow-out-sm),0 0 18px var(--gold-glow);
+  overflow:hidden
+}
+.tier-congrats-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:3px}
+.tier-congrats-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--accent)
+}
+.tier-congrats-title{font-size:13.5px;font-weight:800;line-height:1.25;color:var(--tx)}
+.tier-congrats-msg{font-size:11.5px;color:var(--tx2);margin-top:2px;line-height:1.4}
+.tier-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:10px;
+  background:linear-gradient(135deg,var(--gold-light),var(--accent));
+  color:#14120d;font-size:11px;font-weight:800;
+  box-shadow:0 3px 10px var(--gold-glow);
+  white-space:nowrap
+}
+.tier-next-box{margin-top:10px;padding-top:9px;border-top:1px dashed var(--border)}
+.tier-next-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--tx2);font-weight:600}
+.tier-next-row b{color:var(--tx);font-weight:700}
 
 /* ===== LEADERBOARD & PODIUM (SLATE + EMAS) ===== */
 .lb-me{border-radius:16px;padding:12px 14px;margin-bottom:14px;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-in)}
@@ -498,21 +580,34 @@ main{max-width:520px;margin:0 auto;padding:12px 14px}
   </div>
 </header>
 
+<div id="globalRunningTicker" class="global-ticker-wrap"></div>
+
 <main>
   <section id="sec-beranda" class="section active">
-    <div class="neu-card">
+    <div class="neu-card" id="berandaMainCard">
+      <div id="berandaTierBanner"></div>
+
       <div class="row" style="justify-content:flex-start;gap:16px;margin-bottom:12px;padding:6px 4px 0">
         <button type="button" class="hdr-av" id="berandaAvatar" data-profopen="1" style="width:84px;height:84px" aria-label="Ubah foto dan bingkai"></button>
         <div style="min-width:0"><div style="font-size:12px;color:var(--tx2);font-weight:600;margin-bottom:8px">Foto & bingkai profilmu</div><button type="button" class="btn btn-sm" data-profopen="1">Ubah Foto & Bingkai</button></div>
       </div>
 
       <div class="row" style="align-items:flex-start;gap:8px;margin-bottom:12px">
-        <div><span class="badge" id="berandaKelasBadge">Kelas</span><h2 style="font-size:17px;font-weight:800;margin-top:5px" id="berandaNamaTitle"></h2></div>
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+            <span class="badge" id="berandaKelasBadge">Kelas</span>
+            <span class="tier-pill" id="berandaTierBadge">Thalib Pemula</span>
+          </div>
+          <h2 style="font-size:17px;font-weight:800;margin-top:6px" id="berandaNamaTitle"></h2>
+        </div>
         <div style="display:flex;gap:6px"><button type="button" class="btn btn-sm" id="btnBukaSandi">Ubah Sandi</button><button type="button" class="btn btn-sm" id="btnKeluar">Keluar</button></div>
       </div>
-      <div class="neu-inset row" style="padding:13px">
-        <div><div style="font-size:10.5px;color:var(--tx2);font-weight:700;letter-spacing:.04em">TOTAL KOIN TERKUMPUL</div><div class="gold-text" style="font-size:24px;font-weight:800;font-variant-numeric:tabular-nums" id="berandaTotalKoin">0 Koin</div><div style="font-size:11px;color:var(--tx3)" id="berandaPendingInfo"></div><button type="button" class="btn btn-sm" id="btnBukaResetPoin" style="margin-top:8px">Reset Poin Saya</button></div>
-        <button type="button" class="btn btn-primary" data-goto="kuis">Main Kuis</button>
+      <div class="neu-inset" style="padding:13px">
+        <div class="row">
+          <div><div style="font-size:10.5px;color:var(--tx2);font-weight:700;letter-spacing:.04em">TOTAL KOIN TERKUMPUL</div><div class="gold-text" style="font-size:24px;font-weight:800;font-variant-numeric:tabular-nums" id="berandaTotalKoin">0 Koin</div><div style="font-size:11px;color:var(--tx3)" id="berandaPendingInfo"></div><button type="button" class="btn btn-sm" id="btnBukaResetPoin" style="margin-top:8px">Reset Poin Saya</button></div>
+          <button type="button" class="btn btn-primary" data-goto="kuis">Main Kuis</button>
+        </div>
+        <div id="berandaTierProgress"></div>
       </div>
     </div>
 
@@ -627,13 +722,340 @@ const KEYS = {
   aktif: "bustanul_santri_aktif_id",
   pass: "bustanul_santri_passwords",
   pending: "bustanul_pending_koin",
-  seenAnn: "bustanul_seen_pengumuman"
+  seenAnn: "bustanul_seen_pengumuman",
+  lastTier: "bustanul_last_celebrated_tier",
+  seenBroadcast: "bustanul_seen_broadcast_id"
 };
 const $ = id => document.getElementById(id);
 const esc = v => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const num = v => Number(v) || 0;
 const readJSON = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } };
 const writeJSON = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+
+// ===================== SISTEM TIER KOIN (1.000 -> 10.000 -> ... dst) & TEKS SEKALI JALAN =====================
+const BASE_COIN_TIERS = [
+  { min: 1000, name: "Thalib Pemula", tag: "Tier 1 • 1.000", congrats: "Selamat! Kamu telah mencapai 1.000 koin dan resmi menyandang gelar Thalib Pemula." },
+  { min: 10000, name: "Penuntut Ilmu", tag: "Tier 2 • 10.000", congrats: "Masya Allah, barakallah! 10.000 koin tercapai—selamat atas gelar Penuntut Ilmu." },
+  { min: 100000, name: "Santri Teladan", tag: "Tier 3 • 100.000", congrats: "Luar biasa! Selamat atas pencapaian 100.000 koin sebagai Santri Teladan." },
+  { min: 1000000, name: "Ksatria Kitab", tag: "Tier 4 • 1.000.000", congrats: "Subhanallah! Kamu menembus 1.000.000 koin dan meraih gelar Ksatria Kitab." },
+  { min: 10000000, name: "Pendekar Ilmu", tag: "Tier 5 • 10.000.000", congrats: "Hebat! Selamat atas pencapaian 10.000.000 koin di tier Pendekar Ilmu." },
+  { min: 100000000, name: "Alim Muda", tag: "Tier 6 • 100.000.000", congrats: "Prestasi gemilang! 100.000.000 koin telah diraih sebagai Alim Muda." },
+  { min: 1000000000, name: "Mahaguru Kutub", tag: "Tier 7 • 1.000.000.000", congrats: "Selamat! Kamu mencapai 1.000.000.000 koin dan menyandang gelar Mahaguru Kutub." },
+  { min: 10000000000, name: "Sultanul Ilmi", tag: "Tier 8 • 10.000.000.000", congrats: "Luar biasa! 10.000.000.000 koin tercapai—selamat atas gelar Sultanul Ilmi." },
+  { min: 100000000000, name: "Bintang Arsy", tag: "Tier 9 • 100.000.000.000", congrats: "Masya Allah! Selamat atas pencapaian 100.000.000.000 koin sebagai Bintang Arsy." }
+];
+
+function getTierListForCoins(coins) {
+  const tiers = [...BASE_COIN_TIERS];
+  let last = tiers[tiers.length - 1];
+  let idx = tiers.length + 1;
+  while (num(coins) >= last.min * 10 && last.min * 10 <= Number.MAX_SAFE_INTEGER) {
+    const nextMin = last.min * 10;
+    last = {
+      min: nextMin,
+      name: `Legenda Agung T${idx}`,
+      tag: `Tier ${idx} • ${nextMin.toLocaleString("id-ID")}`,
+      congrats: `Selamat! Kamu menembus ${nextMin.toLocaleString("id-ID")} koin dan meraih gelar Legenda Agung T${idx}.`
+    };
+    tiers.push(last);
+    idx++;
+  }
+  return tiers;
+}
+
+let tickerState = {
+  santriId: "",
+  signature: "",
+  remainingSec: 0,
+  intervalId: null,
+  dismissed: false,
+  paused: false
+};
+
+function computeOneShotDurationSec(text) {
+  const len = String(text || "").length;
+  return Math.max(24, Math.min(85, Math.round(len / 11) + 12));
+}
+
+function getTopAchieversMarquee(limit = 5) {
+  const rk = buildCombinedLeaderboard();
+  return rk
+    .filter(r => getTierInfo(r.poin).current !== null)
+    .slice(0, limit)
+    .map((r, idx) => {
+      const t = getTierInfo(r.poin).current;
+      return `Selamat kepada ${r.nama} (Peringkat #${idx + 1}) atas prestasi ${r.poin.toLocaleString("id-ID")} koin di tier ${t.name}!`;
+    });
+}
+
+function getRunningGreetingBundle(santri, coins) {
+  const nama = (santri && santri.nama) || "Santri";
+  const kelas = (santri && santri.kelas) || "Umum";
+  const info = getTierInfo(coins);
+  const c = num(coins);
+  const feed = Array.isArray(appState.prestasiFeed) ? appState.prestasiFeed : [];
+  const latestFeat = feed.length ? feed[0] : null;
+  const isRecentFeat = latestFeat && (Date.now() - num(latestFeat.timestamp) < 1000 * 60 * 60 * 6);
+
+  const items = [];
+  let isCelebration = false;
+
+  // 1. Sapaan akun santri yang sedang login selalu diletakkan di paling awal
+  if (info.current) {
+    items.push(`Assalamu'alaikum ${nama} (${kelas}), selamat datang di BUSTANUL HADI! Selamat atas pencapaian ${c.toLocaleString("id-ID")} koin di tier ${info.current.name}!`);
+  } else {
+    items.push(`Assalamu'alaikum ${nama} (${kelas}), selamat datang di BUSTANUL HADI! Kumpulkan koinmu menuju 1.000 koin (${info.next.name}) dan raih tier tertinggi!`);
+  }
+
+  // 2. Setelah sapaan akun santri, baru ucapan selamat prestasi terbaru & juara tier
+  if (isRecentFeat) {
+    isCelebration = true;
+    const featText = latestFeat.pesan || `Selamat kepada ${latestFeat.nama} atas pencapaian ${num(latestFeat.koin).toLocaleString("id-ID")} koin di tier ${latestFeat.tierName}!`;
+    items.push(featText);
+  }
+
+  getTopAchieversMarquee(4).forEach(line => {
+    if (!items.includes(line)) items.push(line);
+  });
+
+  return {
+    text: items.join("   •   "),
+    isCelebration,
+    latestFeatId: isRecentFeat ? latestFeat.id : ""
+  };
+}
+
+function stopRunningTickerTimer() {
+  if (tickerState.intervalId) {
+    clearInterval(tickerState.intervalId);
+    tickerState.intervalId = null;
+  }
+}
+
+function syncRunningTicker(santri, coins, boostDuration) {
+  const host = $("globalRunningTicker");
+  if (!host) return;
+  if (!santri || isQuizPlaying) {
+    host.innerHTML = "";
+    return;
+  }
+
+  const bundle = getRunningGreetingBundle(santri, coins);
+  const info = getTierInfo(coins);
+  const tierKey = info.current ? info.current.min : 0;
+  const sig = `${santri.id}:${tierKey}:${bundle.latestFeatId}:${bundle.text}`;
+  const animSec = computeOneShotDurationSec(bundle.text);
+  const runSec = boostDuration ? Math.max(animSec, boostDuration) : animSec;
+
+  if (tickerState.santriId !== santri.id || tickerState.signature !== sig) {
+    tickerState.santriId = santri.id;
+    tickerState.signature = sig;
+    tickerState.dismissed = false;
+    tickerState.paused = false;
+    tickerState.remainingSec = runSec;
+    stopRunningTickerTimer();
+    tickerState.intervalId = setInterval(() => {
+      if (tickerState.dismissed || isQuizPlaying) {
+        if (tickerState.dismissed) stopRunningTickerTimer();
+        return;
+      }
+      if (!tickerState.paused) {
+        tickerState.remainingSec = Math.max(0, tickerState.remainingSec - 1);
+        const timerEl = $("tickerCountdownLabel");
+        if (timerEl) timerEl.textContent = `${tickerState.remainingSec}d`;
+        if (tickerState.remainingSec <= 0) {
+          tickerState.dismissed = true;
+          stopRunningTickerTimer();
+          host.innerHTML = "";
+        }
+      }
+    }, 1000);
+  }
+
+  if (tickerState.dismissed || tickerState.remainingSec <= 0) {
+    host.innerHTML = "";
+    return;
+  }
+
+  const safeText = esc(bundle.text);
+  host.innerHTML = `<div class="running-ticker ${bundle.isCelebration ? "celebration" : ""} ${tickerState.paused ? "paused" : ""}" id="runningTickerBox" style="--ticker-duration:${animSec}s" title="Sentuh atau tahan untuk menjeda teks">
+    <div class="running-ticker-viewport">
+      <div class="running-ticker-track" id="runningTickerTrack">&#127942; ${safeText}</div>
+    </div>
+    <div class="running-ticker-meta">
+      <span class="running-ticker-timer" id="tickerCountdownLabel">${tickerState.remainingSec}d</span>
+      <button type="button" class="running-ticker-close" id="btnCloseTicker" aria-label="Tutup ucapan berjalan">&times;</button>
+    </div>
+  </div>`;
+
+  const track = $("runningTickerTrack");
+  if (track) {
+    track.addEventListener("animationend", () => {
+      tickerState.dismissed = true;
+      stopRunningTickerTimer();
+      host.innerHTML = "";
+    }, { once: true });
+  }
+
+  const box = $("runningTickerBox");
+  if (box) {
+    box.addEventListener("pointerenter", () => { tickerState.paused = true; box.classList.add("paused"); });
+    box.addEventListener("pointerleave", () => { tickerState.paused = false; box.classList.remove("paused"); });
+    box.addEventListener("touchstart", () => { tickerState.paused = true; box.classList.add("paused"); }, { passive: true });
+    box.addEventListener("touchend", () => { setTimeout(() => { tickerState.paused = false; box.classList.remove("paused"); }, 1000); }, { passive: true });
+  }
+  const closeBtn = $("btnCloseTicker");
+  if (closeBtn) {
+    closeBtn.onclick = ev => {
+      ev.stopPropagation();
+      tickerState.dismissed = true;
+      stopRunningTickerTimer();
+      host.innerHTML = "";
+    };
+  }
+}
+
+function getTierInfo(coins) {
+  const c = Math.max(0, num(coins));
+  const tiers = getTierListForCoins(c);
+  let current = null;
+  let currentIdx = -1;
+  for (let i = 0; i < tiers.length; i++) {
+    if (c >= tiers[i].min) {
+      current = tiers[i];
+      currentIdx = i;
+    }
+  }
+  const next = tiers[currentIdx + 1] || null;
+  const prevMin = current ? current.min : 0;
+  let pct = 100;
+  let remaining = 0;
+  if (next) {
+    const span = Math.max(1, next.min - prevMin);
+    pct = Math.max(2, Math.min(100, Math.round(((c - prevMin) / span) * 100)));
+    remaining = Math.max(0, next.min - c);
+  }
+  return { current, currentIdx, next, pct, remaining, coins: c };
+}
+
+function renderTierCardHTML(santri, coins) {
+  const info = getTierInfo(coins);
+  const { current, next, pct, remaining } = info;
+  const nama = esc((santri && santri.nama) || "Santri");
+  const achieved = !!current;
+
+  const bannerHTML = achieved
+    ? `<div class="tier-congrats">
+        <div class="tier-congrats-top">
+          <span class="tier-congrats-tag">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-1.01L12 2z"/></svg>
+            ${esc(current.tag)}
+          </span>
+          <span class="badge urgent">${current.min.toLocaleString("id-ID")} Koin</span>
+        </div>
+        <div class="tier-congrats-title">Selamat, ${nama}! Tier ${esc(current.name)} Tercapai</div>
+        <div class="tier-congrats-msg">${esc(current.congrats)}</div>
+      </div>`
+    : `<div class="tier-congrats">
+        <div class="tier-congrats-top">
+          <span class="tier-congrats-tag">Target Tier 1</span>
+          <span class="badge">1.000 Koin</span>
+        </div>
+        <div class="tier-congrats-title">Ayo Kumpulkan 1.000 Koin, ${nama}!</div>
+        <div class="tier-congrats-msg">Jawab kuis dengan benar untuk membuka tier pertama (1.000 koin) dan naik ke 10.000, 100.000, hingga miliaran koin.</div>
+      </div>`;
+
+  const progressHTML = next
+    ? `<div class="tier-next-box">
+        <div class="tier-next-row">
+          <span>Menuju <b>${esc(next.name)}</b> (${next.min.toLocaleString("id-ID")})</span>
+          <b>${pct}%</b>
+        </div>
+        <div class="bar-track" style="height:6px;margin-top:5px"><div class="bar-fill" style="width:${pct}%"></div></div>
+        <div style="font-size:10.5px;color:var(--tx3);margin-top:4px">Kurang <strong>${remaining.toLocaleString("id-ID")}</strong> koin lagi</div>
+      </div>`
+    : `<div class="tier-next-box">
+        <div class="tier-next-row">
+          <span>Status: <b>${esc(current ? current.name : "Tertinggi")}</b></span>
+          <b class="gold-text">TERCAPAI</b>
+        </div>
+      </div>`;
+
+  return { bannerHTML, progressHTML, badgeText: current ? current.name : "Belum Bertier" };
+}
+
+async function publishAchievementBroadcast(santri, coins, tier) {
+  if (!santri || !tier || tier.min <= 0) return;
+  const eventId = `${santri.id}_${tier.min}`;
+  const entry = {
+    id: eventId,
+    santriId: santri.id,
+    nama: santri.nama,
+    kelas: santri.kelas || "Umum",
+    koin: num(coins),
+    tierName: tier.name,
+    tierMin: tier.min,
+    pesan: `Selamat kepada ${santri.nama} (${santri.kelas || "Umum"}) yang telah mencapai ${num(coins).toLocaleString("id-ID")} koin dan meraih tier ${tier.name}!`,
+    timestamp: Date.now()
+  };
+
+  const existing = Array.isArray(appState.prestasiFeed) ? [...appState.prestasiFeed] : [];
+  const filtered = existing.filter(x => x && x.id !== eventId);
+  appState.prestasiFeed = [entry, ...filtered].slice(0, 15);
+  writeJSON(KEYS.state, appState);
+
+  if (navigator.onLine && docRef) {
+    try {
+      await firebase.firestore().runTransaction(async tx => {
+        const snap = await tx.get(docRef);
+        const data = snap.exists ? snap.data() : {};
+        const serverFeed = Array.isArray(data.prestasiFeed) ? [...data.prestasiFeed] : [];
+        const deduped = [entry, ...serverFeed.filter(x => x && x.id !== eventId)].slice(0, 15);
+        tx.set(docRef, { prestasiFeed: deduped, updatedAt: Date.now() }, { merge: true });
+      });
+    } catch (e) {}
+  }
+}
+
+function checkIncomingAchievementsForOthers() {
+  const s = getSantriAktif();
+  if (!s) return;
+  const feed = Array.isArray(appState.prestasiFeed) ? appState.prestasiFeed : [];
+  if (!feed.length) return;
+  const latest = feed[0];
+  if (!latest || latest.santriId === s.id) return;
+  const ageMs = Date.now() - num(latest.timestamp);
+  if (ageMs > 1000 * 60 * 30) return;
+  const seenId = localStorage.getItem(KEYS.seenBroadcast) || "";
+  if (seenId !== latest.id) {
+    localStorage.setItem(KEYS.seenBroadcast, latest.id);
+    tickerState.dismissed = false;
+    tickerState.signature = "";
+    showToast(`Prestasi baru: ${latest.nama} meraih tier ${latest.tierName}!`);
+  }
+}
+
+function celebrateTierIfUpgraded(santriId, coins) {
+  if (!santriId) return;
+  const info = getTierInfo(coins);
+  if (!info.current || info.current.min <= 0) return;
+  const map = readJSON(KEYS.lastTier, {});
+  const prevMin = num(map[santriId]);
+  if (info.current.min > prevMin) {
+    map[santriId] = info.current.min;
+    writeJSON(KEYS.lastTier, map);
+    const s = (appState.santri || []).find(x => x.id === santriId) || getSantriAktif();
+    publishAchievementBroadcast(s, coins, info.current);
+    if (s && s.id === currentSantriId) {
+      tickerState.dismissed = false;
+      tickerState.signature = "";
+      syncRunningTicker(s, coins);
+    }
+    setTimeout(() => {
+      showToast(`Selamat! Kamu mencapai tier ${info.current.name} (${info.current.min.toLocaleString("id-ID")} koin)!`);
+    }, 550);
+  }
+}
 
 const namaDefault = [["s1","Aswir"],["s2","Ilham"],["s3","Fikri"],["s4","Radian"],["s5","Ardian"],["s6","Arsya"],["s7","Muhammad"],["s8","Afdal"],["s9","Riski"],["s10","Rifki"],["s11","Agi"],["s12","Ilyas"],["s13","Lia"],["s14","Nabila"],["s15","Dila"],["s16","Indah"],["s17","Viani"],["s18","Pida"],["s19","Fatin"],["s20","Azkia"],["s21","Amira"],["s22","Nur"],["s23","Syakira"],["s24","Amelia"],["s25","Eliza"],["s26","Nia"],["s27","Salsa"],["s28","Aurel"],["s29","Asyura"],["s30","Bela"],["s31","Syifa"],["s32","Laudia"],["s33","Pia"],["sgj7h51","Intan"],["skobtzy","Adiba"],["spq6hoz","Lisa"],["s3n7ier","Nufus"],["s8myfxi","Ula"],["s8b0lzr","Liza"],["sxqzifh","Putri"],["sctopcm","Pira"]];
 const fallbackState = {
@@ -643,6 +1065,7 @@ const fallbackState = {
   absensi: {},
   materi: [],
   pengumuman: [],
+  prestasiFeed: [],
   jadwalTable: [],
   kuisConfig: { penaltiSalah: 5, durasi: 180, judul: "Musabaqah Fahmil Kutub BUSTANUL HADI" },
   kuisSoal: [
@@ -751,6 +1174,24 @@ function normalizeState(raw) {
     penting: Boolean(p.penting || p.pinned || String(p.prioritas || p.kategori || "").toLowerCase() === "penting" || String(p.kategori || "").toLowerCase() === "acara besar")
   })).filter(p => p.judul || p.isi);
 
+  const prestasiRaw = Array.isArray(src.prestasiFeed) ? src.prestasiFeed : [];
+  const prestasiFeed = prestasiRaw
+    .filter(Boolean)
+    .map((f, idx) => ({
+      id: String(f.id || `feat_${idx + 1}`),
+      santriId: String(f.santriId || ""),
+      nama: String(f.nama || "Santri").trim(),
+      kelas: String(f.kelas || "Umum").trim(),
+      koin: num(f.koin),
+      tierName: String(f.tierName || "").trim(),
+      tierMin: num(f.tierMin),
+      pesan: String(f.pesan || "").trim(),
+      timestamp: num(f.timestamp)
+    }))
+    .filter(f => f.nama && f.tierName)
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .slice(0, 15);
+
   const kelasList = Array.isArray(src.kelasList) && src.kelasList.length ? src.kelasList : fallbackState.kelasList;
   const bidangIlmuList = Array.isArray(src.bidangIlmuList) && src.bidangIlmuList.length ? src.bidangIlmuList : fallbackState.bidangIlmuList;
   const jadwalTable = Array.isArray(src.jadwalTable) ? src.jadwalTable : fallbackState.jadwalTable;
@@ -763,7 +1204,7 @@ function normalizeState(raw) {
     penaltiSalah: kc.penaltiSalah !== undefined && kc.penaltiSalah !== "" && !isNaN(Number(kc.penaltiSalah)) ? Math.max(0, Number(kc.penaltiSalah)) : 5
   };
 
-  return { ...fallbackState, ...src, kelasList, bidangIlmuList, jadwalTable, santri, kuisSoal, skor: [...skorMap.values()].filter(x => santri.some(s => s.id === x.santriId)), materi, pengumuman, absensi, kuisConfig };
+  return { ...fallbackState, ...src, kelasList, bidangIlmuList, jadwalTable, santri, kuisSoal, skor: [...skorMap.values()].filter(x => santri.some(s => s.id === x.santriId)), materi, pengumuman, prestasiFeed, absensi, kuisConfig };
 }
 
 function showToast(msg) {
@@ -1014,6 +1455,7 @@ function attachFirestoreListeners() {
         writeJSON(KEYS.state, appState);
         sinkronkanPendingKoin();
         cekNamaSantriLive();
+        checkIncomingAchievementsForOthers();
         isQuizPlaying ? renderBeranda() : renderAll();
         if (currentSantriId && !getSantriAktif()) keluarAkun();
       }
@@ -1041,6 +1483,7 @@ function initFirebase() {
           writeJSON(KEYS.state, appState);
           sinkronkanPendingKoin();
           cekNamaSantriLive();
+          checkIncomingAchievementsForOthers();
           isQuizPlaying ? renderBeranda() : renderAll();
         }
       }).catch(() => {});
@@ -1071,7 +1514,7 @@ function cekNamaSantriLive() {
   const s = cariSantri(v);
   const L = t => `<span style="font-size:12px;color:var(--tx2)">${t}</span>`;
   if (!v.trim()) box.innerHTML = L("Status Akun") + `<strong style="font-size:13px">Ketik nama Anda di atas</strong>`;
-  else if (s) box.innerHTML = L(`${esc(s.nama)} (${esc(s.kelas || "Umum")})`) + `<strong class="gold-text" style="font-size:14px">${getKoinSantri(s.id)} Koin</strong>`;
+  else if (s) box.innerHTML = L(`${esc(s.nama)} (${esc(s.kelas || "Umum")})`) + `<strong class="gold-text" style="font-size:14px">${getKoinSantri(s.id).toLocaleString("id-ID")} Koin</strong>`;
   else box.innerHTML = L("Nama belum cocok") + `<strong style="font-size:12px">Periksa ejaan nama</strong>`;
 }
 
@@ -1097,6 +1540,10 @@ async function keluarAkun() {
   if (isQuizPlaying) { await keluarDanSimpanKuis(); kembaliKeLobbyKuis(); }
   currentSantriId = "";
   localStorage.removeItem(KEYS.aktif);
+  stopRunningTickerTimer();
+  tickerState.santriId = "";
+  tickerState.signature = "";
+  $("globalRunningTicker").innerHTML = "";
   $("loginNamaInput").value = "";
   $("loginPassword").value = "";
   cekNamaSantriLive();
@@ -1109,6 +1556,8 @@ function gotoTab(tab) {
   document.querySelectorAll(".nav-item").forEach(n => n.classList.toggle("active", n.dataset.tab === tab));
   $("sec-" + tab).classList.add("active");
   if (tab === "pengumuman") tandaiPengumumanDibaca();
+  const s = getSantriAktif();
+  if (s) syncRunningTicker(s, getKoinSantri(s.id));
   window.scrollTo(0, 0);
 }
 
@@ -1206,9 +1655,8 @@ function buildCombinedLeaderboard() {
   return [...map.values()].filter(r => r.poin > 0).sort((a, b) => b.poin - a.poin || String(a.nama).localeCompare(String(b.nama)));
 }
 
-const LB_LEVELS = [[0, "Pemula"], [50, "Rajin"], [150, "Cerdas"], [300, "Mahir"], [600, "Juara"]];
 let lbKelas = "ALL";
-const lbLevel = p => { let l = LB_LEVELS[0][1]; LB_LEVELS.forEach(([m, n]) => { if (p >= m) l = n; }); return l; };
+const lbLevel = p => { const t = getTierInfo(p).current; return t ? t.name : "Belum Bertier"; };
 const ORN = n => `<svg class="lb-orn c${n}" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5 38V18C5 10 10 5 18 5h20"/><path d="M11 38V22c0-5.5 5.5-11 11-11h16" opacity=".4"/><g fill="currentColor" stroke="none"><circle cx="9" cy="5.5" r="2.4"/><circle cx="9" cy="12.5" r="2.4"/><circle cx="5.5" cy="9" r="2.4"/><circle cx="12.5" cy="9" r="2.4"/><path d="M21 5c3.2 0 5.4 2.1 6.4 5.2-3.2 0-5.4-2.1-6.4-5.2zM5 21c0 3.2 2.1 5.4 5.2 6.4 0-3.2-2.1-5.4-5.2-6.4z"/></g><circle cx="9" cy="9" r="1.7" fill="var(--bg)" stroke="none"/></svg>`;
 const GEM = `<svg viewBox="0 0 24 22" aria-hidden="true"><path d="M6 2h12l5 6-11 13L1 8l5-6z" fill="currentColor"/><path d="M1 8h22M6 2l3 6 3-6 3 6 3-6M9 8l3 13 3-13" fill="none" stroke="var(--surface)" stroke-width="1" stroke-linejoin="round" opacity=".55"/></svg>`;
 const CROWN_SVG = `<svg class="lb-crown" viewBox="0 0 28 22" aria-hidden="true"><path d="M2 8l5.5 5L14 3l6.5 10L26 8l-2 12H4L2 8z" fill="currentColor"/><g fill="currentColor"><circle cx="2" cy="7" r="1.9"/><circle cx="14" cy="2.6" r="1.9"/><circle cx="26" cy="7" r="1.9"/></g><g fill="var(--bg)"><circle cx="14" cy="15.5" r="1.5"/><circle cx="8.5" cy="16" r="1.1"/><circle cx="19.5" cy="16" r="1.1"/></g></svg>`;
@@ -1225,7 +1673,7 @@ function renderPodiumHTML(rk) {
     if (!it) return `<div class="lb-slot r${n}" style="opacity:.35"><div class="lb-avw"><div class="lb-av">-</div></div><div class="lb-p-name">Kosong</div><div class="lb-p-pts">0 Koin</div><div class="lb-ped">${n}</div></div>`;
     return `<div class="lb-slot r${n}"><div class="lb-avw">${n === 1 && !hasFrame(it.santriId) ? CROWN_SVG : ""}${avatarHTML(it.santriId, it.nama, n === 1 ? 56 : 46)}</div>
       <div class="lb-p-name">${esc(it.nama)}${it.santriId === me ? " •" : ""}</div>
-      <div class="lb-p-pts">${it.poin} Koin</div><div class="lb-ped">${n}</div></div>`;
+      <div class="lb-p-pts">${it.poin.toLocaleString("id-ID")} Koin</div><div class="lb-ped">${n}</div></div>`;
   };
   return `<div class="lb-stage"><span class="lb-gem-top">${GEM}</span>${ORN(1)}${ORN(2)}${slot(rk[1], 2)}${slot(rk[0], 1)}${slot(rk[2], 3)}</div>`;
 }
@@ -1234,13 +1682,13 @@ function renderMyRankHTML(rk, me) {
   const s = (appState.santri || []).find(x => x.id === me);
   if (!s) return "";
   const idx = rk.findIndex(r => r.santriId === me);
-  if (idx < 0) return `<div class="lb-me">${ORN(1)}${ORN(3)}<div class="lb-me-top"><div class="lb-me-rank"><small>PERINGKAT</small><b>-</b></div><div class="lb-me-info"><div class="n">${esc(s.nama)}</div><div class="t">Belum masuk klasemen</div></div><div class="lb-me-coin"><b>0</b><span>KOIN</span></div></div><div class="lb-me-gap">Mainkan kuis untuk mengumpulkan koin pertamamu.</div></div>`;
+  if (idx < 0) return `<div class="lb-me">${ORN(1)}${ORN(3)}<div class="lb-me-top"><div class="lb-me-rank"><small>PERINGKAT</small><b>-</b></div><div class="lb-me-info"><div class="n">${esc(s.nama)}</div><div class="t">${esc(lbLevel(0))} • Belum masuk klasemen</div></div><div class="lb-me-coin"><b>0</b><span>KOIN</span></div></div><div class="lb-me-gap">Mainkan kuis untuk mengumpulkan koin pertamamu.</div></div>`;
   const r = rk[idx], prev = rk[idx - 1];
   const pct = prev ? Math.max(4, Math.min(100, Math.round(r.poin / prev.poin * 100))) : 100;
-  const msg = prev ? `Kurang <b>${prev.poin - r.poin} koin</b> lagi untuk menyalip <b>${esc(prev.nama)}</b>` : `Kamu berada di puncak klasemen. Pertahankan!`;
+  const msg = prev ? `Kurang <b>${(prev.poin - r.poin).toLocaleString("id-ID")} koin</b> lagi untuk menyalip <b>${esc(prev.nama)}</b>` : `Kamu berada di puncak klasemen. Pertahankan!`;
   return `<div class="lb-me">${ORN(1)}${ORN(3)}<div class="lb-me-top"><div class="lb-me-rank"><small>PERINGKAT</small><b>#${idx + 1}</b></div>
     <div class="lb-me-info"><div class="n">${esc(s.nama)}</div><div class="t">${esc(lbLevel(r.poin))} • ${esc(r.kelas || "Umum")}</div></div>
-    <div class="lb-me-coin"><b>${r.poin}</b><span>KOIN</span></div></div>
+    <div class="lb-me-coin"><b>${r.poin.toLocaleString("id-ID")}</b><span>KOIN</span></div></div>
     <div class="lb-me-gap">${msg}</div><div class="lb-me-bar"><i style="width:${pct}%"></i></div></div>`;
 }
 
@@ -1257,7 +1705,7 @@ function renderRowsHTML(rk, me) {
       <div class="lb-mid"><div class="lb-nm">${esc(r.nama)}${isMe ? `<span class="badge me" style="margin:0">Anda</span>` : ""}</div>
         <div class="lb-meta">${esc(lbLevel(r.poin))} • ${esc(r.kelas || "Umum")}</div>
         <div class="lb-tr"><i style="width:${pct}%"></i></div></div>
-      <div class="lb-sc"><b>${r.poin}</b><span>KOIN</span></div></div>`;
+      <div class="lb-sc"><b>${r.poin.toLocaleString("id-ID")}</b><span>KOIN</span></div></div>`;
   }).join("") + `</div>`;
 }
 
@@ -1491,15 +1939,21 @@ function renderBeranda() {
   const s = getSantriAktif();
   if (!s) return;
   const total = getKoinSantri(s.id), p = getPendingMap()[s.id], pend = p ? num(p.poin) : 0;
+  const tierUI = renderTierCardHTML(s, total);
+
+  syncRunningTicker(s, total);
   $("headerSantriName").textContent = s.nama;
   $("headerAvatar").innerHTML = avatarHTML(s.id, s.nama, 34);
   $("berandaAvatar").innerHTML = avatarHTML(s.id, s.nama, 64);
   $("headerSantriKelas").textContent = s.kelas || "Umum";
   $("headerCoinCount").textContent = total.toLocaleString("id-ID");
   $("berandaKelasBadge").textContent = `${s.kelas || "Umum"} • @${s.username || s.id}`;
+  $("berandaTierBadge").textContent = tierUI.badgeText;
+  $("berandaTierBanner").innerHTML = tierUI.bannerHTML;
+  $("berandaTierProgress").innerHTML = tierUI.progressHTML;
   $("berandaNamaTitle").textContent = `Assalamu'alaikum, ${s.nama}`;
   $("berandaTotalKoin").textContent = `${total.toLocaleString("id-ID")} Koin`;
-  $("berandaPendingInfo").textContent = pend !== 0 ? `Termasuk ${fmtKoin(pend)} koin lokal menunggu sinyal online` : "Saldo tersinkron dengan portal guru & klasemen";
+  $("berandaPendingInfo").textContent = pend !== 0 ? `Termasuk ${fmtKoin(pend).toLocaleString("id-ID")} koin lokal menunggu sinyal online` : "Saldo tersinkron dengan portal guru & klasemen";
 
   const ab = appState.absensi || {};
   const c = { Hadir: 0, Izin: 0, Sakit: 0, Alpa: 0 };
@@ -1559,6 +2013,7 @@ function mulaiKuis() {
   currentQIndex = 0; selectedOptionIdx = null; answerChecked = false;
   sessionBenar = sessionSalah = sessionKoin = 0;
   isQuizPlaying = true;
+  $("globalRunningTicker").innerHTML = "";
   $("quizLobbyView").style.display = "none";
   $("quizResultView").style.display = "none";
   $("quizPlayView").style.display = "block";
@@ -1569,9 +2024,9 @@ function renderPertanyaanAktif() {
   const q = activeQuestions[currentQIndex], total = activeQuestions.length;
   selectedOptionIdx = null; answerChecked = false;
   $("playProgressBadge").textContent = `Soal ${currentQIndex + 1}/${total}`;
-  $("playSessionCoinBadge").textContent = `${fmtKoin(sessionKoin)} Koin Sesi Ini`;
+  $("playSessionCoinBadge").textContent = `${fmtKoin(sessionKoin).toLocaleString("id-ID")} Koin Sesi Ini`;
   $("playProgressBar").style.width = `${Math.round(currentQIndex / total * 100)}%`;
-  $("playSoalKategori").textContent = `${q.kategori || "Umum"} • Benar +${num(q.poin) || 100} • Salah -${getPenalti()} Koin`;
+  $("playSoalKategori").textContent = `${q.kategori || "Umum"} • Benar +${(num(q.poin) || 100).toLocaleString("id-ID")} • Salah -${getPenalti().toLocaleString("id-ID")} Koin`;
   $("playSoalTeks").textContent = q.pertanyaan;
   $("playFeedback").textContent = "";
   $("playFeedback").style.color = "";
@@ -1622,15 +2077,15 @@ async function lanjutSoalBerikutnya() {
     fb.textContent = kunci < 0
       ? "Kunci jawaban soal ini belum valid (hubungi guru). Soal tidak dihitung."
       : benar
-        ? `Benar! +${poin} Koin`
-        : `Kurang tepat. Jawaban benar: ${"ABCDE"[kunci]}${potong > 0 ? ` • -${potong} Koin` : (getPenalti() > 0 ? " • Saldo koin sudah 0" : "")}`;
+        ? `Benar! +${poin.toLocaleString("id-ID")} Koin`
+        : `Kurang tepat. Jawaban benar: ${"ABCDE"[kunci]}${potong > 0 ? ` • -${potong.toLocaleString("id-ID")} Koin` : (getPenalti() > 0 ? " • Saldo koin sudah 0" : "")}`;
     fb.style.color = kunci < 0 ? "var(--tx2)" : benar ? "var(--ok)" : "var(--bad)";
     const noteText = q.penjelasan || q.pembahasan || "";
     if (noteText) {
       $("playExplainNote").textContent = "Pembahasan: " + noteText;
       $("playExplainNote").style.display = "block";
     }
-    $("playSessionCoinBadge").textContent = `${fmtKoin(sessionKoin)} Koin Sesi Ini`;
+    $("playSessionCoinBadge").textContent = `${fmtKoin(sessionKoin).toLocaleString("id-ID")} Koin Sesi Ini`;
     $("playProgressBar").style.width = `${Math.round((currentQIndex + 1) / total * 100)}%`;
     $("btnNextSoal").textContent = currentQIndex === total - 1 ? "Selesai & Simpan Koin" : "Soal Berikutnya";
     return;
@@ -1664,15 +2119,16 @@ async function selesaikanKuis(early) {
   $("quizResultView").style.display = "block";
   const h = await simpanDanAkumulasiKoin(s.id, s.nama, sessionKoin, sessionBenar, sessionSalah, sessionBenar + sessionSalah);
   $("resHeaderBadge").textContent = early ? "Keluar & Poin Disimpan" : "Sesi Kuis Selesai";
-  $("resHeaderTitle").textContent = sessionKoin > 0 ? `Alhamdulillah, +${sessionKoin} Koin Tersimpan!` : (sessionKoin < 0 ? `Koin berkurang ${Math.abs(sessionKoin)}, ayo coba lagi!` : "Permainan Selesai");
-  $("resKoinLama").textContent = `${h.koinSebelumnya} Koin`;
-  $("resKoinBaru").textContent = `${fmtKoin(h.koinBaru)} Koin`;
-  $("resKoinTotal").textContent = `${h.totalKoin} Koin`;
+  $("resHeaderTitle").textContent = sessionKoin > 0 ? `Alhamdulillah, +${sessionKoin.toLocaleString("id-ID")} Koin Tersimpan!` : (sessionKoin < 0 ? `Koin berkurang ${Math.abs(sessionKoin).toLocaleString("id-ID")}, ayo coba lagi!` : "Permainan Selesai");
+  $("resKoinLama").textContent = `${h.koinSebelumnya.toLocaleString("id-ID")} Koin`;
+  $("resKoinBaru").textContent = `${fmtKoin(h.koinBaru).toLocaleString("id-ID")} Koin`;
+  $("resKoinTotal").textContent = `${h.totalKoin.toLocaleString("id-ID")} Koin`;
   $("resBenarCount").textContent = sessionBenar;
   $("resSalahCount").textContent = sessionSalah;
   $("resSyncStatusText").textContent = h.mode === "online" ? "Poin otomatis digabungkan dengan saldo sebelumnya di server." : "Poin tersimpan di HP & otomatis digabung ke server saat online.";
-  if (sessionKoin > 0) showToast(`+${sessionKoin} Koin berhasil disimpan!`);
-  else if (sessionKoin < 0) showToast(`${sessionKoin} Koin (pengurangan jawaban salah)`);
+  if (sessionKoin > 0) showToast(`+${sessionKoin.toLocaleString("id-ID")} Koin berhasil disimpan!`);
+  else if (sessionKoin < 0) showToast(`${sessionKoin.toLocaleString("id-ID")} Koin (pengurangan jawaban salah)`);
+  celebrateTierIfUpgraded(s.id, h.totalKoin);
   renderAll();
 }
 
@@ -1732,7 +2188,7 @@ function renderAll() {
 // ===================== RESET POIN SENDIRI =====================
 function bukaModalReset() {
   const s = getSantriAktif(); if (!s) return;
-  $("resetPoinSaatIni").textContent = `${getKoinSantri(s.id)} Koin`;
+  $("resetPoinSaatIni").textContent = `${getKoinSantri(s.id).toLocaleString("id-ID")} Koin`;
   $("resetPassInput").value = ""; $("resetPassInput").type = "password";
   document.querySelectorAll("#modalResetPoin .pass-toggle").forEach(b => b.textContent = "Lihat");
   $("modalResetPoin").classList.add("open");
@@ -1761,6 +2217,7 @@ async function resetPoinSendiri() {
       tx.set(docRef, patch, { merge: true });
     });
     const pm = getPendingMap(); delete pm[s.id]; writeJSON(KEYS.pending, pm);
+    const tm = readJSON(KEYS.lastTier, {}); delete tm[s.id]; writeJSON(KEYS.lastTier, tm);
     appState.skor = (appState.skor || []).map(x => x.santriId === s.id ? { ...x, poin: 0, benar: 0, salah: 0, total: 0 } : x);
     const si = (appState.santri || []).findIndex(x => x.id === s.id);
     if (si >= 0) appState.santri[si].koin = 0;

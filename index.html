@@ -638,14 +638,16 @@ const writeJSON = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); 
 const namaDefault = [["s1","Aswir"],["s2","Ilham"],["s3","Fikri"],["s4","Radian"],["s5","Ardian"],["s6","Arsya"],["s7","Muhammad"],["s8","Afdal"],["s9","Riski"],["s10","Rifki"],["s11","Agi"],["s12","Ilyas"],["s13","Lia"],["s14","Nabila"],["s15","Dila"],["s16","Indah"],["s17","Viani"],["s18","Pida"],["s19","Fatin"],["s20","Azkia"],["s21","Amira"],["s22","Nur"],["s23","Syakira"],["s24","Amelia"],["s25","Eliza"],["s26","Nia"],["s27","Salsa"],["s28","Aurel"],["s29","Asyura"],["s30","Bela"],["s31","Syifa"],["s32","Laudia"],["s33","Pia"],["sgj7h51","Intan"],["skobtzy","Adiba"],["spq6hoz","Lisa"],["s3n7ier","Nufus"],["s8myfxi","Ula"],["s8b0lzr","Liza"],["sxqzifh","Putri"],["sctopcm","Pira"]];
 const fallbackState = {
   kelasList: ["Umum", "Matan Taqrib", "Matan Al Jurumiah", "Al Quran"],
-  santri: namaDefault.map(([id, nama]) => ({ id, nama, username: nama.toLowerCase(), kelas: "Umum" })),
+  bidangIlmuList: ["Umum", "Fiqih", "Tauhid", "Tasawuf", "Tajwid", "Akhlak", "Nahwu", "Sharaf", "Hadis"],
+  santri: namaDefault.map(([id, nama]) => ({ id, nama, username: nama.toLowerCase(), kelas: "Umum", pin: "1234" })),
   absensi: {},
   materi: [],
   pengumuman: [],
-  kuisConfig: { penaltiSalah: 5 },
+  jadwalTable: [],
+  kuisConfig: { penaltiSalah: 5, durasi: 180, judul: "Musabaqah Fahmil Kutub BUSTANUL HADI" },
   kuisSoal: [
-    { id: "q_default_1", kategori: "Umum", pertanyaan: "Berapa jumlah rukun Islam?", opsi: ["3 Perkara", "4 Perkara", "5 Perkara", "6 Perkara"], jawaban: 2, poin: 10 },
-    { id: "q_default_2", kategori: "Umum", pertanyaan: "Berapa jumlah rukun Iman?", opsi: ["5 Perkara", "6 Perkara", "7 Perkara", "8 Perkara"], jawaban: 1, poin: 10 }
+    { id: "q_default_1", kategori: "Umum", pertanyaan: "Berapa jumlah rukun Islam?", opsi: ["3 Perkara", "4 Perkara", "5 Perkara", "6 Perkara"], kunci: 2, poin: 10 },
+    { id: "q_default_2", kategori: "Umum", pertanyaan: "Berapa jumlah rukun Iman?", opsi: ["5 Perkara", "6 Perkara", "7 Perkara", "8 Perkara"], kunci: 1, poin: 10 }
   ],
   skor: []
 };
@@ -663,28 +665,38 @@ let sessionBenar = 0, sessionSalah = 0, sessionKoin = 0;
 function normalizeState(raw) {
   const src = raw && typeof raw === "object" ? raw : {};
   const santriRaw = Array.isArray(src.santri) ? src.santri : (Array.isArray(src.daftarSantri) ? src.daftarSantri : fallbackState.santri);
-  const santri = santriRaw.filter(Boolean).map((s, idx) => ({
-    ...s,
-    id: String(s.id || s.santriId || `s_${idx + 1}`),
-    nama: String(s.nama || s.name || "Santri").trim(),
-    username: String(s.username || (s.nama || `santri${idx + 1}`).trim().toLowerCase().replace(/\s+/g, "")),
-    kelas: String(s.kelas || s.tingkat || "Umum").trim() || "Umum",
-    password: s.password !== undefined ? String(s.password) : (s.pin !== undefined ? String(s.pin) : undefined),
-    koin: num(s.koin !== undefined ? s.koin : s.poin)
-  }));
+  const santri = santriRaw.filter(Boolean).map((s, idx) => {
+    const sandi = s.pin !== undefined && String(s.pin).trim() !== ""
+      ? String(s.pin).trim()
+      : (s.password !== undefined && String(s.password).trim() !== "" ? String(s.password).trim() : undefined);
+    return {
+      ...s,
+      id: String(s.id || s.santriId || `s_${idx + 1}`),
+      nama: String(s.nama || s.name || "Santri").trim(),
+      username: String(s.username || (s.nama || `santri${idx + 1}`).trim().toLowerCase().replace(/\s+/g, "")),
+      kelas: String(s.kelas || s.tingkat || "Umum").trim() || "Umum",
+      pin: sandi,
+      password: sandi,
+      koin: num(s.koin !== undefined ? s.koin : s.poin)
+    };
+  });
 
   const soalRaw = Array.isArray(src.kuisSoal) ? src.kuisSoal : (Array.isArray(src.soal) ? src.soal : (Array.isArray(src.bankSoal) ? src.bankSoal : []));
   const kuisSoal = (soalRaw.length ? soalRaw : fallbackState.kuisSoal).filter(Boolean).map((q, idx) => {
     const opsi = Array.isArray(q.opsi) ? q.opsi : (Array.isArray(q.pilihan) ? q.pilihan : [q.a, q.b, q.c, q.d, q.e].filter(x => x !== undefined && x !== null && String(x).trim() !== ""));
+    const kunciVal = q.kunci !== undefined ? q.kunci : (q.jawaban !== undefined ? q.jawaban : (q.jawabanBenar !== undefined ? q.jawabanBenar : q.benar));
+    const penjelasanVal = String(q.penjelasan || q.pembahasan || q.keterangan || "").trim();
     return {
       ...q,
       id: String(q.id || `q_${idx + 1}`),
       kategori: String(q.kategori || q.mapel || q.kitab || q.kelas || "Umum").trim() || "Umum",
       pertanyaan: String(q.pertanyaan || q.soal || q.teks || "").trim(),
       opsi,
-      jawaban: q.jawaban !== undefined ? q.jawaban : (q.kunci !== undefined ? q.kunci : (q.jawabanBenar !== undefined ? q.jawabanBenar : q.benar)),
-      poin: num(q.poin !== undefined ? q.poin : (q.koin !== undefined ? q.koin : 10)) || 10,
-      pembahasan: String(q.pembahasan || q.penjelasan || q.keterangan || "").trim()
+      kunci: kunciVal,
+      jawaban: kunciVal,
+      poin: num(q.poin !== undefined ? q.poin : (q.koin !== undefined ? q.koin : 100)) || 100,
+      penjelasan: penjelasanVal,
+      pembahasan: penjelasanVal
     };
   }).filter(q => q.pertanyaan && Array.isArray(q.opsi) && q.opsi.length > 1);
 
@@ -712,14 +724,21 @@ function normalizeState(raw) {
   });
 
   const materiRaw = Array.isArray(src.materi) ? src.materi : (Array.isArray(src.daftarMateri) ? src.daftarMateri : []);
-  const materi = materiRaw.filter(Boolean).map((m, idx) => ({
-    ...m,
-    id: String(m.id || `m_${idx + 1}`),
-    kelas: String(m.kelas || m.kategori || m.kitab || "Umum").trim() || "Umum",
-    judul: String(m.judul || m.title || "Materi").trim(),
-    isi: String(m.isi || m.konten || m.deskripsi || "").trim(),
-    tanggal: String(m.tanggal || m.date || "").trim()
-  }));
+  const materi = materiRaw.filter(Boolean).map((m, idx) => {
+    const kategoriVal = String(m.kategori || m.mapel || m.kitab || m.kelas || "Umum").trim() || "Umum";
+    const kitabVal = String(m.kitab || "").trim();
+    const kelasVal = String(m.kelas || "Umum").trim() || "Umum";
+    return {
+      ...m,
+      id: String(m.id || `m_${idx + 1}`),
+      kategori: kategoriVal,
+      kitab: kitabVal,
+      kelas: kelasVal,
+      judul: String(m.judul || m.title || "Materi").trim(),
+      isi: String(m.isi || m.konten || m.deskripsi || "").trim(),
+      tanggal: String(m.tanggal || m.date || "").trim()
+    };
+  });
 
   const annRaw = Array.isArray(src.pengumuman) ? src.pengumuman : (Array.isArray(src.daftarPengumuman) ? src.daftarPengumuman : (Array.isArray(src.announcements) ? src.announcements : (Array.isArray(src.info) ? src.info : [])));
   const pengumuman = annRaw.filter(Boolean).map((p, idx) => ({
@@ -729,17 +748,22 @@ function normalizeState(raw) {
     isi: String(p.isi || p.pesan || p.konten || p.deskripsi || p.text || "").trim(),
     kategori: String(p.kategori || p.prioritas || p.tipe || p.kelas || "Umum").trim() || "Umum",
     tanggal: String(p.tanggal || p.waktu || p.date || "").trim(),
-    penting: Boolean(p.penting || p.pinned || String(p.prioritas || p.kategori || "").toLowerCase() === "penting")
+    penting: Boolean(p.penting || p.pinned || String(p.prioritas || p.kategori || "").toLowerCase() === "penting" || String(p.kategori || "").toLowerCase() === "acara besar")
   })).filter(p => p.judul || p.isi);
 
   const kelasList = Array.isArray(src.kelasList) && src.kelasList.length ? src.kelasList : fallbackState.kelasList;
+  const bidangIlmuList = Array.isArray(src.bidangIlmuList) && src.bidangIlmuList.length ? src.bidangIlmuList : fallbackState.bidangIlmuList;
+  const jadwalTable = Array.isArray(src.jadwalTable) ? src.jadwalTable : fallbackState.jadwalTable;
   const absensi = src.absensi && typeof src.absensi === "object" ? src.absensi : {};
 
-  // Pengaturan kuis dari portal guru (pengurangan poin jika salah)
   const kc = src.kuisConfig && typeof src.kuisConfig === "object" ? src.kuisConfig : {};
-  const kuisConfig = { ...kc, penaltiSalah: kc.penaltiSalah !== undefined && kc.penaltiSalah !== "" && !isNaN(Number(kc.penaltiSalah)) ? Math.max(0, Number(kc.penaltiSalah)) : 5 };
+  const kuisConfig = {
+    ...fallbackState.kuisConfig,
+    ...kc,
+    penaltiSalah: kc.penaltiSalah !== undefined && kc.penaltiSalah !== "" && !isNaN(Number(kc.penaltiSalah)) ? Math.max(0, Number(kc.penaltiSalah)) : 5
+  };
 
-  return { ...fallbackState, ...src, kelasList, santri, kuisSoal, skor: [...skorMap.values()].filter(x => santri.some(s => s.id === x.santriId)), materi, pengumuman, absensi, kuisConfig };
+  return { ...fallbackState, ...src, kelasList, bidangIlmuList, jadwalTable, santri, kuisSoal, skor: [...skorMap.values()].filter(x => santri.some(s => s.id === x.santriId)), materi, pengumuman, absensi, kuisConfig };
 }
 
 function showToast(msg) {
@@ -761,11 +785,12 @@ function toggleInputPass(id, btn) {
   btn.textContent = show ? "Sembunyi" : "Lihat";
 }
 
-// ===================== SANDI =====================
+// ===================== SANDI / PIN =====================
 const getSantriAktif = () => (appState.santri || []).find(s => s.id === currentSantriId) || null;
 
 function getSandiSantri(s) {
   if (!s) return "1234";
+  if (s.pin && String(s.pin).trim()) return String(s.pin).trim();
   if (s.password && String(s.password).trim()) return String(s.password).trim();
   const local = readJSON(KEYS.pass, {});
   if (local[s.id]) return String(local[s.id]);
@@ -776,8 +801,9 @@ function syncPasswordsFromServer(santriList) {
   const local = readJSON(KEYS.pass, {});
   let changed = false;
   (santriList || []).forEach(s => {
-    if (s && s.id && s.password && String(s.password).trim() && local[s.id] !== String(s.password).trim()) {
-      local[s.id] = String(s.password).trim();
+    const serverPin = s && (s.pin || s.password);
+    if (s && s.id && serverPin && String(serverPin).trim() && local[s.id] !== String(serverPin).trim()) {
+      local[s.id] = String(serverPin).trim();
       changed = true;
     }
   });
@@ -804,7 +830,7 @@ async function simpanSandiBaru() {
   local[s.id] = baru;
   writeJSON(KEYS.pass, local);
   const idx = (appState.santri || []).findIndex(x => x.id === s.id);
-  if (idx >= 0) { appState.santri[idx].password = baru; writeJSON(KEYS.state, appState); }
+  if (idx >= 0) { appState.santri[idx].pin = baru; appState.santri[idx].password = baru; writeJSON(KEYS.state, appState); }
 
   let msg = "Sandi berhasil diubah (tersimpan lokal)!";
   if (navigator.onLine && docRef) {
@@ -817,7 +843,7 @@ async function simpanSandiBaru() {
         const list = Array.isArray(data[keyField]) ? [...data[keyField]] : [];
         const i = list.findIndex(x => String(x.id || x.santriId) === s.id);
         if (i >= 0) {
-          list[i] = { ...list[i], password: baru };
+          list[i] = { ...list[i], pin: baru, password: baru };
           tx.set(docRef, { [keyField]: list, updatedAt: Date.now() }, { merge: true });
         }
       });
@@ -831,7 +857,6 @@ async function simpanSandiBaru() {
 // ===================== KOIN =====================
 const getPendingMap = () => readJSON(KEYS.pending, {});
 
-// Buang koin offline milik akun yang sudah dihapus guru
 function purgePendingOrphans() {
   const ids = new Set((appState.santri || []).map(s => s.id));
   const m = getPendingMap();
@@ -840,7 +865,6 @@ function purgePendingOrphans() {
   if (changed) writeJSON(KEYS.pending, m);
 }
 
-// Pengurangan poin jika salah (diatur guru di portal guru)
 const getPenalti = () => {
   const v = Number(appState.kuisConfig && appState.kuisConfig.penaltiSalah);
   return isNaN(v) || v < 0 ? 0 : v;
@@ -853,7 +877,6 @@ function getKoinSantri(id) {
   return Math.max(0, (c ? num(c.poin) : 0) + (p ? num(p.poin) : 0));
 }
 
-// Potongan sebenarnya: tidak boleh membuat saldo total di bawah 0
 function hitungPotongan() {
   const s = getSantriAktif();
   const saldo = (s ? getKoinSantri(s.id) : 0) + sessionKoin;
@@ -974,17 +997,12 @@ async function sinkronkanPendingKoin() {
 }
 
 // ===================== FIREBASE =====================
-function initFirebase() {
-  try {
-    if (typeof firebase === "undefined") { lastFirebaseError = "SDK Firebase gagal dimuat (cek izin INTERNET)"; return updateSyncUI(false, "Lokal"); }
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-      try { firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true }); } catch (e) {}
-    }
-    docRef = firebase.firestore().collection("balai_pengajian").doc("data_utama");
-    initProfilListener();
+function attachFirestoreListeners() {
+  if (typeof firebase === "undefined" || !firebase.apps.length) return;
+  const fs = firebase.firestore();
+  if (!docRef) docRef = fs.collection("balai_pengajian").doc("data_utama");
+  if (!unsubSnap) {
     updateSyncUI(false, "Menghubungkan...");
-    if (unsubSnap) unsubSnap();
     unsubSnap = docRef.onSnapshot(snap => {
       lastFirebaseError = "";
       updateSyncUI(true, "Online");
@@ -1000,6 +1018,33 @@ function initFirebase() {
         if (currentSantriId && !getSantriAktif()) keluarAkun();
       }
     }, err => { lastFirebaseError = (err && err.message) || "Gagal terhubung ke Firestore"; updateSyncUI(false, "Lokal"); });
+  }
+  initProfilListener();
+}
+
+function initFirebase() {
+  try {
+    if (typeof firebase === "undefined") { lastFirebaseError = "SDK Firebase gagal dimuat (cek izin INTERNET)"; return updateSyncUI(false, "Lokal"); }
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+      try { firebase.firestore().settings({ experimentalForceLongPolling: true, merge: true }); } catch (e) {}
+    }
+    attachFirestoreListeners();
+    if (navigator.onLine && docRef) {
+      docRef.get().then(snap => {
+        if (snap && snap.exists) {
+          lastFirebaseError = "";
+          updateSyncUI(true, "Online");
+          appState = normalizeState(snap.data() || {});
+          purgePendingOrphans();
+          syncPasswordsFromServer(appState.santri);
+          writeJSON(KEYS.state, appState);
+          sinkronkanPendingKoin();
+          cekNamaSantriLive();
+          isQuizPlaying ? renderBeranda() : renderAll();
+        }
+      }).catch(() => {});
+    }
   } catch (e) { lastFirebaseError = e.message || "Error koneksi Firebase"; updateSyncUI(false, "Lokal"); }
 }
 
@@ -1114,7 +1159,7 @@ function renderPengumuman() {
       banner.innerHTML = `<div class="ann-banner">
         <div style="min-width:0;flex:1">
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-            <span class="badge ${isNew || top.penting ? "urgent" : ""}">${isNew ? "Pengumuman Baru" : (top.penting ? "Penting" : "Pengumuman")}</span>
+            <span class="badge ${isNew || top.penting ? "urgent" : ""}">${isNew ? "Pengumuman Baru" : (top.penting ? "Penting" : esc(top.kategori || "Pengumuman"))}</span>
             ${top.tanggal ? `<span style="font-size:11px;color:var(--tx3)">${esc(top.tanggal)}</span>` : ""}
           </div>
           <div style="font-size:14px;font-weight:800;margin-bottom:2px">${esc(top.judul)}</div>
@@ -1130,7 +1175,7 @@ function renderPengumuman() {
     ? list.map(p => `<div class="neu-card ${p.penting ? "ann-card-pinned" : ""}">
         <div class="row" style="margin-bottom:6px">
           <div style="display:flex;gap:6px;align-items:center">
-            <span class="badge ${p.penting ? "urgent" : ""}">${esc(p.penting ? "Penting" : (p.kategori || "Umum"))}</span>
+            <span class="badge ${p.penting ? "urgent" : ""}">${esc(p.kategori || (p.penting ? "Penting" : "Umum"))}</span>
             ${!seen.has(p.id) ? `<span class="badge urgent">Baru</span>` : ""}
           </div>
           <span style="font-size:11px;color:var(--tx3)">${esc(p.tanggal)}</span>
@@ -1199,7 +1244,6 @@ function renderMyRankHTML(rk, me) {
     <div class="lb-me-gap">${msg}</div><div class="lb-me-bar"><i style="width:${pct}%"></i></div></div>`;
 }
 
-// Mulai dari peringkat ke-4 agar juara 1-3 di podium tidak berulang di daftar baris
 function renderRowsHTML(rk, me) {
   if (!rk || !rk.length) return `<div class="empty">Belum ada santri yang mengumpulkan koin.</div>`;
   const rest = rk.slice(3);
@@ -1321,7 +1365,7 @@ async function sinkronProfil() {
 
 function initProfilListener() {
   try {
-    if (unsubProfil) unsubProfil();
+    if (unsubProfil) return;
     const fs = firebase.firestore();
     unsubProfil = fs.collection("balai_pengajian").orderBy(firebase.firestore.FieldPath.documentId()).startAt("profil_").endAt("profil_\uf8ff").onSnapshot(snap => {
       snap.docChanges().forEach(ch => {
@@ -1490,7 +1534,10 @@ function renderLobbyKuis() {
   $("maxSoalInfo").textContent = MAX_SOAL;
   $("penaltiInfo").textContent = getPenalti();
   const all = Array.isArray(appState.kuisSoal) ? appState.kuisSoal : [];
-  quizCats = ["ALL", ...new Set(all.map(q => q.kategori || "Umum"))];
+  const preferred = Array.isArray(appState.bidangIlmuList) ? appState.bidangIlmuList.filter(b => b !== "Umum") : [];
+  const found = [...new Set(all.map(q => q.kategori || "Umum"))];
+  const ordered = [...preferred.filter(b => found.includes(b)), ...found.filter(b => !preferred.includes(b))];
+  quizCats = ["ALL", ...ordered];
   if (!quizCats.includes(selectedQuizCategory)) selectedQuizCategory = "ALL";
   $("quizCategoryPills").innerHTML = quizCats.map((c, i) => `<button type="button" class="pill ${c === selectedQuizCategory ? "active" : ""}" data-cat="${i}">${c === "ALL" ? "Semua Materi" : esc(c)}</button>`).join("");
   $("lobbyJumlahSoal").textContent = `${soalByCategory().length} Soal`;
@@ -1524,7 +1571,7 @@ function renderPertanyaanAktif() {
   $("playProgressBadge").textContent = `Soal ${currentQIndex + 1}/${total}`;
   $("playSessionCoinBadge").textContent = `${fmtKoin(sessionKoin)} Koin Sesi Ini`;
   $("playProgressBar").style.width = `${Math.round(currentQIndex / total * 100)}%`;
-  $("playSoalKategori").textContent = `${q.kategori || "Umum"} • Benar +${num(q.poin) || 10} • Salah -${getPenalti()} Koin`;
+  $("playSoalKategori").textContent = `${q.kategori || "Umum"} • Benar +${num(q.poin) || 100} • Salah -${getPenalti()} Koin`;
   $("playSoalTeks").textContent = q.pertanyaan;
   $("playFeedback").textContent = "";
   $("playFeedback").style.color = "";
@@ -1536,8 +1583,8 @@ function renderPertanyaanAktif() {
 
 function getKunciIndex(q) {
   const n = (q.opsi || []).length;
-  let v = q.jawaban;
-  if (v === undefined || v === null || v === "") v = q.kunci !== undefined ? q.kunci : (q.jawabanBenar !== undefined ? q.jawabanBenar : q.benar);
+  let v = q.kunci !== undefined && q.kunci !== null && q.kunci !== "" ? q.kunci : q.jawaban;
+  if (v === undefined || v === null || v === "") v = q.jawabanBenar !== undefined ? q.jawabanBenar : q.benar;
   if (v === undefined || v === null) return -1;
   if (typeof v === "number" || /^\s*\d+\s*$/.test(String(v))) {
     const k = Number(v);
@@ -1562,7 +1609,7 @@ async function lanjutSoalBerikutnya() {
   if (!answerChecked) {
     if (selectedOptionIdx === null) return showToast("Pilih salah satu jawaban terlebih dahulu!");
     answerChecked = true;
-    const poin = num(q.poin) || 10, kunci = getKunciIndex(q), benar = kunci >= 0 && selectedOptionIdx === kunci;
+    const poin = num(q.poin) || 100, kunci = getKunciIndex(q), benar = kunci >= 0 && selectedOptionIdx === kunci;
     let potong = 0;
     if (kunci < 0) {
     } else if (benar) { sessionBenar++; sessionKoin += poin; }
@@ -1578,8 +1625,9 @@ async function lanjutSoalBerikutnya() {
         ? `Benar! +${poin} Koin`
         : `Kurang tepat. Jawaban benar: ${"ABCDE"[kunci]}${potong > 0 ? ` • -${potong} Koin` : (getPenalti() > 0 ? " • Saldo koin sudah 0" : "")}`;
     fb.style.color = kunci < 0 ? "var(--tx2)" : benar ? "var(--ok)" : "var(--bad)";
-    if (q.pembahasan) {
-      $("playExplainNote").textContent = "Pembahasan: " + q.pembahasan;
+    const noteText = q.penjelasan || q.pembahasan || "";
+    if (noteText) {
+      $("playExplainNote").textContent = "Pembahasan: " + noteText;
       $("playExplainNote").style.display = "block";
     }
     $("playSessionCoinBadge").textContent = `${fmtKoin(sessionKoin)} Koin Sesi Ini`;
@@ -1599,7 +1647,7 @@ async function keluarDanSimpanKuis() {
     if (!answerChecked && selectedOptionIdx !== null && q) {
       const k = getKunciIndex(q);
       if (k >= 0) {
-        if (selectedOptionIdx === k) { sessionBenar++; sessionKoin += num(q.poin) || 10; }
+        if (selectedOptionIdx === k) { sessionBenar++; sessionKoin += num(q.poin) || 100; }
         else { sessionSalah++; sessionKoin -= hitungPotongan(); }
       }
     }
@@ -1636,6 +1684,8 @@ function kembaliKeLobbyKuis() {
 }
 
 // ===================== MATERI & ABSENSI =====================
+const getMateriTopik = m => String((m && (m.kategori || m.kitab || m.kelas)) || "Umum").trim() || "Umum";
+
 function setMateriFilter(idx) {
   selectedMateriFilter = materiCats[idx] || "ALL";
   renderMateri();
@@ -1643,15 +1693,22 @@ function setMateriFilter(idx) {
 
 function renderMateri() {
   const all = Array.isArray(appState.materi) ? appState.materi : [];
-  materiCats = ["ALL", ...new Set(all.map(m => m.kelas || "Umum"))];
+  const preferred = Array.isArray(appState.bidangIlmuList) ? appState.bidangIlmuList.filter(b => b !== "Umum") : [];
+  const found = [...new Set(all.map(getMateriTopik))];
+  const ordered = [...preferred.filter(b => found.includes(b)), ...found.filter(b => !preferred.includes(b))];
+  materiCats = ["ALL", ...ordered];
   if (!materiCats.includes(selectedMateriFilter)) selectedMateriFilter = "ALL";
   $("materiFilterPills").innerHTML = all.length
     ? materiCats.map((c, i) => `<button type="button" class="pill ${c === selectedMateriFilter ? "active" : ""}" data-mcat="${i}">${c === "ALL" ? "Semua Kitab" : esc(c)}</button>`).join("")
     : "";
-  const list = selectedMateriFilter === "ALL" ? all : all.filter(m => (m.kelas || "Umum") === selectedMateriFilter);
+  const list = selectedMateriFilter === "ALL" ? all : all.filter(m => getMateriTopik(m) === selectedMateriFilter);
   $("materiCountBadge").textContent = `${list.length} Materi`;
   $("materiListContainer").innerHTML = list.length
-    ? list.map(m => `<div class="neu-card"><div class="row" style="margin-bottom:6px"><span class="badge">${esc(m.kelas || "Umum")}</span><span style="font-size:11px;color:var(--tx3)">${esc(m.tanggal)}</span></div><h3 style="font-size:15px;font-weight:800;margin-bottom:6px">${esc(m.judul || "Materi")}</h3><p style="font-size:13px;color:var(--tx2);white-space:pre-line">${esc(m.isi)}</p></div>`).join("")
+    ? list.map(m => {
+        const topik = getMateriTopik(m);
+        const subBadge = m.kitab && m.kitab !== topik && m.kitab !== "Umum" ? `<span class="badge">${esc(m.kitab)}</span>` : "";
+        return `<div class="neu-card"><div class="row" style="margin-bottom:6px"><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="badge">${esc(topik)}</span>${subBadge}</div><span style="font-size:11px;color:var(--tx3)">${esc(m.tanggal)}</span></div><h3 style="font-size:15px;font-weight:800;margin-bottom:6px">${esc(m.judul || "Materi")}</h3><p style="font-size:13px;color:var(--tx2);white-space:pre-line">${esc(m.isi)}</p></div>`;
+      }).join("")
     : `<div class="neu-card empty">Belum ada materi pengajian yang ditambahkan guru.</div>`;
 }
 
